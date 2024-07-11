@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createHashRouter } from 'react-router-dom';
 import LazyImport from './LazyImport';
 import Signup from './components/onboarding/signup';
 import Verify from './components/onboarding/verify';
@@ -8,7 +8,7 @@ import BusinessInfo from './components/onboarding/signup/BusinessInfo';
 import AdminSignupForm from './components/onboarding/signup/SignUpForm';
 const LoginLoader = () => import('./components/onboarding/login');
 
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
         path: '/',
         element: <LazyImport componentLoader={LoginLoader} />,

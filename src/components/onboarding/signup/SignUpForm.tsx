@@ -33,7 +33,7 @@ function AdminSignupForm() {
         onSuccess: async (data: any) => {
             console.log(data)
             toast.success(`${data?.data?.message}, " "A verification code has been sent to your email`)
-            navigate('/verify-account')
+            navigate('/create-account/business-info')
         },
         onError: (err: IErrorResponse) => {
             toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message)
@@ -73,7 +73,7 @@ function AdminSignupForm() {
                         <input
                             type="text"
                             placeholder="First Name"
-                            className="w-[100%] outline-none h-[30px] text-sm"
+                            className="w-[100%] outline-none h-[30px] text-sm bg-transparent"
                             {...register('firstName')}
                         />
                     </div>
@@ -85,7 +85,7 @@ function AdminSignupForm() {
                         <input
                             type="text"
                             placeholder="Last Name"
-                            className="w-[100%] outline-none h-[30px] text-sm"
+                            className="w-[100%] outline-none h-[30px] text-sm bg-transparent"
                             {...register('lastName')}
                         />
                     </div>
@@ -99,7 +99,7 @@ function AdminSignupForm() {
                         <input
                             type="number"
                             placeholder="Enter Phone number"
-                            className="w-[100%] outline-none h-[30px] text-sm"
+                            className="w-[100%] outline-none h-[30px] text-sm bg-transparent"
                             {...register('phoneNumber')}
                         />
                     </div>
@@ -111,7 +111,7 @@ function AdminSignupForm() {
                         <input
                             type="email"
                             placeholder="Ex: Maguire@FlexUI.com"
-                            className="w-[100%] outline-none h-[30px] text-sm"
+                            className="w-[100%] outline-none h-[30px] text-sm bg-transparent"
                             {...register('email')}
                         />
                     </div>
@@ -125,7 +125,7 @@ function AdminSignupForm() {
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
-                            className="w-[90%] outline-none h-[30px] text-sm"
+                            className="w-[90%] outline-none h-[30px] text-sm bg-transparent"
                             {...register('password')}
                         />
                         <span
@@ -144,7 +144,7 @@ function AdminSignupForm() {
                         <input
                             type={showConfirmassword ? "text" : "password"}
                             placeholder="Confirm password"
-                            className="w-[90%] outline-none h-[30px] text-sm"
+                            className="w-[90%] outline-none h-[30px] text-sm bg-transparent"
                             {...register('confirmPassword')}
                         />
                         <span
@@ -161,7 +161,7 @@ function AdminSignupForm() {
             <div className="w-[80%] flex items-center justify-center max-[650px]:w-[90%] max-[650px]:mt-[10px]">
                 <button
                     type="submit"
-                    className="w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg text-[20px]"
+                    className="w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg text-[20px] dark:text-[black] "
                     onClick={handleButtonClick}
                     disabled={isLoading}
                 >

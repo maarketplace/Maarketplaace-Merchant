@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -21,8 +19,7 @@ interface IErrorResponse {
 }
 function BusinessInfo() {
     const navigate = useNavigate()
-    const [showPassword, setShow] = useState<boolean>(false);
-    const [showConfirmassword, setShowConfirmPassword] = useState<boolean>(false);
+
 
     const form = useForm<SignUpInterface>({
         resolver: yupResolver(AdminSignUpSchema) as any
@@ -79,11 +76,11 @@ function BusinessInfo() {
                     <b className=''>{errors.firstName?.message}</b>
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
-                    <label className="text-sm">Last Name</label>
+                    <label className="text-sm">Profession</label>
                     <div className=" w-[100%] border-[#999BA1]  border p-2 max-[650px]:rounded-lg">
                         <input
                             type="text"
-                            placeholder="Last Name"
+                            placeholder="eg. Graphic Designer"
                             className="w-[100%] outline-none h-[30px] text-sm"
                             {...register('lastName')}
                         />
@@ -92,69 +89,16 @@ function BusinessInfo() {
                 </span>
             </div>
             <div className="w-[80%]  flex items-center gap-[10px] max-[650px]:flex-wrap max-[650px]:w-[90%]">
-                <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
-                    <label className="text-sm">Your Phone Number</label>
+                <span className="w-[100%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
+                    <label className="text-sm">Tell us about yourself</label>
                     <div className="w-[100%] border-[#999BA1]  border p-2 max-[650px]:rounded-lg">
-                        <input
-                            type="number"
-                            placeholder="Enter Phone number"
+                        <textarea
+                            placeholder="eg. i am a seasoned graphic designer with 2 years of experince etc.."
                             className="w-[100%] outline-none h-[30px] text-sm"
                             {...register('phoneNumber')}
                         />
                     </div>
                     <b className=''>{errors.phoneNumber?.message}</b>
-                </span>
-                <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
-                    <label className="text-sm">Your Email</label>
-                    <div className="w-[100%] border-[#999BA1] border p-2 max-[650px]:rounded-lg">
-                        <input
-                            type="email"
-                            placeholder="Ex: Maguire@FlexUI.com"
-                            className="w-[100%] outline-none h-[30px] text-sm"
-                            {...register('email')}
-                        />
-                    </div>
-                    <b className=''>{errors.email?.message}</b>
-                </span>
-            </div>
-            <div className="w-[80%]  flex items-center gap-[10px] max-[650px]:flex-wrap  max-[650px]:w-[90%]">
-                <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
-                    <label className="text-sm">Enter Your Password</label>
-                    <div className="flex w-[100%] border-[#999BA1] items-center  border p-2 max-[650px]:rounded-lg">
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Password"
-                            className="w-[90%] outline-none h-[30px] text-sm"
-                            {...register('password')}
-                        />
-                        <span
-                            onClick={() => setShow(!showPassword)}
-                            className=""
-
-                        >
-                            {!showPassword ? <FaEye size={20} color="black" /> : <FaEyeSlash size={20} color="black" />}
-                        </span>
-                    </div>
-                    <b className=''>{errors.password?.message}</b>
-                </span>
-                <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
-                    <label className="text-sm">Confirm Your Password</label>
-                    <div className="flex w-[100%] items-center  border-[#999BA1] border p-2 max-[650px]:rounded-lg">
-                        <input
-                            type={showConfirmassword ? "text" : "password"}
-                            placeholder="Confirm password"
-                            className="w-[90%] outline-none h-[30px] text-sm"
-                            {...register('confirmPassword')}
-                        />
-                        <span
-                            onClick={() => setShowConfirmPassword(!showConfirmassword)}
-                            className=""
-
-                        >
-                            {!showConfirmassword ? <FaEye size={20} color="black" /> : <FaEyeSlash size={20} color="black" />}
-                        </span>
-                    </div>
-                    <b className=''>{errors.confirmPassword?.message}</b>
                 </span>
             </div>
             <div className="w-[80%] flex items-center justify-center max-[650px]:w-[90%] max-[650px]:mt-[10px]">
