@@ -73,7 +73,7 @@ function AdminSignupForm() {
             <div className="w-[70%] flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]" >
                 <img src="MARKET.svg" alt="" className="max-[650px]:w-[80px]" />
                 <span className="flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]" >
-                    <h2 className="text-2xl max-[650px]:text-[20px] max-[650px]:m-[20px]">Create your maarketplaace account</h2>
+                    <h2 className="text-2xl max-[650px]:text-[18px] max-[650px]:m-[20px] text-center">Create your maarketplaace account</h2>
                     {/* <p className="italic text-center max-[650px]:text-[12px] text-wrap">Continue selling and creating wonderful <br></br>products for our consumers</p> */}
                 </span>
             </div>
