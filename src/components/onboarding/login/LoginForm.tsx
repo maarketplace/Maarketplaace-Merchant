@@ -11,7 +11,7 @@ import { AdminLoginSchema } from "../../../schema/LoginSchema";
 import { merchantLogin } from "../../../api/mutation";
 import Modal from "../../../utils/Modal";
 import { ModalData } from "../../../interface/ModalInterface";
-import { FaAngleDown } from "react-icons/fa6";
+// import { FaAngleDown } from "react-icons/fa6";
 function LoginForm() {
     // const location = useLocation();
     const [modalData, setModalData] = useState<ModalData>({ isOpen: false, title: '', message: '', isSuccess: false });
@@ -61,9 +61,9 @@ function LoginForm() {
     };
     return (
         <div className="h-[100vh] w-[55%] flex items-center justify-center flex-col gap-5 max-[650px]:w-[100%]">
-            <span className="w-[70%] h-[100px] max-[650px]:w-[90%] " >
+            {/* <span className="w-[70%] h-[100px] max-[650px]:w-[90%] " >
                 <p className="p-[10px] bg-[#FFC300] w-[120px] rounded-lg flex gap-[5px] items-center justify-center max-[650px]:p-[5px]" >Login as <FaAngleDown /></p>
-            </span>
+            </span> */}
             <div className="w-[70%] flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]" >
                 <img src="MARKET.svg" alt="" className="max-[650px]:w-[80px]" />
                 <span className="flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]" >

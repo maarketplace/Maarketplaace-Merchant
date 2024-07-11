@@ -47,7 +47,7 @@ export const merchantAddProductToCart = async ({ id, data }: { id: string, data:
 }
 export const merchantComment = async ({ id, comment }: { id: string | undefined, comment: string }) => {
     const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT}/comment/merchant/products/${id}`, {comment}, {
+    return await axios.post(`${VITE_ENDPOINT}/comment/merchant/products/${id}`, { comment }, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -63,19 +63,19 @@ export const merchantLikeAComment = async (id: string) => {
         }
     })
 }
-export const merchantForgotPassword = async (email: string)=>{
+export const merchantForgotPassword = async (email: string) => {
     console.log(email)
-    return await axios.post(`${VITE_ENDPOINT}/merchant/fpw`, {email})
+    return await axios.post(`${VITE_ENDPOINT}/merchant/fpw`, { email })
 }
 
-export const merchantResetPassword = async (data: { id: string | undefined, password: string })=>{
+export const merchantResetPassword = async (data: { id: string | undefined, password: string }) => {
     const { id, password } = data
     return await axios.patch(`${VITE_ENDPOINT}/merchant/ps-change/${id}`, { password })
 }
 
-export const merchantLoginAsUser = async ()=>{
+export const merchantLoginAsUser = async () => {
     const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT}/merchant/user`,{}, {
+    return await axios.post(`${VITE_ENDPOINT}/merchant/user`, {}, {
         headers: {
             'Authorization': `Bearer ${Token}`
         }

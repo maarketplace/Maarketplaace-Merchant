@@ -8,7 +8,7 @@ function App() {
   return (
     <div className={`${darkMode && "dark"}`}>
       <RouterProvider router={router} />
-      <button className='absolute w-16 h-16 bottom-10 left-5 bg-[#FFc300] dark:bg-white rounded-full dark:text-black font-semibold flex items-center justify-center'
+      <button className='absolute w-16 h-16 bottom-2 left-2 bg-[#FFc300] dark:bg-white rounded-full dark:text-black font-semibold flex items-center justify-center'
 
         onClick={Toggle}>
         {darkMode ?
