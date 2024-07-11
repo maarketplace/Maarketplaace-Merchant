@@ -52,7 +52,7 @@ function AdminSignupForm() {
 
     const handleButtonClick = () => {
         // console.log("dhcadvjhvdhjavh");
-        // handleSubmit(onSubmit)();
+        handleSubmit(onSubmit)();
         navigate('/create-account/business-info')
     };
     return (
