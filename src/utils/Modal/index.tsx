@@ -50,8 +50,8 @@ const Modal: React.FC<ModalProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 max-[650px]:items-end">
-            <div className="bg-white rounded-lg overflow-hidden shadow-lg max-w-sm w-full">
+        <div className="relative inset-0 z-50 flex items-center bg-black bg-opacity-50 p-4 max-[650px]:items-end">
+            <div className="bg-white rounded-lg overflow-hidden shadow-lg max-w-sm w-[300px] absolute bottom-[190px] right-[-135px] max-[650px]:bottom-[-40px] max-[650px]:w-[300px]">
                 <div className="p-4 border-b flex items-center">
                     <h2 className="text-xl font-semibold mr-2">{title}</h2>
                 </div>

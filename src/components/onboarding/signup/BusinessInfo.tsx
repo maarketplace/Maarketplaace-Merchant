@@ -104,7 +104,7 @@ function BusinessInfo() {
                         <input
                             type="text"
                             placeholder="eg. Buy and sell ventures"
-                            className="w-[100%] outline-none h-[30px] text-sm"
+                            className="w-[100%] outline-none h-[30px] text-sm bg-transparent"
                             {...register('businessName')}
                         />
                     </div>
@@ -116,7 +116,7 @@ function BusinessInfo() {
                         <input
                             type="text"
                             placeholder="eg. Graphic Designer"
-                            className="w-[100%] outline-none h-[30px] text-sm"
+                            className="w-[100%] outline-none h-[30px] text-sm bg-transparent"
                             {...register('profession')}
                         />
                     </div>
@@ -129,7 +129,7 @@ function BusinessInfo() {
                     <div className="w-[100%] border-[#999BA1] border p-2 max-[650px]:rounded-lg">
                         <textarea
                             placeholder="eg. I am a seasoned graphic designer with 2 years of experience etc.."
-                            className="w-[100%] outline-none h-[30px] text-sm"
+                            className="w-[100%] outline-none h-[30px] text-sm bg-transparent"
                             {...register('about')}
                         />
                     </div>
