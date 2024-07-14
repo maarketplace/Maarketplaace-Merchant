@@ -81,3 +81,11 @@ export const merchantLoginAsUser = async () => {
         }
     })
 }
+export const createCategory = async () => {
+    const Token = localStorage.getItem(VITE_TOKEN)
+    return await axios.post(`${VITE_ENDPOINT}/merchant/user`, {}, {
+        headers: {
+            'Authorization': `Bearer ${Token}`
+        }
+    })
+}

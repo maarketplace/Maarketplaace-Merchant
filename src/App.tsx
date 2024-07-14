@@ -9,7 +9,6 @@ function App() {
     <div className={`${darkMode && "dark"}`}>
       <RouterProvider router={router} />
       <button className='fixed w-16 h-16 bottom-2 left-2 bg-[#FFc300] dark:bg-white rounded-full dark:text-black font-semibold flex items-center justify-center max-[650px]:top-2 max-[650px]:animate-slideUp'
-
         onClick={Toggle}>
         {darkMode ?
           <MdOutlineLightMode

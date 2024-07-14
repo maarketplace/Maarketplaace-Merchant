@@ -58,33 +58,37 @@ function BusinessInfo() {
     const handleButtonClick = () => {
         handleSubmit(onSubmit)();
     };
-
     const onDropProfilePicture = (acceptedFiles: File[]) => {
-        const fileList = new DataTransfer();
-        acceptedFiles.forEach(file => fileList.items.add(file));
-        setValue('profilePicture', fileList.files);
-        const reader = new FileReader();
-        reader.onload = () => {
-            setSelectedImage(reader.result);
-        };
-        reader.readAsDataURL(acceptedFiles[0]);
+        if (acceptedFiles.length > 0) {
+            const file = acceptedFiles[0];
+            const fileList = new DataTransfer();
+            fileList.items.add(file);
+            setValue('profilePicture', fileList.files[0].name);
+            const reader = new FileReader();
+            console.log(fileList.files[0].name);
+            reader.onload = () => {
+                setSelectedImage(reader.result);
+                // console.log(reader)
+            };
+            reader.readAsDataURL(file);
+        }
     };
-
     const { getRootProps: getProfilePictureRootProps, getInputProps: getProfilePictureInputProps } = useDropzone({
         onDrop: onDropProfilePicture,
         accept: { 'image/*': ['.png', '.jpg', '.jpeg', '.gif'] },
+        multiple: false
     });
 
     return (
         <div className=" w-[55%] flex items-center justify-center flex-col gap-[30px] max-[650px]:w-[100%] max-[650px]:gap-0 max-[650px]:mb-[40px] max-[650px]:mt-[20px]">
             <div className="w-[70%] flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]">
-                <img src="MARKET.svg" alt="" className="max-[650px]:w-[80px]" />
+                <img src="MARKET.svg" alt="" className="max-[650px]:w-[80px] w-[100px] " />
                 <span className="flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]">
                     <h2 className="text-2xl max-[650px]:text-[20px] max-[650px]:m-[20px]">Create your marketplace account</h2>
                 </span>
             </div>
             <div className='w-[150px] h-[150px] rounded-full border border-separate flex items-center justify-center p-[10px]'>
-                <div {...getProfilePictureRootProps()} className=" flex items-center justify-center text-center flex-col">
+                <div {...getProfilePictureRootProps()} className=" flex items-center justify-center text-center flex-col gap-[10px]">
                     {
                         selectedImage ?
                             <img src={selectedImage as string} alt="Selected" className="w-[130px] rounded-full h-[130px] object-cover" />
@@ -97,6 +101,7 @@ function BusinessInfo() {
                     }
                 </div>
             </div>
+            <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%] flex items-center justify-center '>{errors.profilePicture?.message}</b>
             <div className="w-[80%] flex items-center gap-[10px] max-[650px]:flex-wrap max-[650px]:w-[90%]">
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Business Name / Store Name</label>
@@ -108,7 +113,7 @@ function BusinessInfo() {
                             {...register('businessName')}
                         />
                     </div>
-                    <b className=''>{errors.businessName?.message}</b>
+                    <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.businessName?.message}</b>
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Profession</label>
@@ -120,7 +125,7 @@ function BusinessInfo() {
                             {...register('profession')}
                         />
                     </div>
-                    <b className=''>{errors.profession?.message}</b>
+                    <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.profession?.message}</b>
                 </span>
             </div>
             <div className="w-[80%] flex items-center gap-[10px] max-[650px]:flex-wrap max-[650px]:w-[90%]">
@@ -129,17 +134,17 @@ function BusinessInfo() {
                     <div className="w-[100%] border-[#999BA1] border p-2 max-[650px]:rounded-lg">
                         <textarea
                             placeholder="eg. I am a seasoned graphic designer with 2 years of experience etc.."
-                            className="w-[100%] outline-none h-[30px] text-sm bg-transparent"
+                            className="w-[100%] outline-none h-[50px] text-sm bg-transparent"
                             {...register('about')}
                         />
                     </div>
-                    <b className=''>{errors.about?.message}</b>
+                    <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.about?.message}</b>
                 </span>
             </div>
             <div className="w-[80%] flex items-center justify-center max-[650px]:w-[90%] max-[650px]:mt-[10px]">
                 <button
                     type="submit"
-                    className="w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg text-[20px]"
+                    className="w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg text-[20px] dark:text-[black]"
                     onClick={handleButtonClick}
                     disabled={isLoading}
                 >

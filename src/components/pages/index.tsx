@@ -1,8 +1,17 @@
+import { Outlet } from "react-router-dom"
+import MerchantHeader from "./header"
 
-const index = () => {
+const Merchant = () => {
   return (
-    <div>index</div>
+    <div>
+        <div>
+           <MerchantHeader/>
+        </div>
+        <div>
+          <Outlet/>
+        </div>
+    </div>
   )
 }
 
-export default index
+export default Merchant

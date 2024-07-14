@@ -6,6 +6,10 @@ import ForgotPassword from './components/onboarding/forgetpassword';
 import ResetPassword from './components/onboarding/resetpassword';
 import BusinessInfo from './components/onboarding/signup/BusinessInfo';
 import AdminSignupForm from './components/onboarding/signup/SignUpForm';
+import Merchant from './components/pages';
+import DashboardMain from './components/pages/dashboard';
+import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCourse';
+import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
 const LoginLoader = () => import('./components/onboarding/login');
 
 const router = createHashRouter([
@@ -20,14 +24,14 @@ const router = createHashRouter([
     {
         path: '/create-account',
         element: <Signup />,
-        children:[
+        children: [
             {
                 path: '',
                 element: <AdminSignupForm />,
             },
             {
-                path: 'business-info',
-                element:<BusinessInfo/>
+                path: '/create-account/business-info',
+                element: <BusinessInfo />
             }
         ]
     },
@@ -44,12 +48,31 @@ const router = createHashRouter([
         element: <ResetPassword />
     },
     {
-        path: '/dashboard',
-
+        path: '/merchant',
+        element: <Merchant />,
         children: [
             {
-                path: ''
+                path: '/merchant',
+                element: "Merchant"
             }
+        ]
+    },
+    {
+        path: '/dashboard',
+        element: <DashboardMain/>,
+        children: [
+            {
+                path: '',
+                element: 'hello main'
+            },
+            {
+                path: '/dashboard/course',
+                element: <UploadCourse/>
+            },
+            {
+                path: '/dashboard/ebook',
+                element: <UploadEbook/>
+            },
         ]
     }
 ]);
