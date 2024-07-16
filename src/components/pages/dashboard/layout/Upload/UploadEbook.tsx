@@ -3,12 +3,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import toast from 'react-hot-toast';
 import { useMutation } from 'react-query';
 import { useDropzone } from 'react-dropzone';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import { uploadEbook } from '../../../../../api/mutation';
 import { IAddEbook } from '../../../../../interface/UploadEbook';
 import { UploadEbookSchema } from '../../../../../schema/UploadEbookSchema';
 
 function UploadEbook() {
-
     const form = useForm<IAddEbook>({
         resolver: yupResolver(UploadEbookSchema) as any,
     });
@@ -68,7 +69,7 @@ function UploadEbook() {
         <div className="w-[100%] h-[100%] overflow-scroll " >
             <div className='w-[90%]  ml-[30px] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center '>
                 <h3 className='text-[25px]'>Upload an Ebook</h3>
-                <p className='text-[20px]'>Show the world what you are selling</p>
+                <p className='text-[20px] max-[650px]:text-center'>Show the world what you are selling</p>
             </div>
             <div className='flex w-[100%] gap-[20px] max-[650px]:flex-col '>
                 <div className='w-[40%] mt-[20px] flex flex-col items-center gap-[10px] max-[650px]:w-[100%] '>
@@ -82,15 +83,7 @@ function UploadEbook() {
                         />
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productName?.message}</b>
-                    <div className='w-[90%] flex flex-col gap-[10px]'>
-                        <label className='max-[650px]:text-[15px]'>Product Description</label>
-                        <textarea
-                            placeholder='Product Description'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
-                            {...register('productDescription')}
-                        />
-                    </div>
-                    <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productDescription?.message}</b>
+
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Product Price</label>
                         <input
@@ -131,21 +124,31 @@ function UploadEbook() {
                         />
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productLocation?.message}</b>
+                    <div className='w-[90%] flex flex-col gap-[10px]'>
+                        <label className='max-[650px]:text-[15px]'>Product Description</label>
+                        <ReactQuill
+                            theme="snow"
+                            onChange={(value) => {
+                                setValue('productDescription', value)
+                            }}
+                        />
+                    </div>
+                    <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productDescription?.message}</b>
                 </div>
                 <div className='mt-[20px] w-[40%] flex flex-col items-center gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
                     <div className='w-[100%] flex gap-[20px] mt-[20px] max-[650px]:w-[90%] max-[650px]:flex-col max-[650px]:mt-[0px] '>
                         <span className='w-[90%] flex flex-col gap-[10px] max-[650px]:w-[100%]'>
                             <label>Add Category</label>
-                            <input 
-                            placeholder='Add Category'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                            <input
+                                placeholder='Add Category'
+                                className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                             />
                         </span>
                         <span className='w-[90%] flex flex-col gap-[10px] max-[650px]:w-[100%]'>
                             <label htmlFor="">Add Sub Category</label>
-                            <input 
-                            placeholder='Add Sub Category' 
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                            <input
+                                placeholder='Add Sub Category'
+                                className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                             />
                         </span>
                     </div>

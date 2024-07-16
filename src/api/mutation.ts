@@ -28,6 +28,15 @@ export const uploadEbook = async (data: any) => {
         },
     })
 }
+export const uploadCourse = async (data: any) => {
+    const token = localStorage.getItem(VITE_TOKEN)
+    return await axios.post(`${VITE_ENDPOINT}/product/course`, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            'Authorization': `Bearer ${token}`
+        },
+    })
+}
 export const merchantLike = async (id: string) => {
     const token = localStorage.getItem(VITE_TOKEN)
     // console.log(id)

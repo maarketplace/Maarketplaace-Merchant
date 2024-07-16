@@ -3,8 +3,8 @@ import * as yup from 'yup';
 export const UploadEbookSchema = yup.object({
     productName: yup
         .string()
-        .required("Product name is required")
-        .matches(/^[A-Za-z0-9\s\-_,.'&]*$/, "Product name should only contain letters, numbers, spaces, and the following special characters: - _ , . ' &"),
+        .required("Product name is required"),
+        // .matches(/^[A-Za-z0-9\s\-_,.'&]*$/, "Product name should only contain letters, numbers, spaces, and the following special characters: - _ , . ' &"),
     productDescription: yup
         .string()
         .required("Product description is required"),
@@ -20,16 +20,16 @@ export const UploadEbookSchema = yup.object({
         .required("Quantity is required"),
     category: yup
         .string()
-        .required("Category is required")
-        .matches(/^[A-Za-z ]+$/, "Category should not contain any special characters"),
+        .required("Category is required"),
+        // .matches(/^[A-Za-z ]+$/, "Category should not contain any special characters"),
     subCategory: yup
         .string()
-        .required("Subcategory is required")
-        .matches(/^[A-Za-z ]+$/, "Subcategory should not contain any special characters"),
+        .required("Subcategory is required"),
+        // .matches(/^[A-Za-z ]+$/, "Subcategory should not contain any special characters"),
     productLocation: yup
         .string()
-        .required("Product location is required")
-        .matches(/^(.*[0-9]){2,}.*$/, "Product location should contain text and  number"),
+        .required("Product location is required"),
+        // .matches(/^(.*[0-9]){2,}.*$/, "Product location should contain text and  number"),
     productImage: yup
         .mixed()
         .required("Product image is required").test({

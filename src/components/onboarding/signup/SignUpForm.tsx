@@ -64,7 +64,7 @@ function AdminSignupForm() {
     const handleButtonClick = () => {
         // console.log("dhcadvjhvdhjavh");
         handleSubmit(onSubmit)();
-        navigate('/create-account/business-info')
+        // navigate('/create-account/business-info')
     };
     return (
         <div
@@ -88,7 +88,7 @@ function AdminSignupForm() {
                             {...register('firstName')}
                         />
                     </div>
-                    <b className=''>{errors.firstName?.message}</b>
+                    <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.firstName?.message}</b>
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Last Name</label>
@@ -100,7 +100,7 @@ function AdminSignupForm() {
                             {...register('lastName')}
                         />
                     </div>
-                    <b className=''>{errors.lastName?.message}</b>
+                    <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.lastName?.message}</b>
                 </span>
             </div>
             <div className="w-[80%]  flex items-center gap-[10px] max-[650px]:flex-wrap max-[650px]:w-[90%]">
@@ -114,7 +114,7 @@ function AdminSignupForm() {
                             {...register('phoneNumber')}
                         />
                     </div>
-                    <b className=''>{errors.phoneNumber?.message}</b>
+                    <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.phoneNumber?.message}</b>
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Your Email</label>
@@ -126,7 +126,7 @@ function AdminSignupForm() {
                             {...register('email')}
                         />
                     </div>
-                    <b className=''>{errors.email?.message}</b>
+                    <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.email?.message}</b>
                 </span>
             </div>
             <div className="w-[80%]  flex items-center gap-[10px] max-[650px]:flex-wrap  max-[650px]:w-[90%]">
@@ -147,7 +147,7 @@ function AdminSignupForm() {
                             {!showPassword ? <FaEye size={20} color="black" /> : <FaEyeSlash size={20} color="black" />}
                         </span>
                     </div>
-                    <b className=''>{errors.password?.message}</b>
+                    <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.password?.message}</b>
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Confirm Your Password</label>
@@ -166,7 +166,7 @@ function AdminSignupForm() {
                             {!showConfirmassword ? <FaEye size={20} color="black" /> : <FaEyeSlash size={20} color="black" />}
                         </span>
                     </div>
-                    <b className=''>{errors.confirmPassword?.message}</b>
+                    <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.confirmPassword?.message}</b>
                 </span>
             </div>
             <div className="w-[80%] flex items-center justify-center max-[650px]:w-[90%] max-[650px]:mt-[10px]">
