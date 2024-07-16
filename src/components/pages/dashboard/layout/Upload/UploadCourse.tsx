@@ -106,11 +106,17 @@ const UploadCourse = () => {
                     <div className='w-[100%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Category</label>
                         <input
-                            placeholder='Product Name'
-                            type='text'
+                            placeholder='Course Category'
+                            list="options"
                             className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
+                            id="option-input"
                             {...register('courseCategory')}
                         />
+                        <datalist id="options">
+                            <option value="Course" />
+                            <option value="Ticket" />
+                            <option value="Ebook" />
+                        </datalist>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseCategory?.message}</b>
                     <div className='w-[100%] flex flex-col gap-[10px] mt-[20px] '>

@@ -144,7 +144,7 @@ function AdminSignupForm() {
                             className=""
 
                         >
-                            {!showPassword ? <FaEye size={20} color="black" /> : <FaEyeSlash size={20} color="black" />}
+                            {!showPassword ? <FaEye size={20} className="dark:text-[white]" /> : <FaEyeSlash size={20} className="dark:text-[white]" />}
                         </span>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.password?.message}</b>
@@ -163,7 +163,7 @@ function AdminSignupForm() {
                             className=""
 
                         >
-                            {!showConfirmassword ? <FaEye size={20} color="black" /> : <FaEyeSlash size={20} color="black" />}
+                            {!showConfirmassword ? <FaEye size={20} className="dark:text-[white]" /> : <FaEyeSlash size={20} className="dark:text-[white]" />}
                         </span>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.confirmPassword?.message}</b>
