@@ -1,54 +1,30 @@
-const { VITE_TOKEN_USER } = import.meta.env;
+const { VITE_TOKEN } = import.meta.env;
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, } from "react-icons/fa";
 import { useMutation } from 'react-query'
-// import toast from 'react-hot-toast';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginInterface } from "../../../interface/LoginInterface";
 import { AdminLoginSchema } from "../../../schema/LoginSchema";
 import { merchantLogin } from "../../../api/mutation";
-import Modal from "../../../utils/Modal";
-import { ModalData } from "../../../interface/ModalInterface";
-// import { FaAngleDown } from "react-icons/fa6";
+import toast from "react-hot-toast";
 function LoginForm() {
-    // const location = useLocation();
-    const [modalData, setModalData] = useState<ModalData>({ isOpen: false, title: '', message: '', isSuccess: false });
     const [showPassword, setShow] = useState<boolean>(false);
     const navigate = useNavigate()
     const form = useForm<LoginInterface>({
         resolver: yupResolver(AdminLoginSchema) as any
     });
     const { register, handleSubmit, formState: { errors } } = form;
+
     const { mutate, isLoading } = useMutation(['merchantLogin'], merchantLogin, {
         onSuccess: async (data: any) => {
-            setModalData({
-                isOpen: true,
-                title: 'Success',
-                message: data?.data?.message,
-                isSuccess: true,
-            });
-            localStorage.setItem(VITE_TOKEN_USER, data?.data?.data?.token)
-            // toast.success(data?.data?.message);
-            const redirectPath = localStorage.getItem('redirectPath');
-            if (redirectPath) {
-                // Clear the stored location from session storage
-                localStorage.removeItem('redirectPath');
-                navigate(redirectPath);
-                localStorage.setItem(VITE_TOKEN_USER, data?.data?.data?.token)
-            } else {
-                navigate('');
-            }
+            toast.success(data?.data?.message,)
+            localStorage.setItem(VITE_TOKEN, data?.data?.data?.token)
+            navigate('/dashboard');
         },
         onError: (err: any) => {
-            setModalData({
-                isOpen: true,
-                title: 'Error',
-                message: err?.response?.data?.message || err?.response?.data?.error?.message || err?.message,
-                isSuccess: false,
-            });
-            // toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message);
+            toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message);
         }
     })
 
@@ -61,9 +37,6 @@ function LoginForm() {
     };
     return (
         <div className="h-[100vh] w-[55%] flex items-center justify-center flex-col gap-5 max-[650px]:w-[100%]">
-            {/* <span className="w-[70%] h-[100px] max-[650px]:w-[90%] " >
-                <p className="p-[10px] bg-[#FFC300] w-[120px] rounded-lg flex gap-[5px] items-center justify-center max-[650px]:p-[5px]" >Login as <FaAngleDown /></p>
-            </span> */}
             <div className="w-[70%] flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]" >
                 <img src="MARKET.svg" alt="" className="max-[650px]:w-[80px]" />
                 <span className="flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]" >
@@ -123,24 +96,6 @@ function LoginForm() {
                 </h4>
             </div>
             <h4 className="text-[red] cursor-pointer" onClick={() => navigate('/forgot-password')}>Forgot Password?</h4>
-            <Modal
-                isOpen={modalData.isOpen}
-                setIsOpen={(isOpen) => setModalData({ ...modalData, isOpen })}
-                title={modalData.title}
-                message={modalData.message}
-                autoClose={true}
-                closeAfter={3000}
-                primaryButton={{
-                    text: 'Close',
-                    display: true,
-                    primary: true,
-                }}
-                secondaryButton={{
-                    text: 'Verify',
-                    display: false,
-                    primary: false,
-                }}
-            />
         </div>
     )
 }

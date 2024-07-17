@@ -3,15 +3,11 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-
 import { useMutation } from 'react-query'
-
-// import toast from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { SignUpInterface } from "../../../interface/SignUpInterface";
 import { AdminSignUpSchema } from "../../../schema/SignupSchema";
 import { merchantSignup } from "../../../api/mutation";
-import { ModalData } from "../../../interface/ModalInterface";
-import Modal from "../../../utils/Modal";
 interface IErrorResponse {
     message: any;
     response: {
@@ -25,8 +21,6 @@ function AdminSignupForm() {
     const navigate = useNavigate()
     const [showPassword, setShow] = useState<boolean>(false);
     const [showConfirmassword, setShowConfirmPassword] = useState<boolean>(false);
-    const [modalData, setModalData] = useState<ModalData>({ isOpen: false, title: '', message: '' , isSuccess: false,});
-
     const form = useForm<SignUpInterface>({
         resolver: yupResolver(AdminSignUpSchema) as any
     });
@@ -34,23 +28,11 @@ function AdminSignupForm() {
 
     const { mutate, isLoading } = useMutation(['merchantSignup'], merchantSignup, {
         onSuccess: async (data: any) => {
-            setModalData({
-                isOpen: true,
-                title: 'Success',
-                message: `${data?.data?.message}`,
-                isSuccess: true,
-            });
-            // toast.success(`${data?.data?.message}`)
+            toast.success(`${data?.data?.message}`)
             navigate('/create-account/business-info')
         },
         onError: (err: IErrorResponse) => {
-            setModalData({
-                isOpen: true,
-                title: 'Error',
-                message: err?.response?.data?.message || err?.response?.data?.error?.message || err?.message,
-                isSuccess: false,
-            });
-            // toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message)
+            toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message)
         }
     })
     const onSubmit: SubmitHandler<SignUpInterface> = (data) => {
@@ -189,24 +171,6 @@ function AdminSignupForm() {
                     Sign in
                 </h4>
             </div>
-            <Modal
-                isOpen={modalData.isOpen}
-                setIsOpen={(isOpen) => setModalData({ ...modalData, isOpen })}
-                title={modalData.title}
-                message={modalData.message}
-                autoClose={true} // Enable auto-close
-                closeAfter={3000} // Auto-close after 3 seconds
-                primaryButton={{
-                    text: 'Close',
-                    display: true,
-                    primary: true,
-                }}
-                secondaryButton={{
-                    text: 'Verify',
-                    display: false,
-                    primary: false,
-                }}
-            />
         </div>
     )
 }
