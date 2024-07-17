@@ -6,10 +6,9 @@ import { useDropzone } from 'react-dropzone';
 import { merchantSignup } from "../../../api/mutation";
 import { BusinessInfoSchema } from "../../../schema/BusinessInfoSchema";
 import { BusinessInfoInterface } from "../../../interface/BusinessInfoInterface";
-import { useState } from "react";
-import { ModalData } from "../../../interface/ModalInterface";
-import Modal from "../../../utils/Modal";
+import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 interface IErrorResponse {
     message: any;
@@ -23,7 +22,6 @@ interface IErrorResponse {
 
 function BusinessInfo() {
     const navigate = useNavigate();
-    const [modalData, setModalData] = useState<ModalData>({ isOpen: false, title: '', message: '', isSuccess: false });
     const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
     const form = useForm<BusinessInfoInterface>({
         resolver: yupResolver(BusinessInfoSchema) as any
@@ -32,46 +30,46 @@ function BusinessInfo() {
 
     const { mutate, isLoading } = useMutation(['merchantSignup'], merchantSignup, {
         onSuccess: async (data: any) => {
-            setModalData({
-                isOpen: true,
-                title: 'Success',
-                message: `${data?.data?.message}, "A verification code has been sent to your email"`,
-                isSuccess: true,
-            });
+            toast.success(`${data?.data?.message}, "A verification code has been sent to your email"`,)
             navigate('/verify-account');
+            localStorage.removeItem('merchantData')
         },
         onError: (err: IErrorResponse) => {
-            setModalData({
-                isOpen: true,
-                title: 'Error',
-                message: err?.response?.data?.message || err?.response?.data?.error?.message || err?.message,
-                isSuccess: false,
-            });
+            toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message,)
         }
     });
+    useEffect(() => {
+        // Retrieve data from local storage
+        const storedData = localStorage.getItem('merchantData');
+        if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            setValue('firstName', parsedData.firstName);
+            setValue('lastName', parsedData.lastName);
+            setValue('email', parsedData.email);
+            setValue('phoneNumber', parsedData.phoneNumber);
+            setValue('password', parsedData.password);
+        }
+    }, [setValue]);
 
     const onSubmit: SubmitHandler<BusinessInfoInterface> = (data) => {
-        const { ...others } = data;
-        mutate({ ...others });
+        const {  image,  firstName, lastName, ...others } = data;
+        const fullName = (firstName as string) + " " + (lastName as string)
+        mutate({ ...others, fullName, image: image?.[0] });
+        
     };
 
     const handleButtonClick = () => {
         handleSubmit(onSubmit)();
     };
     const onDropProfilePicture = (acceptedFiles: File[]) => {
-        if (acceptedFiles.length > 0) {
-            const file = acceptedFiles[0];
-            const fileList = new DataTransfer();
-            fileList.items.add(file);
-            setValue('profilePicture', fileList.files[0].name);
-            const reader = new FileReader();
-            console.log(fileList.files[0].name);
-            reader.onload = () => {
-                setSelectedImage(reader.result);
-                // console.log(reader)
-            };
-            reader.readAsDataURL(file);
-        }
+        const fileList = new DataTransfer();
+        acceptedFiles.forEach(file => fileList.items.add(file));
+        setValue('image', fileList.files);
+        const reader = new FileReader();
+        reader.onload = () => {
+            setSelectedImage(reader.result);
+        };
+        reader.readAsDataURL(acceptedFiles[0]);
     };
     const { getRootProps: getProfilePictureRootProps, getInputProps: getProfilePictureInputProps } = useDropzone({
         onDrop: onDropProfilePicture,
@@ -101,7 +99,7 @@ function BusinessInfo() {
                     }
                 </div>
             </div>
-            <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%] flex items-center justify-center '>{errors.profilePicture?.message}</b>
+            <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%] flex items-center justify-center '>{errors.image?.message}</b>
             <div className="w-[80%] flex items-center gap-[10px] max-[650px]:flex-wrap max-[650px]:w-[90%]">
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Business Name / Store Name</label>
@@ -110,10 +108,10 @@ function BusinessInfo() {
                             type="text"
                             placeholder="eg. Buy and sell ventures"
                             className="w-[100%] outline-none h-[30px] text-sm bg-transparent"
-                            {...register('businessName')}
+                            {...register('business_name')}
                         />
                     </div>
-                    <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.businessName?.message}</b>
+                    <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.business_name?.message}</b>
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Profession</label>
@@ -135,10 +133,10 @@ function BusinessInfo() {
                         <textarea
                             placeholder="eg. I am a seasoned graphic designer with 2 years of experience etc.."
                             className="w-[100%] outline-none h-[50px] text-sm bg-transparent"
-                            {...register('about')}
+                            {...register('bio')}
                         />
                     </div>
-                    <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.about?.message}</b>
+                    <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.bio?.message}</b>
                 </span>
             </div>
             <div className="w-[80%] flex items-center justify-center max-[650px]:w-[90%] max-[650px]:mt-[10px]">
@@ -160,24 +158,6 @@ function BusinessInfo() {
                     Sign in
                 </h4>
             </div>
-            <Modal
-                isOpen={modalData.isOpen}
-                setIsOpen={(isOpen) => setModalData({ ...modalData, isOpen })}
-                title={modalData.title}
-                message={modalData.message}
-                autoClose={true}
-                closeAfter={3000}
-                primaryButton={{
-                    text: 'Close',
-                    display: true,
-                    primary: true,
-                }}
-                secondaryButton={{
-                    text: 'Verify',
-                    display: false,
-                    primary: false,
-                }}
-            />
         </div>
     );
 }

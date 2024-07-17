@@ -3,20 +3,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useMutation } from 'react-query'
-import toast from 'react-hot-toast';
 import { SignUpInterface } from "../../../interface/SignUpInterface";
 import { AdminSignUpSchema } from "../../../schema/SignupSchema";
-import { merchantSignup } from "../../../api/mutation";
-interface IErrorResponse {
-    message: any;
-    response: {
-        data: {
-            error: any;
-            message: string
-        }
-    };
-}
+
 function AdminSignupForm() {
     const navigate = useNavigate()
     const [showPassword, setShow] = useState<boolean>(false);
@@ -26,27 +15,17 @@ function AdminSignupForm() {
     });
     const { register, handleSubmit, formState: { errors } } = form;
 
-    const { mutate, isLoading } = useMutation(['merchantSignup'], merchantSignup, {
-        onSuccess: async (data: any) => {
-            toast.success(`${data?.data?.message}`)
-            navigate('/create-account/business-info')
-        },
-        onError: (err: IErrorResponse) => {
-            toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message)
-        }
-    })
     const onSubmit: SubmitHandler<SignUpInterface> = (data) => {
-        const { confirmPassword, firstName, lastName, ...others } = data;
-        const fullName = (firstName as string) + " " + (lastName as string)
-
-        mutate({ fullName, ...others })
+        const { confirmPassword, ...others } = data;
+        // const fullName = (firstName as string) + " " + (lastName as string)
+        const userData = { ...others };
+        localStorage.setItem('merchantData', JSON.stringify(userData));
 
     };
 
     const handleButtonClick = () => {
-        // console.log("dhcadvjhvdhjavh");
         handleSubmit(onSubmit)();
-        // navigate('/create-account/business-info')
+        navigate('/create-account/business-info')
     };
     return (
         <div
@@ -156,9 +135,8 @@ function AdminSignupForm() {
                     type="submit"
                     className="w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg text-[20px] dark:text-[black] "
                     onClick={handleButtonClick}
-                    disabled={isLoading}
                 >
-                    {isLoading ? "Loading..." : "Create account"}
+                    Create account
                 </button>
             </div>
             <div className="w-[70%] flex items-center justify-center gap-[10px] max-[650px]:w-[90%] max-[650px]:flex-wrap max-[650px]:mt-[10px] ">

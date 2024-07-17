@@ -1,8 +1,14 @@
 
 
 export interface BusinessInfoInterface {
-    businessName: string,
+    business_name: string,
     profession: string,
-    about: string,
-    profilePicture?: string | null;
+    bio: string,
+    image: FileList | null;
+    email: string;
+    lastName: string;
+    firstName: string;
+    phoneNumber: string
+    password: string;
+    confirmPassword?: string;
 }

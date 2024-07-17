@@ -42,6 +42,7 @@ function UploadEbook() {
         const fileList = new DataTransfer();
         acceptedFiles.forEach(file => fileList.items.add(file));
         setValue('productImage', fileList.files);
+        console.log(fileList)
     };
 
     const onDropEbook = (acceptedFiles: File[]) => {

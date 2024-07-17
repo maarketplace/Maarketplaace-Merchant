@@ -6,7 +6,11 @@ const { VITE_TOKEN } = import.meta.env;
 // const token = localStorage.getItem(VITE_TOKEN)
 export const merchantSignup = async (data: any) => {
     console.log(data);
-    return await axios.post(`${VITE_ENDPOINT}/merchant`, data)
+    return await axios.post(`${VITE_ENDPOINT}/merchant`, data,  {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    })
 };
 
 export const merchantLogin = async (data: any) => {

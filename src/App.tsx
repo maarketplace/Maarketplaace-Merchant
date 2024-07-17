@@ -3,6 +3,7 @@ import router from './router'
 import { useContext } from 'react';
 import { ThemeContext } from './context/DarkTheme';
 import { MdOutlineLightMode, MdOutlineNightlight } from 'react-icons/md';
+import { Toaster } from 'react-hot-toast';
 function App() {
   const { darkMode, Toggle } = useContext(ThemeContext);
   return (
@@ -19,6 +20,7 @@ function App() {
             className='w-[30px] h-[30px] text-center'
           />}
       </button>
+      <Toaster />
     </div>
   )
 }
