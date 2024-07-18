@@ -7,6 +7,7 @@ import {
   QueryClientProvider,
 } from 'react-query'
 import { ThemeProvider } from './context/DarkTheme.tsx';
+import { MerchantProvider } from './context/GetMerchant.tsx';
 
 
 const queryClient = new QueryClient()
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <App />
+        <MerchantProvider>
+          <App />
+        </MerchantProvider>
       </ThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>

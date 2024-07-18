@@ -12,6 +12,8 @@ import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCours
 import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
 const LoginLoader = () => import('./components/onboarding/login');
 
+
+
 const router = createHashRouter([
     {
         path: '/',
@@ -59,7 +61,7 @@ const router = createHashRouter([
     },
     {
         path: '/dashboard',
-        element: <DashboardMain/>,
+        element: <DashboardMain />,
         children: [
             {
                 path: '',
@@ -67,11 +69,11 @@ const router = createHashRouter([
             },
             {
                 path: '/dashboard/course',
-                element: <UploadCourse/>
+                element: <UploadCourse />
             },
             {
                 path: '/dashboard/ebook',
-                element: <UploadEbook/>
+                element: <UploadEbook />
             },
         ]
     }

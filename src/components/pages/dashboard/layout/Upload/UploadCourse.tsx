@@ -21,7 +21,7 @@ const UploadCourse = () => {
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadCourse, {
         onSuccess: async (data: any) => {
             console.log(data);
-            toast.success(`${data?.data?.message}`);
+            toast.success(`${data?.data?.data?.message}`);
         },
         onError: (err: any) => {
             toast.error(err?.response?.data?.message);
@@ -36,7 +36,6 @@ const UploadCourse = () => {
 
     const handleButtonClick = () => {
         handleSubmit(onSubmit)();
-        console.log('clicked');
     };
 
     const onDropProductImage = (acceptedFiles: File[]) => {
@@ -113,7 +112,7 @@ const UploadCourse = () => {
                             {...register('courseCategory')}
                         />
                         <datalist id="options">
-                            <option value="Course" />
+                            <option value="category3" />
                             <option value="Ticket" />
                             <option value="Ebook" />
                         </datalist>
@@ -133,10 +132,16 @@ const UploadCourse = () => {
                         <label className='max-[650px]:text-[15px]'>Course Location</label>
                         <input
                             placeholder='Product Name'
+                            list="location"
                             type='text'
                             className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
                             {...register('courseLocation')}
                         />
+                          <datalist id="location">
+                            <option value="Telegram" />
+                            <option value="Google Drive" />
+                            <option value="others" />
+                        </datalist>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseLocation?.message}</b>
                     <div className='w-[100%] flex flex-col gap-[10px] '>
