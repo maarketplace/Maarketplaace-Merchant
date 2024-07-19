@@ -50,12 +50,12 @@ const UploadCourse = () => {
     });
 
     return (
-        <div className="w-[100%] h-[100%] overflow-scroll max-[650px]:items-center">
-            <div className='w-[90%]  ml-[30px] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center '>
+        <div className="w-[100%] h-[100%] flex flex-col items-center gap-[20px] overflow-scroll max-[650px]:items-center">
+            <div className='w-[90%] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center mt-[20px]'>
                 <h3 className='text-[25px]'>Upload a Course</h3>
                 <p className='text-[20px] max-[650px]:text-center'>Show the world what you are selling</p>
             </div>
-            <div className="flex w-[90%] ml-[30px]  gap-[20px] max-[650px]:flex-col max-[650px]:ml-[0px] max-[650px]:w-[100%] '">
+            <div className="flex w-[90%]  gap-[50px] max-[650px]:flex-col max-[650px]:ml-[0px] max-[650px]:w-[100%] mb-[20px]">
                 <div className='w-[40%] flex flex-col items-center gap-[20px] max-[650px]:w-[100%] max-[650px]:items-center' >
                     <div className='w-[100%] flex flex-col gap-[10px] mt-[20px] '>
                         <label className='max-[650px]:text-[15px]'>Course Name</label>
@@ -70,7 +70,7 @@ const UploadCourse = () => {
                     <div className='w-[100%] flex flex-col gap-[10px]  '>
                         <label className='max-[650px]:text-[15px]'>Course Price</label>
                         <input
-                            placeholder='Product Name'
+                            placeholder='Course Price'
                             type='text'
                             className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
                             {...register('coursePrice')}
@@ -81,7 +81,7 @@ const UploadCourse = () => {
                     <div className='w-[100%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Discounted Price</label>
                         <input
-                            placeholder='Product Name'
+                            placeholder='Course Discounted Price'
                             type='text'
                             className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
                             {...register('courseDiscountedPrice')}
@@ -121,7 +121,7 @@ const UploadCourse = () => {
                     <div className='w-[100%] flex flex-col gap-[10px] mt-[20px] '>
                         <label className='max-[650px]:text-[15px]'>Course Sub Category</label>
                         <input
-                            placeholder='Product Name'
+                            placeholder='Course Sub Category'
                             type='text'
                             className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
                             {...register('courseSubCategory')}
@@ -131,7 +131,7 @@ const UploadCourse = () => {
                     <div className='w-[100%] flex flex-col gap-[10px] mt-[20px] '>
                         <label className='max-[650px]:text-[15px]'>Course Location</label>
                         <input
-                            placeholder='Product Name'
+                            placeholder='Course Location'
                             list="location"
                             type='text'
                             className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
@@ -147,7 +147,7 @@ const UploadCourse = () => {
                     <div className='w-[100%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course URL</label>
                         <input
-                            placeholder='Product Name'
+                            placeholder='Course URL'
                             type='text'
                             className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
                             {...register('courseURL')}

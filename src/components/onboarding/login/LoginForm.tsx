@@ -19,6 +19,7 @@ function LoginForm() {
 
     const { mutate, isLoading } = useMutation(['merchantLogin'], merchantLogin, {
         onSuccess: async (data: any) => {
+            console.log(data)
             toast.success(data?.data?.message,)
             localStorage.setItem(VITE_TOKEN, data?.data?.data?.token)
             navigate('/dashboard');
