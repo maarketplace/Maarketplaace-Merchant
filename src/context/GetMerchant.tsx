@@ -21,7 +21,6 @@ export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }
         refetchOnWindowFocus: true,
         onError: (error: any) => {
             console.log(error?.response?.data?.message)
-            // please log in!
         },
     });
     const value: MerchantContextType = {

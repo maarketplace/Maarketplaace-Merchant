@@ -94,9 +94,17 @@ export const merchantLoginAsUser = async () => {
         }
     })
 }
-export const createCategory = async () => {
+export const createCategory = async (category: string) => {
     const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT}/merchant/user`, {}, {
+    return await axios.post(`${VITE_ENDPOINT}/category`, {category}, {
+        headers: {
+            'Authorization': `Bearer ${Token}`
+        }
+    })
+}
+export const createSubCategory = async (sub: string) => {
+    const Token = localStorage.getItem(VITE_TOKEN)
+    return await axios.post(`${VITE_ENDPOINT}/sub-category`, {sub}, {
         headers: {
             'Authorization': `Bearer ${Token}`
         }

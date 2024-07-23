@@ -17,11 +17,11 @@ const SideBar = () => {
             <div className="w-[100%] flex flex-col gap-[10px]">
                 <span className="flex items-center gap-[30px] justify-center  h-[50px] cursor-pointer w-[100%] " onClick={() => navigate('/dashboard')}>
                     <RxDashboard className=" w-[20%] h-[15px] " />
-                    <p className=" text-[15px] w-[80%] ">Overview</p>
+                    <p className=" text-[15px] w-[80%] ">Dashboard</p>
                 </span>
                 <span className="flex items-center gap-[30px] justify-center  h-[50px] cursor-pointer w-[100%] " onClick={() => navigate('/dashboard')}>
                     <RxDashboard className=" w-[20%] h-[15px] " />
-                    <p className=" text-[15px] w-[80%] ">Dashboard</p>
+                    <p className=" text-[15px] w-[80%] ">Store</p>
                 </span>
                 <span
                     className="flex items-center gap-[30px] justify-center h-[50px] cursor-pointer w-[100%] "

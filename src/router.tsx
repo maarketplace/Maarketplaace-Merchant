@@ -10,6 +10,7 @@ import Merchant from './components/pages';
 import DashboardMain from './components/pages/dashboard';
 import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCourse';
 import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
+import Overview from './components/pages/dashboard/layout/overview';
 const LoginLoader = () => import('./components/onboarding/login');
 
 
@@ -65,7 +66,7 @@ const router = createHashRouter([
         children: [
             {
                 path: '',
-                element: 'hello main'
+                element: <Overview/>
             },
             {
                 path: '/dashboard/course',

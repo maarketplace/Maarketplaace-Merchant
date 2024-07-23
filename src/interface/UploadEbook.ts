@@ -3,7 +3,6 @@ export interface IAddEbook {
     productDescription: string,
     productPrice: number,
     discountPrice: number,
-    quantity: number,
     category: string,
     subCategory: string,
     productLocation: string,

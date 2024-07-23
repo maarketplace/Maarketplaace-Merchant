@@ -8,8 +8,10 @@ import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import { uploadEbook } from '../../../../../api/mutation';
 import { IAddEbook } from '../../../../../interface/UploadEbook';
 import { UploadEbookSchema } from '../../../../../schema/UploadEbookSchema';
+import { categories } from './category';
 
 function UploadEbook() {
+
     const form = useForm<IAddEbook>({
         resolver: yupResolver(UploadEbookSchema) as any,
     });
@@ -26,7 +28,6 @@ function UploadEbook() {
             toast.error(err?.response?.data?.message);
         }
     });
-
     const onSubmit: SubmitHandler<IAddEbook> = (data) => {
         const { eBook, productImage, ...others } = data;
         mutate({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
@@ -42,7 +43,7 @@ function UploadEbook() {
         const fileList = new DataTransfer();
         acceptedFiles.forEach(file => fileList.items.add(file));
         setValue('productImage', fileList.files);
-        console.log(fileList)
+
     };
 
     const onDropEbook = (acceptedFiles: File[]) => {
@@ -65,21 +66,20 @@ function UploadEbook() {
         },
         multiple: true,
     });
-
     return (
-        <div className="w-[100%] h-[100%] overflow-scroll " >
+        <div className="w-[100%] h-[100%]" >
             <div className='w-[90%]  ml-[30px] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center '>
                 <h3 className='text-[25px]'>Upload an Ebook</h3>
                 <p className='text-[20px] max-[650px]:text-center'>Show the world what you are selling</p>
             </div>
-            <div className='flex w-[100%] gap-[20px] max-[650px]:flex-col '>
+            <div className='flex w-[100%] gap-[20px] max-[650px]:flex-col'>
                 <div className='w-[40%] mt-[20px] flex flex-col items-center gap-[10px] max-[650px]:w-[100%] '>
                     <div className='w-[90%] flex flex-col gap-[10px] mt-[20px] '>
                         <label className='max-[650px]:text-[15px]'>Product Name</label>
                         <input
                             placeholder='Product Name'
                             type='text'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
+                            className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
                             {...register('productName')}
                         />
                     </div>
@@ -90,7 +90,7 @@ function UploadEbook() {
                         <input
                             placeholder='Product Price'
                             type='number'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                            className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                             {...register('productPrice')}
                         />
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productPrice?.message}</b>
@@ -100,31 +100,11 @@ function UploadEbook() {
                         <input
                             placeholder='Discounted Price'
                             type='number'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                            className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                             {...register('discountPrice')}
                         />
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.discountPrice?.message}</b>
                     </div>
-                    <div className='w-[90%] flex flex-col gap-[10px]'>
-                        <label className='max-[650px]:text-[15px]'>Product Quantity</label>
-                        <input
-                            placeholder='Product Quantity'
-                            type='number'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
-                            {...register('quantity')}
-                        />
-                    </div>
-                    <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.quantity?.message}</b>
-                    <div className='w-[90%] flex flex-col gap-[10px]'>
-                        <label className='max-[650px]:text-[15px]'>Product Location</label>
-                        <input
-                            placeholder='Product Location'
-                            type='text'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
-                            {...register('productLocation')}
-                        />
-                    </div>
-                    <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productLocation?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Product Description</label>
                         <ReactQuill
@@ -136,43 +116,50 @@ function UploadEbook() {
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productDescription?.message}</b>
                 </div>
-                <div className='mt-[20px] w-[40%] flex flex-col items-center gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
-                    <div className='w-[100%] flex gap-[20px] mt-[20px] max-[650px]:w-[90%] max-[650px]:flex-col max-[650px]:mt-[0px] '>
-                        <span className='w-[90%] flex flex-col gap-[10px] max-[650px]:w-[100%]'>
-                            <label>Add Category</label>
-                            <input
-                                placeholder='Add Category'
-                                className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
-                            />
-                        </span>
-                        <span className='w-[90%] flex flex-col gap-[10px] max-[650px]:w-[100%]'>
-                            <label htmlFor="">Add Sub Category</label>
-                            <input
-                                placeholder='Add Sub Category'
-                                className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
-                            />
-                        </span>
+                <div className='mt-[40px] w-[40%] flex flex-col items-center  gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
+                    <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
+                        <label className='max-[650px]:text-[15px]'>Product Location</label>
+                        <input
+                            placeholder='Product Location'
+                            type='text'
+                            className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                            {...register('productLocation')}
+                        />
                     </div>
-                    <div className='w-[100%] flex flex-col gap-[10px] mt-[10px] max-[650px]:w-[90%] max-[650px]:mt-[0px] '>
-                        <label className='max-[650px]:text-[15px]' htmlFor="category">Select Category</label>
-                        <select id="category" className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]' {...register('category')}>
+                    <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productLocation?.message}</b>
+                    <div className='w-[100%] flex flex-col gap-[10px] mt-[10px] max-[650px]:w-[90%] max-[650px]:mt-[0px]'>
+                        <label className='max-[650px]:text-[15px] ' htmlFor="category">Select Category</label>
+                        <input
+                            id="category"
+                            list="categoryList"
+                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                            {...register('category')}
+                        />
+                        <datalist id="categoryList">
                             <option value="">Select a category</option>
-                            <option>Select a category</option>
-                            <option>Select a category</option>
-                            <option>Select a category</option>
-                            <option>Select a category</option>
-                        </select>
+                            {Object.keys(categories).map(categoryKey => (
+                                <option key={categoryKey} value={categoryKey}>{categories[categoryKey].name}</option>
+                            ))}
+                        </datalist>
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.category?.message}</b>
                         {selectedCategory && (
                             <>
-                                <label className='max-[650px]:text-[15px]' htmlFor="subcategory">Select Subcategory</label>
-                                <select id="subcategory" className='max-[650px]:text-[15px]' {...register('subCategory')}>
+                                <label
+                                    className='max-[650px]:text-[15px]'
+                                    htmlFor="subcategory">Select Subcategory</label>
+                                <input
+                                    id="subcategory"
+                                    list="subcategoryList"
+                                    className='w-[100%] h-[45px] outline-none p-[10px]  text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                                    {...register('subCategory')}
+                                />
+                                <datalist id="subcategoryList">
                                     <option value="">Select a subcategory</option>
-                                    {/* {categories[selectedCategory].subcategories.map(subcategory => (
+                                    {categories[selectedCategory].subcategories.map(subcategory => (
                                         <option key={subcategory} value={subcategory}>{subcategory}</option>
-                                    ))} */}
-                                </select>
-                                <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.subCategory?.message}</b>
+                                    ))}
+                                </datalist>
+                                <b className='upload_product_error_msg'>{errors.subCategory?.message}</b>
                             </>
                         )}
                     </div>

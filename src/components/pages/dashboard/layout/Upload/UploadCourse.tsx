@@ -9,6 +9,7 @@ import { UploadCourseSchema } from "../../../../../schema/UploadCourseSchema";
 import { useMutation } from "react-query";
 import { uploadCourse } from "../../../../../api/mutation";
 import toast from "react-hot-toast";
+
 const UploadCourse = () => {
     const [description, setDescription] = useState('');
 
@@ -16,7 +17,8 @@ const UploadCourse = () => {
     const form = useForm<IAddCourse>({
         resolver: yupResolver(UploadCourseSchema) as any,
     });
-    const { register, handleSubmit, formState: { errors }, setValue } = form;
+    const { register, handleSubmit, formState: { errors }, setValue, } = form;
+
 
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadCourse, {
         onSuccess: async (data: any) => {
@@ -50,14 +52,14 @@ const UploadCourse = () => {
     });
 
     return (
-        <div className="w-[100%] h-[100%] flex flex-col items-center gap-[20px] overflow-scroll max-[650px]:items-center">
-            <div className='w-[90%] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center mt-[20px]'>
+        <div className="w-[100%] h-[100%] overflow-scroll">
+            <div className='w-[100%] ml-[20px] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center max-[650px]:justify-center'>
                 <h3 className='text-[25px]'>Upload a Course</h3>
-                <p className='text-[20px] max-[650px]:text-center'>Show the world what you are selling</p>
+                <p className='text-[20px] max-[650px]:text-center max-[650px]:text-wrap'>Show the world what you are selling</p>
             </div>
-            <div className="flex w-[90%]  gap-[50px] max-[650px]:flex-col max-[650px]:ml-[0px] max-[650px]:w-[100%] mb-[20px]">
-                <div className='w-[40%] flex flex-col items-center gap-[20px] max-[650px]:w-[100%] max-[650px]:items-center' >
-                    <div className='w-[100%] flex flex-col gap-[10px] mt-[20px] '>
+            <div className="flex w-[100%] items-center ml-[20px] gap-[10px] max-[650px]:flex-col mt-[20px]">
+                <div className='w-[40%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:items-center' >
+                    <div className='w-[90%] flex flex-col gap-[10px] mt-[20px] '>
                         <label className='max-[650px]:text-[15px]'>Course Name</label>
                         <input
                             placeholder='Course Name'
@@ -66,8 +68,8 @@ const UploadCourse = () => {
                             {...register('courseName')}
                         />
                     </div>
-                    <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseName?.message}</b>
-                    <div className='w-[100%] flex flex-col gap-[10px]  '>
+                    <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseName?.message}</b>
+                    <div className='w-[90%] flex flex-col gap-[10px]  '>
                         <label className='max-[650px]:text-[15px]'>Course Price</label>
                         <input
                             placeholder='Course Price'
@@ -77,8 +79,7 @@ const UploadCourse = () => {
                         />
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.coursePrice?.message}</b>
-
-                    <div className='w-[100%] flex flex-col gap-[10px] '>
+                    <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Discounted Price</label>
                         <input
                             placeholder='Course Discounted Price'
@@ -88,7 +89,23 @@ const UploadCourse = () => {
                         />
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseDiscountedPrice?.message}</b>
-                    <div className='w-[100%] flex flex-col gap-[10px]'>
+                    <div className='w-[90%] flex flex-col gap-[10px] '>
+                        <label className='max-[650px]:text-[15px]'>Course Location</label>
+                        <input
+                            placeholder='Course Location'
+                            list="location"
+                            type='text'
+                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
+                            {...register('courseLocation')}
+                        />
+                        <datalist id="location">
+                            <option value="Telegram" />
+                            <option value="Google Drive" />
+                            <option value="others" />
+                        </datalist>
+                    </div>
+                    <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseLocation?.message}</b>
+                    <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Course Description</label>
                         <ReactQuill
                             theme="snow"
@@ -101,8 +118,8 @@ const UploadCourse = () => {
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.courseDescription?.message}</b>
                 </div>
-                <div className='mt-[20px] w-[40%] flex flex-col items-center  gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
-                    <div className='w-[100%] flex flex-col gap-[10px] '>
+                <div className=' w-[40%] max-[650px]:mb-[20px] flex flex-col items-center gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
+                    <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Category</label>
                         <input
                             placeholder='Course Category'
@@ -118,7 +135,7 @@ const UploadCourse = () => {
                         </datalist>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseCategory?.message}</b>
-                    <div className='w-[100%] flex flex-col gap-[10px] mt-[20px] '>
+                    <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Sub Category</label>
                         <input
                             placeholder='Course Sub Category'
@@ -128,23 +145,7 @@ const UploadCourse = () => {
                         />
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseSubCategory?.message}</b>
-                    <div className='w-[100%] flex flex-col gap-[10px] mt-[20px] '>
-                        <label className='max-[650px]:text-[15px]'>Course Location</label>
-                        <input
-                            placeholder='Course Location'
-                            list="location"
-                            type='text'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
-                            {...register('courseLocation')}
-                        />
-                          <datalist id="location">
-                            <option value="Telegram" />
-                            <option value="Google Drive" />
-                            <option value="others" />
-                        </datalist>
-                    </div>
-                    <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseLocation?.message}</b>
-                    <div className='w-[100%] flex flex-col gap-[10px] '>
+                    <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course URL</label>
                         <input
                             placeholder='Course URL'
@@ -154,7 +155,7 @@ const UploadCourse = () => {
                         />
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseURL?.message}</b>
-                    <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[100%]'>
+                    <div className='w-[90%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
                         <label className='max-[650px]:text-[15px]'>Add Course Image</label>
                         <div {...getProductImageRootProps()} className='border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center '>
                             <input {...getProductImageInputProps()} />
@@ -163,7 +164,7 @@ const UploadCourse = () => {
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseImage?.message}</b>
                     <button
-                        className='w-[100%] h-[40px] outline-none bg-[#FFC300] rounded-lg text-[20px] dark:text-[black] max-[650px]:w-[100%] '
+                        className='w-[90%] h-[40px] outline-none bg-[#FFC300] rounded-lg text-[20px] dark:text-[black] max-[650px]:w-[90%] '
                         type='button'
                         onClick={handleButtonClick}
                         disabled={isLoading}
