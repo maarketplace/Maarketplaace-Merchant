@@ -9,8 +9,11 @@ import { UploadCourseSchema } from "../../../../../schema/UploadCourseSchema";
 import { useMutation } from "react-query";
 import { uploadCourse } from "../../../../../api/mutation";
 import toast from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const UploadCourse = () => {
+    const navigate = useNavigate()
+    const location = useLocation();
     const [description, setDescription] = useState('');
 
 
@@ -52,12 +55,28 @@ const UploadCourse = () => {
     });
 
     return (
-        <div className="w-[100%] h-[100%] overflow-scroll">
+        <div className="w-[100%] h-[100%] overflow-hidden">
+            <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
+            <span className="gap-[10px] flex w-[95%]">
+                    <button
+                        className={`p-[5px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/course' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
+                        onClick={() => navigate('/dashboard/course')}
+                    >
+                        Upload Course
+                    </button>
+                    <button
+                        className={`p-[5px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/ebook' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
+                        onClick={() => navigate('/dashboard/ebook')}
+                    >
+                        Upload Ebook
+                    </button>
+                </span>
+            </div>
             <div className='w-[100%] ml-[20px] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center max-[650px]:justify-center'>
                 <h3 className='text-[25px]'>Upload a Course</h3>
                 <p className='text-[20px] max-[650px]:text-center max-[650px]:text-wrap'>Show the world what you are selling</p>
             </div>
-            <div className="flex w-[100%] items-center ml-[20px] gap-[10px] max-[650px]:flex-col mt-[20px]">
+            <div className="flex w-[100%] items-center  ml-[20px] gap-[10px] max-[650px]:flex-col">
                 <div className='w-[40%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:items-center' >
                     <div className='w-[90%] flex flex-col gap-[10px] mt-[20px] '>
                         <label className='max-[650px]:text-[15px]'>Course Name</label>
@@ -118,7 +137,7 @@ const UploadCourse = () => {
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.courseDescription?.message}</b>
                 </div>
-                <div className=' w-[40%] max-[650px]:mb-[20px] flex flex-col items-center gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
+                <div className=' w-[40%] max-[650px]:mb-[20px] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Category</label>
                         <input

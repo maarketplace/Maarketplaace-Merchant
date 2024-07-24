@@ -11,6 +11,7 @@ import DashboardMain from './components/pages/dashboard';
 import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCourse';
 import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
 import Overview from './components/pages/dashboard/layout/overview';
+import Store from './components/pages/dashboard/layout/store';
 const LoginLoader = () => import('./components/onboarding/login');
 
 
@@ -75,6 +76,10 @@ const router = createHashRouter([
             {
                 path: '/dashboard/ebook',
                 element: <UploadEbook />
+            },
+            {
+                path: '/dashboard/store',
+                element: <Store />
             },
         ]
     }

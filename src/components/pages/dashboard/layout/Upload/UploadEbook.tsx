@@ -9,8 +9,11 @@ import { uploadEbook } from '../../../../../api/mutation';
 import { IAddEbook } from '../../../../../interface/UploadEbook';
 import { UploadEbookSchema } from '../../../../../schema/UploadEbookSchema';
 import { categories } from './category';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function UploadEbook() {
+    const navigate = useNavigate()
+    const location = useLocation();
 
     const form = useForm<IAddEbook>({
         resolver: yupResolver(UploadEbookSchema) as any,
@@ -68,6 +71,22 @@ function UploadEbook() {
     });
     return (
         <div className="w-[100%] h-[100%]" >
+            <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
+            <span className="gap-[10px] flex w-[95%]">
+                    <button
+                        className={`p-[5px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/course' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
+                        onClick={() => navigate('/dashboard/course')}
+                    >
+                        Upload Course
+                    </button>
+                    <button
+                        className={`p-[5px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/ebook' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
+                        onClick={() => navigate('/dashboard/ebook')}
+                    >
+                        Upload Ebook
+                    </button>
+                </span>
+            </div>
             <div className='w-[90%]  ml-[30px] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center '>
                 <h3 className='text-[25px]'>Upload an Ebook</h3>
                 <p className='text-[20px] max-[650px]:text-center'>Show the world what you are selling</p>
