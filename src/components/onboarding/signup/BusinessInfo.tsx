@@ -103,7 +103,7 @@ function BusinessInfo() {
             <div className="w-[80%] flex items-center gap-[10px] max-[650px]:flex-wrap max-[650px]:w-[90%]">
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Business Name / Store Name</label>
-                    <div className="w-[100%] border-[#999BA1] border p-2 max-[650px]:rounded-lg">
+                    <div className="w-[100%] border-[#999BA1] border p-2">
                         <input
                             type="text"
                             placeholder="eg. Buy and sell ventures"
@@ -115,7 +115,7 @@ function BusinessInfo() {
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Profession</label>
-                    <div className=" w-[100%] border-[#999BA1] border p-2 max-[650px]:rounded-lg">
+                    <div className=" w-[100%] border-[#999BA1] border p-2">
                         <input
                             type="text"
                             placeholder="eg. Graphic Designer"
@@ -129,7 +129,7 @@ function BusinessInfo() {
             <div className="w-[80%] flex items-center gap-[10px] max-[650px]:flex-wrap max-[650px]:w-[90%]">
                 <span className="w-[100%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Tell us about yourself</label>
-                    <div className="w-[100%] border-[#999BA1] border p-2 max-[650px]:rounded-lg">
+                    <div className="w-[100%] border-[#999BA1] border p-2">
                         <textarea
                             placeholder="eg. I am a seasoned graphic designer with 2 years of experience etc.."
                             className="w-[100%] outline-none h-[50px] text-sm bg-transparent"

@@ -41,7 +41,7 @@ function AdminSignupForm() {
             <div className="w-[80%]  flex items-center gap-[10px] max-[650px]:flex-wrap max-[650px]:w-[90%] ">
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">First Name</label>
-                    <div className="w-[100%] border-[#999BA1]  border p-2 max-[650px]:rounded-lg">
+                    <div className="w-[100%] border-[#999BA1]  border p-2">
                         <input
                             type="text"
                             placeholder="First Name"
@@ -53,7 +53,7 @@ function AdminSignupForm() {
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Last Name</label>
-                    <div className=" w-[100%] border-[#999BA1]  border p-2 max-[650px]:rounded-lg">
+                    <div className=" w-[100%] border-[#999BA1]  border p-2">
                         <input
                             type="text"
                             placeholder="Last Name"
@@ -67,7 +67,7 @@ function AdminSignupForm() {
             <div className="w-[80%]  flex items-center gap-[10px] max-[650px]:flex-wrap max-[650px]:w-[90%]">
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Your Phone Number</label>
-                    <div className="w-[100%] border-[#999BA1]  border p-2 max-[650px]:rounded-lg">
+                    <div className="w-[100%] border-[#999BA1]  border p-2">
                         <input
                             type="number"
                             placeholder="Enter Phone number"
@@ -79,7 +79,7 @@ function AdminSignupForm() {
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Your Email</label>
-                    <div className="w-[100%] border-[#999BA1] border p-2 max-[650px]:rounded-lg">
+                    <div className="w-[100%] border-[#999BA1] border p-2">
                         <input
                             type="email"
                             placeholder="Ex: Maguire@FlexUI.com"
@@ -93,7 +93,7 @@ function AdminSignupForm() {
             <div className="w-[80%]  flex items-center gap-[10px] max-[650px]:flex-wrap  max-[650px]:w-[90%]">
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Enter Your Password</label>
-                    <div className="flex w-[100%] border-[#999BA1] items-center  border p-2 max-[650px]:rounded-lg">
+                    <div className="flex w-[100%] border-[#999BA1] items-center  border p-2">
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
@@ -112,7 +112,7 @@ function AdminSignupForm() {
                 </span>
                 <span className="w-[50%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[10px]">
                     <label className="text-sm">Confirm Your Password</label>
-                    <div className="flex w-[100%] items-center  border-[#999BA1] border p-2 max-[650px]:rounded-lg">
+                    <div className="flex w-[100%] items-center  border-[#999BA1] border p-2">
                         <input
                             type={showConfirmassword ? "text" : "password"}
                             placeholder="Confirm password"

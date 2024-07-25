@@ -18,7 +18,7 @@ export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }
         error,
     } = useQuery(["getMerchant"], getMerchant, {
         // enabled: !!localStorage.getItem('VITE_TOKEN'),
-        refetchOnWindowFocus: true,
+        // refetchOnWindowFocus: true,
         onError: (error: any) => {
             console.log(error?.response?.data?.message)
         },
