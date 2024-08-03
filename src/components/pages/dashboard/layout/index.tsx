@@ -16,7 +16,7 @@ const Layout = () => {
     const [showSideBar, setShowSidebar] = useState<boolean>(false)
     return (
         <div className=" w-[100%] h-[100%] dark:bg-black">
-            <div className="w-[100%] bg-[#FFC300] p-[10px] flex items-center  rounded-bl-[20px]">
+            <div className="w-[100%] bg-[#FFC300] p-[10px] flex items-center  rounded-bl-[20px] sticky top-0">
                 <span className="w-[30%] max-[650px]:w-[50%]">
                     <HiMenuAlt2 className=" text-[30px] hidden max-[650px]:flex" onClick={() => setShowSidebar(!showSideBar)} />
                 </span>
@@ -34,7 +34,7 @@ const Layout = () => {
                     <div className="w-[30%] h-[100%]" onClick={() => setShowSidebar(!showSideBar)}></div>
                 </div>
             }
-            <div className="w-[100%] p-[10px] dark:text-white dark:bg-black">
+            <div className="w-[100%] p-[10px] dark:text-white dark:bg-black ">
                 <Outlet />
             </div>
         </div>

@@ -55,7 +55,7 @@ const UploadCourse = () => {
     });
 
     return (
-        <div className="w-[100%] h-[100%] overflow-hidden">
+        <div className="w-[100%] h-[100%]">
             <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
             <span className="gap-[10px] flex w-[95%]">
                     <button
@@ -133,6 +133,32 @@ const UploadCourse = () => {
                                 setDescription(value);
                                 setValue("courseDescription", value);
                             }}
+                        />
+                    </div>
+                    <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.courseDescription?.message}</b>
+                    <div className='w-[90%] flex flex-col gap-[10px] mt-[20px]'>
+                        <label className='max-[650px]:text-[15px]'>What to learn on this course</label>
+                        <ReactQuill
+                            theme="snow"
+                            value={description}
+                            onChange={(value) => {
+                                setDescription(value);
+                                setValue("courseDescription", value);
+                            }}
+                            placeholder="Tell us what to learn in this ocurse "
+                        />
+                    </div>
+                    <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.courseDescription?.message}</b>
+                    <div className='w-[90%] flex flex-col gap-[10px] mt-[20px]'>
+                        <label className='max-[650px]:text-[15px]'>Course Topic</label>
+                        <ReactQuill
+                            theme="snow"
+                            value={description}
+                            onChange={(value) => {
+                                setDescription(value);
+                                setValue("courseDescription", value);
+                            }}
+                            placeholder="write your topic in a bullet style eg "
                         />
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.courseDescription?.message}</b>

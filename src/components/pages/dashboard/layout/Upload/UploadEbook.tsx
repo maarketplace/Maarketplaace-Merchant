@@ -70,7 +70,7 @@ function UploadEbook() {
         multiple: true,
     });
     return (
-        <div className="w-[100%] h-[100%]" >
+        <div className="w-[100%] h-[100%] overflow-auto" >
             <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
             <span className="gap-[10px] flex w-[95%]">
                     <button
