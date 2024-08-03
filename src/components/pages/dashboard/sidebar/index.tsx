@@ -1,26 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { RxDashboard } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { PiNotebookLight, PiUsersThree } from "react-icons/pi";
 import { IoVideocamOutline, IoCartOutline, IoQrCodeOutline, IoBagHandleOutline, IoStorefrontOutline } from "react-icons/io5";
-
-const SideBar = () => {
+export interface ToggleSidebar {
+    showSideBar: boolean;
+    setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const SideBar = ({showSideBar, setShowSidebar}: ToggleSidebar) => {
     const navigate = useNavigate();
     const [activeItem, setActiveItem] = useState<string>("");
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
+    useEffect(() => {
+        // Load active item from local storage when the component mounts
+        const storedActiveItem = localStorage.getItem("activeSidebarItem");
+        if (storedActiveItem) {
+            setActiveItem(storedActiveItem);
+        }
+    }, []);
+
     const handleNavigate = (path: string, item: string) => {
         navigate(path);
         setActiveItem(item);
+        // Save active item to local storage
+        localStorage.setItem("activeSidebarItem", item);
+        setShowSidebar(!showSideBar)
     };
 
     const getActiveClass = (item: string) => {
-        return activeItem === item ? "bg-black text-white border-inline-start-4 border-[#FFC300]" : "";
+        return activeItem === item ? " w-[100%] bg-black text-white border-inline-start-4 border-[#FFC300]" : "";
     };
 
     return (
-        <div className="w-[90%] h-[100%]">
+        <div className="w-[90%] h-[83vh]">
             <div className="w-[100%] flex flex-col gap-[10px]">
                 <span
                     className={`flex items-center gap-[30px] justify-center h-[50px] cursor-pointer w-[100%] ${getActiveClass("dashboard")}`}

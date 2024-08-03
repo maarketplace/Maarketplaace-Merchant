@@ -110,3 +110,19 @@ export const createSubCategory = async (sub: string) => {
         }
     })
 }
+
+
+
+
+export const updateMerchantImage = async (file: string | Blob) =>{
+    const formData = new FormData();
+    formData.append('image', file);
+    const Token = localStorage.getItem(VITE_TOKEN)
+
+    return await axios.post(`${VITE_ENDPOINT}/merchant/image`, formData, {
+        headers: {
+            'Authorization': `Bearer ${Token}`,
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+};

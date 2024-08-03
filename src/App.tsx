@@ -7,9 +7,9 @@ import { Toaster } from 'react-hot-toast';
 function App() {
   const { darkMode, Toggle } = useContext(ThemeContext);
   return (
-    <div className={`${darkMode && "dark"}`}>
+    <div className={`${darkMode && "dark"} bg-white dark:bg-black`}>
       <RouterProvider router={router} />
-      <button className='fixed w-10 h-10 bottom-4 right-4 bg-[#FFC300]  rounded-full dark:text-black font-semibold flex items-center justify-center max-[650px]:top-2 max-[650px]:animate-slideUp'
+      <button className='fixed w-10 h-10 bottom-4 right-4 bg-[#FFC300]  rounded-full dark:text-black font-semibold flex items-center justify-center  max-[650px]:animate-slideUp'
         onClick={Toggle}>
         {darkMode ?
           <MdOutlineLightMode

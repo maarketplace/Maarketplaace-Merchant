@@ -13,6 +13,9 @@ module.exports = {
         animation: {
           slideUp: 'slideUp 2s ease-out',
         },
+        fontSize: {
+          'clamp': 'clamp(1.5rem, 2vw + 1rem, 2.5rem)',
+        },
       },
     },
     variants: {

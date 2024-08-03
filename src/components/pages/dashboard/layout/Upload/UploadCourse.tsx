@@ -76,8 +76,8 @@ const UploadCourse = () => {
                 <h3 className='text-[25px]'>Upload a Course</h3>
                 <p className='text-[20px] max-[650px]:text-center max-[650px]:text-wrap'>Show the world what you are selling</p>
             </div>
-            <div className="flex w-[100%] items-center  ml-[20px] gap-[10px] max-[650px]:flex-col">
-                <div className='w-[40%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:items-center' >
+            <div className="flex w-[100%] gap-[20px] max-[650px]:flex-col">
+                <div className='w-[40%] mt-[20px] flex flex-col items-center gap-[10px] max-[650px]:w-[100%]' >
                     <div className='w-[90%] flex flex-col gap-[10px] mt-[20px] '>
                         <label className='max-[650px]:text-[15px]'>Course Name</label>
                         <input
@@ -137,7 +137,7 @@ const UploadCourse = () => {
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.courseDescription?.message}</b>
                 </div>
-                <div className=' w-[40%] max-[650px]:mb-[20px] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
+                <div className='mt-[40px] w-[40%] flex flex-col items-center  gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Category</label>
                         <input
