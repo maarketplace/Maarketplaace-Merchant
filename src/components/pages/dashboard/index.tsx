@@ -13,7 +13,7 @@ const DashboardMain = () => {
                     <SideBar showSideBar={false} setShowSidebar={function (_value: SetStateAction<boolean>): void {}} />
                 </div>
             </div>
-            <div className="w-[100%] ml-[18%] flex justify-center">
+            <div className="w-[100%] ml-[18%] flex justify-center max-[650px]:ml-[0px]">
                 <div className="w-[100%] dark:bg-black h-[100%]">
                     <Layout />
                 </div>

@@ -73,7 +73,7 @@ const barData = {
 };
 const Overview = () => {
     return (
-        <div className="w-[100%] flex items-center justify-center flex-col max-h-[100%]">
+        <div className="w-[100%] flex items-center justify-center flex-col">
             <div className="w-[100%] p-[10px] flex justify-center gap-[10px] max-[650px]:flex-col" >
                 <div className="w-[18%] h-[100px] border flex p-[10px] justify-center gap-[10px] rounded-[8px] shadow-lg shadow-grey-500/50 bg-slate-50  dark:bg-[#1D1C1C] dark:shadow-white-500/50 dark:border-none max-[650px]:w-[100%]">
                     <span className="w-[80%] h-[90%] p-[10px] flex flex-col gap-[10px] ">
@@ -121,7 +121,7 @@ const Overview = () => {
                     </span>
                 </div>
             </div>
-            <div className="flex w-[95%] flex-wrap gap-[30px] mt-[50px] p-[5px]">
+            <div className="flex w-[95%] flex-wrap gap-[50px] mt-[50px] p-[5px]">
                 <div className="h-[250px] w-[400px] max-[650px]:w-[100%]">
                     <Bar data={barData} />
                 </div>

@@ -24,7 +24,6 @@ function UploadEbook() {
 
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadEbook, {
         onSuccess: async (data: any) => {
-            console.log(data);
             toast.success(`${data?.data?.message}`);
         },
         onError: (err: any) => {
@@ -124,6 +123,26 @@ function UploadEbook() {
                         />
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.discountPrice?.message}</b>
                     </div>
+                     {/* <div className='w-[90%] flex flex-col gap-[10px]'>
+                        <label className='max-[650px]:text-[15px]'>Author Name</label>
+                        <input
+                            placeholder='Author Name'
+                            type='text'
+                            className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                            {...register('discountPrice')}
+                        />
+                        <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.discountPrice?.message}</b>
+                    </div> */}
+                    <div className='w-[90%] flex flex-col gap-[10px]'>
+                        <label className='max-[650px]:text-[15px]'>Number  Of Pages</label>
+                        <input
+                            placeholder='Number Pages'
+                            type='number'
+                            className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                            {...register('pages')}
+                        />
+                        <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.pages?.message}</b>
+                    </div> 
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Product Description</label>
                         <ReactQuill

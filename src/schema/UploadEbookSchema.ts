@@ -35,7 +35,7 @@ export const UploadEbookSchema = yup.object({
             test: (value: any) => value?.length > 0
         }),
     eBook: yup
-        .mixed()
+        .mixed(),
     // .test({
     //     name: 'fileType',
     //     message: 'Invalid file type. Only PDF, PPT, or DOC allowed.',
@@ -49,4 +49,5 @@ export const UploadEbookSchema = yup.object({
     //         return allowedFileTypes.includes(fileType);
     //     },
     // }),
+    pages: yup.number()
 }).required();

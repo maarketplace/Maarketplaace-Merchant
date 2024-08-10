@@ -52,11 +52,16 @@ function BusinessInfo() {
     }, [setValue]);
 
     const onSubmit: SubmitHandler<BusinessInfoInterface> = (data) => {
-        const {  image,  firstName, lastName, ...others } = data;
-        const fullName = (firstName as string) + " " + (lastName as string)
-        mutate({ ...others, fullName, image: image?.[0] });
-        
-    };
+        const { image, firstName, lastName, ...others } = data;
+        const fullName = `${firstName} ${lastName}`;
+        const payload = {
+            ...others,
+            fullName,
+            image: image ? image[0] : null
+        };
+        // console.log(payload);
+        mutate(payload);
+    }
 
     const handleButtonClick = () => {
         handleSubmit(onSubmit)();

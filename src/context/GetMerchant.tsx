@@ -16,13 +16,7 @@ export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }
         data,
         isLoading,
         error,
-    } = useQuery(["getMerchant"], getMerchant, {
-        // enabled: !!localStorage.getItem('VITE_TOKEN'),
-        // refetchOnWindowFocus: true,
-        onError: (error: any) => {
-            console.log(error?.response?.data?.message)
-        },
-    });
+    } = useQuery(["getMerchant"], getMerchant, {});
     const value: MerchantContextType = {
         data: data?.data?.data?.data,
         isLoading,

@@ -111,18 +111,33 @@ export const createSubCategory = async (sub: string) => {
     })
 }
 
-
-
-
 export const updateMerchantImage = async (file: string | Blob) =>{
     const formData = new FormData();
     formData.append('image', file);
     const Token = localStorage.getItem(VITE_TOKEN)
 
-    return await axios.post(`${VITE_ENDPOINT}/merchant/image`, formData, {
+    return await axios.patch(`${VITE_ENDPOINT}/merchant/profile/image`, formData, {
         headers: {
             'Authorization': `Bearer ${Token}`,
             'Content-Type': 'multipart/form-data',
         },
     });
 };
+
+export const deleteProduct = async (id: string) =>{
+    const Token = localStorage.getItem(VITE_TOKEN)
+    return await axios.delete(`${VITE_ENDPOINT}/product/${id}`), {}, {
+        headers: {
+            'Authorization': `Bearer ${Token}`,
+        }, 
+    }
+} 
+
+export const verifyMerchantAccountNumber = async ({account_number,bank_code}: {account_number: string, bank_code: string}) =>{
+    const Token = localStorage.getItem(VITE_TOKEN)
+    return await axios.delete(`${VITE_ENDPOINT}/product/`), {account_number, bank_code}, {
+        headers: {
+            'Authorization': `Bearer ${Token}`,
+        }, 
+    }
+}

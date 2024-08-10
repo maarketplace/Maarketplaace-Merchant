@@ -70,7 +70,7 @@ function LoginForm() {
                         className=""
                         style={{ background: "none", border: "none" }}
                     >
-                        {!showPassword ? <FaEye style={{ color: 'black' }} className=" text-[20px] max-[650px]:w-[15px]" /> : <FaEyeSlash style={{ color: 'black' }} className=" text-[20px] max-[650px]:w-[15px]" />}
+                        {!showPassword ? <FaEye className=" text-[20px] max-[650px]:w-[15px]" /> : <FaEyeSlash className=" text-[20px] max-[650px]:w-[15px]" />}
                     </span>
                 </div>
                 <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.password?.message}</b>

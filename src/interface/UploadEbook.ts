@@ -8,4 +8,5 @@ export interface IAddEbook {
     productLocation: string,
     productImage: FileList | null,
     eBook: FileList | null;
+    pages: number
 }
