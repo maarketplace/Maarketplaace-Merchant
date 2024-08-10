@@ -38,18 +38,27 @@ function BusinessInfo() {
             toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message,)
         }
     });
+
     useEffect(() => {
-        // Retrieve data from local storage
         const storedData = localStorage.getItem('merchantData');
         if (storedData) {
-            const parsedData = JSON.parse(storedData);
-            setValue('firstName', parsedData.firstName);
-            setValue('lastName', parsedData.lastName);
-            setValue('email', parsedData.email);
-            setValue('phoneNumber', parsedData.phoneNumber);
-            setValue('password', parsedData.password);
+            try {
+                const parsedData = JSON.parse(storedData);
+                if (parsedData.firstName && parsedData.lastName && parsedData.email) {
+                    setValue('firstName', parsedData.firstName);
+                    setValue('lastName', parsedData.lastName);
+                    setValue('email', parsedData.email);
+                    setValue('phoneNumber', parsedData.phoneNumber);
+                    setValue('password', parsedData.password); 
+                } else {
+                   
+                }
+            } catch (error) {
+                console.error('Error parsing stored data:', error);
+            }
         }
     }, [setValue]);
+
 
     const onSubmit: SubmitHandler<BusinessInfoInterface> = (data) => {
         const { image, firstName, lastName, ...others } = data;
@@ -59,7 +68,9 @@ function BusinessInfo() {
             fullName,
             image: image ? image[0] : null
         };
+
         // console.log(payload);
+
         mutate(payload);
     }
 

@@ -17,15 +17,13 @@ function AdminSignupForm() {
 
     const onSubmit: SubmitHandler<SignUpInterface> = (data) => {
         const { confirmPassword, ...others } = data;
-        // const fullName = (firstName as string) + " " + (lastName as string)
         const userData = { ...others };
         localStorage.setItem('merchantData', JSON.stringify(userData));
-
+        navigate('/create-account/business-info')
     };
 
     const handleButtonClick = () => {
         handleSubmit(onSubmit)();
-        navigate('/create-account/business-info')
     };
     return (
         <div
