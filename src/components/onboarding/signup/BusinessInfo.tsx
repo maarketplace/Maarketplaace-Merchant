@@ -30,6 +30,8 @@ function BusinessInfo() {
 
     const { mutate, isLoading } = useMutation(['merchantSignup'], merchantSignup, {
         onSuccess: async (data: any) => {
+            console.log(data);
+            
             toast.success(`${data?.data?.message}, "A verification code has been sent to your email"`,)
             navigate('/verify-account');
             localStorage.removeItem('merchantData')

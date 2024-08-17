@@ -26,6 +26,9 @@ function LoginForm() {
         },
         onError: (err: any) => {
             toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message);
+            if(err?.response?.data?.message === "Please verify your account"){
+                navigate('/verify-account')
+            }
         }
     })
 

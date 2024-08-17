@@ -2,12 +2,10 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useMutation } from 'react-query';
-import { merchantVerify } from '../../../api/mutation';
-// import toast from 'react-hot-toast';
+import { merchantVerify, resendMerchantVerify } from '../../../api/mutation';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
-import Modal from '../../../utils/Modal';
-import { ModalData } from '../../../interface/ModalInterface';
+import toast from 'react-hot-toast';
 
 interface VerificationFormData {
     verificationCode: string;
@@ -22,7 +20,7 @@ const VerificationSchema = yup.object({
 
 const Verify = () => {
     const navigate = useNavigate();
-    const [modalData, setModalData] = useState<ModalData>({ isOpen: false, title: '', message: '' , isSuccess: false,});
+    const [email, setEmail] = useState('');
     const form = useForm<VerificationFormData>({
         resolver: yupResolver(VerificationSchema) as any,
         defaultValues: {
@@ -33,25 +31,30 @@ const Verify = () => {
 
     const { mutate, isLoading } = useMutation(['merchantverify'], merchantVerify, {
         onSuccess: async (data: any) => {
-            setModalData({
-                isOpen: true,
-                title: 'Success',
-                message: data?.data?.data?.message,
-                isSuccess: true,
-            });
-            // toast.success(data?.data?.data?.message);
+            console.log(data);
+            
+            toast.success(data?.data?.data?.message);
             navigate('/');
+            setEmail(data?.data?.data?.email)
         },
         onError: (err: any) => {
-            setModalData({
-                isOpen: true,
-                title: 'Error',
-                message: err?.response?.data?.message || err?.response?.data?.error?.message || err?.message,
-                isSuccess: false,
-            });
-            // toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message);
+            toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message);
         }
     });
+
+    const { mutate: resendVerificationMutate, isLoading: isResendLoading } = useMutation(
+        ['resendMerchantVerify'], 
+        () => resendMerchantVerify({ email }), // Ensure email is passed correctly
+        {
+            onSuccess: async (data: any) => {
+                toast.success("Verification code resent successfully.");
+            },
+            onError: (err: any) => {
+                toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message);
+            }
+        }
+    );
+
 
     const onSubmit: SubmitHandler<VerificationFormData> = (data) => {
         const numericCode = Number(data.verificationCode); // Convert to number
@@ -100,7 +103,6 @@ const Verify = () => {
                     <p className='w-[70%] flex justify-center text-center text-[15px] max-[650px]:w-[95%] max-[650px]:text-[12px]'>
                         We just sent you a 6 digit verification message
                         to your email address
-                        The code will expire in the next 00:40
                     </p>
                 </div>
                 <div className="w-[70%] flex gap-[10px] justify-center max-[650px]:w-[100%]">
@@ -123,6 +125,7 @@ const Verify = () => {
                     value={verificationCode}
                 />
                 <b className='w-[50%] text-[red] text-[12px]'>{errors?.verificationCode?.message}</b>
+                <p>Didn't recieve a code <strong className='text-blue-500'>Resend code</strong></p>
                 <button type="submit"
                     className='w-[55%] bg-[#FFC300] h-[40px] rounded-lg'
                     onClick={handleFormSubmit}
@@ -131,24 +134,6 @@ const Verify = () => {
                     {isLoading ? "Verifying" : "Submit"}
                 </button>
             </div>
-            <Modal
-                isOpen={modalData.isOpen}
-                setIsOpen={(isOpen) => setModalData({ ...modalData, isOpen })}
-                title={modalData.title}
-                message={modalData.message}
-                autoClose={true} // Enable auto-close
-                closeAfter={3000} // Auto-close after 3 seconds
-                primaryButton={{
-                    text: 'Close',
-                    display: true,
-                    primary: true,
-                }}
-                secondaryButton={{
-                    text: 'Verify',
-                    display: false,
-                    primary: false,
-                }}
-            />
         </div>
     );
 };
