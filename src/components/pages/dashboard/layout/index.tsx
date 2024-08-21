@@ -6,11 +6,9 @@ import SideBar from "../sidebar";
 import { HiMenuAlt2 } from "react-icons/hi";
 const Layout = () => {
     const navigate = useNavigate()
-    const { data, error } = useMerchant();
-    //  console.log(data);
+    const { data, err } = useMerchant();
 
-
-    if (error?.response?.data?.message === "Token expired login again") {
+    if (err === "Token expired login again") {
         navigate('/')
     }
     const [showSideBar, setShowSidebar] = useState<boolean>(false)

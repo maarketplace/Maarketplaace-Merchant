@@ -9,7 +9,9 @@ import { TbUserEdit } from "react-icons/tb";
 import { IProduct } from "../../../../../interface/ProductInterface";
 import { updateMerchantImage } from "../../../../../api/mutation";
 import { FaUser } from "react-icons/fa";
-import { IoHeart, IoShareSocial } from "react-icons/io5";
+import { IoHeart } from "react-icons/io5";
+import { RiShareForwardLine } from "react-icons/ri";
+import { BsPeople } from "react-icons/bs";
 
 const Store = () => {
     const navigate = useNavigate();
@@ -39,8 +41,6 @@ const Store = () => {
             const reversedData = [...StoreData.data.data.data].reverse();
             setAllProduct(reversedData);
         }
-        // console.log(StoreData?.data?.data?.data);
-        // console.log(data);
 
     }, [StoreData]);
 
@@ -75,7 +75,16 @@ const Store = () => {
             console.error("File input ref is not set");
         }
     };
-
+    const copyToClipboard = (text: string) => {
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = text;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextArea);
+        toast.success('Link copied successfully!');
+    };
+    // onClick={() => copyToClipboard(`https://maarketplaace.com/#/userhome/admin_store/${value?._id}`)}
     return (
         <div className="w-[100%] flex items-center justify-center flex-col">
             <div className="w-[95%] mt-[30px] h-[auto] p-[2%] shadow-lg shadow-grey-500/50 bg-slate-50  dark:bg-[#1D1C1C] dark:shadow-white-500/50 rounded-[16px]  max-[650px]:w-[90%] max-[650px]:p-[2%]">
@@ -109,17 +118,16 @@ const Store = () => {
                     <div className="w-[100%] flex  items-center ">
                         <p className="text-[12px] font-bold max-[650px]:hidden ">{data?.profession}</p>
                     </div>
-                    <div className="flex justify-between w-[35%] max-[650px]:w-[70%] text-[16px] p-[10px]">
+                    <div className="flex gap-[20px]  w-[35%] max-[650px]:w-[70%] text-[16px] p-[10px]">
                         <span className="flex gap-[5px] items-center">
                             <p>4</p>
                             <IoHeart/>
                         </span>
                         <span className="flex gap-[5px] items-center">
-                            <p>4</p>
-                            <p>Followers</p>
+                           <BsPeople />
                         </span>
-                        <span className="flex gap-[5px] items-center">
-                            <IoShareSocial className="text-[20px] text-[#FFC300]"/>
+                        <span className="flex gap-[5px] items-center" onClick={()=> copyToClipboard(`https://www.maarketplaace.com/#/home/store/${data?._id}`)}>
+                            <RiShareForwardLine className="text-[20px]"/>
                         </span>
                     </div>
                 </div>
