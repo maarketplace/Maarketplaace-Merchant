@@ -5,16 +5,12 @@ import { RxDashboard } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { PiNotebookLight, PiUsersThree } from "react-icons/pi";
 import { IoVideocamOutline, IoCartOutline, IoQrCodeOutline, IoBagHandleOutline, IoStorefrontOutline } from "react-icons/io5";
-import { useMutation } from "react-query";
-import { logOutMerchant } from "../../../../api/mutation";
-import toast from "react-hot-toast";
-import { useMerchant } from "../../../../context/GetMerchant";
 export interface ToggleSidebar {
     showSideBar: boolean;
     setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const SideBar = ({showSideBar, setShowSidebar}: ToggleSidebar) => {
-    const data = useMerchant()
+    // const data = useMerchant()
     const navigate = useNavigate();
     const [activeItem, setActiveItem] = useState<string>("");
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -30,7 +26,6 @@ const SideBar = ({showSideBar, setShowSidebar}: ToggleSidebar) => {
     const handleNavigate = (path: string, item: string) => {
         navigate(path);
         setActiveItem(item);
-        // Save active item to local storage
         localStorage.setItem("activeSidebarItem", item);
         setShowSidebar(!showSideBar)
     };
@@ -38,22 +33,9 @@ const SideBar = ({showSideBar, setShowSidebar}: ToggleSidebar) => {
     const getActiveClass = (item: string) => {
         return activeItem === item ? " w-[100%] bg-black text-white border-inline-start-4 border-[#FFC300]" : "";
     };
-    const { mutate } = useMutation(['logoutAdmin'], logOutMerchant, {
-        onSuccess: (data) => {
-            localStorage.removeItem(VITE_TOKEN)
-            setTimeout(() => {
-                navigate('/')
-            }, 500)
-            toast.success(data?.data?.data.message)
-        },
-        onError: (err: any) => {
-            console.log(err)
-            toast.error(err?.response?.data?.message)
-
-        }
-    });
     const handleLogoutClick = async () => {
-        mutate(data?.data?._id)
+        navigate('/')
+        localStorage.removeItem(VITE_TOKEN)
     };
     return (
         <div className="w-[90%] h-[83vh]">

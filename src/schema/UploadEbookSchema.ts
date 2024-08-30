@@ -49,5 +49,7 @@ export const UploadEbookSchema = yup.object({
     //         return allowedFileTypes.includes(fileType);
     //     },
     // }),
-    pages: yup.number()
+    pages: yup.number(),
+    author:  yup.string(),
+    duration:  yup.string()
 }).required();
