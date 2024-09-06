@@ -3,7 +3,9 @@ import axios from "axios";
 const { VITE_ENDPOINT } = import.meta.env;
 const { VITE_TOKEN } = import.meta.env;
 
-
+export interface BusinessName {
+    name: string
+}
 export const getMerchant = async () => {
     const token = localStorage.getItem(VITE_TOKEN)
     return await axios.get(`${VITE_ENDPOINT}/merchant`, {
@@ -40,3 +42,7 @@ export const getOneProduct = async (id: any) => {
     // console.log(data?.queryKey[1])
     return await axios.get(`${VITE_ENDPOINT}/product/${id}`)
 }
+
+// export const getBusinessName = async (name: BusinessName) => {
+//     return await axios.get(`${VITE_ENDPOINT}/product`, name)
+// }

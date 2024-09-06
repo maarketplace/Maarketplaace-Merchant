@@ -1,4 +1,4 @@
-const { VITE_TOKEN } = import.meta.env;
+// const { VITE_TOKEN } = import.meta.env;
 import { useState, useEffect } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { RxDashboard } from "react-icons/rx";
@@ -35,7 +35,7 @@ const SideBar = ({showSideBar, setShowSidebar}: ToggleSidebar) => {
     };
     const handleLogoutClick = async () => {
         navigate('/')
-        localStorage.removeItem(VITE_TOKEN)
+        localStorage.clear();
     };
     return (
         <div className="w-[90%] h-[83vh]">

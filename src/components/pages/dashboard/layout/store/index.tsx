@@ -23,19 +23,20 @@ const Store = () => {
     const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
     const [err, setErr] = useState('')
 
- useEffect(()=>{
-    if (err === "Token expired login again") {
-        toast.error(err);
-        setTimeout(() => {
-            navigate('/');
-        }, 1000);
-    }
- })
+    useEffect(() => {
+        if (err === "Token expired login again") {
+            toast.error(err);
+            setTimeout(() => {
+                navigate('/');
+                localStorage.clear()
+            }, 1000);
+        }
+    })
     const {
         data: StoreData
     } = useQuery(["getOneMerchantAllProduct", data?._id], getOneMerchantAllProduct, {
         enabled: !!localStorage.getItem(VITE_TOKEN),
-        onSuccess: () => {},
+        onSuccess: () => { },
         onError: (error: any) => {
             // console.log(error);
             setErr(error?.response?.data?.message)
@@ -123,7 +124,7 @@ const Store = () => {
             <div className="w-[95%] mt-[40px] flex flex-wrap gap-[10px] max-[650px]:justify-center max-[650px]:w-[100%]">
                 {
                     allProduct?.map((i: IProduct) => (
-                        <div className="w-[200px]  border flex flex-col items-center p-[10px] gap-[10px] max-[650px]:w-[170px] rounded-[8px] max-[320px]:w-[95%]">
+                        <div className="w-[200px] border flex flex-col items-center p-[10px] gap-[10px] max-[650px]:w-[150px] rounded-[8px] max-[320px]:w-[90%]">
                             <img src={i?.productImage} alt="" className="w-[100%] h-[200px] object-cover aspect-square " />
                             <span className="w-full">
                                 <p className="max-[650px]:text-[12px] text-[14px]">{i?.productName}</p>

@@ -33,8 +33,8 @@ function UploadEbook() {
     });
     const onSubmit: SubmitHandler<IAddEbook> = (data) => {
         const { eBook, productImage, ...others } = data;
-        // mutate({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
-        console.log({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
+        mutate({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
+        // console.log({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
     };
 
     const handleButtonClick = () => {
