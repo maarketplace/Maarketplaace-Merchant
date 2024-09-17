@@ -8,6 +8,10 @@ import {
 } from 'react-query'
 import { ThemeProvider } from './context/DarkTheme.tsx';
 import { MerchantProvider } from './context/GetMerchant.tsx';
+import "./index.css"
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 
 const queryClient = new QueryClient()
