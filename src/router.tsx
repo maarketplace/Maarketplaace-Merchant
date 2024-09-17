@@ -12,6 +12,8 @@ import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCours
 import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
 import Overview from './components/pages/dashboard/layout/overview';
 import Store from './components/pages/dashboard/layout/store';
+
+// eslint-disable-next-line react-refresh/only-export-components
 const LoginLoader = () => import('./components/auth/login');
 
 
