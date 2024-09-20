@@ -10,4 +10,8 @@ export interface IAddCourse {
     courseLocation: string;
     courseURL: string;
     courseImage: FileList | null;
+    author: string;
+    duration: string;
+    topics:string;
+    whatToExpect: string
 }

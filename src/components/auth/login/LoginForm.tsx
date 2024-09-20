@@ -9,6 +9,7 @@ import { LoginInterface } from "../../../interface/LoginInterface";
 import { AdminLoginSchema } from "../../../schema/LoginSchema";
 import { merchantLogin } from "../../../api/mutation";
 import toast from "react-hot-toast";
+import Loading from "../../../loader";
 function LoginForm() {
     const [showPassword, setShow] = useState<boolean>(false);
     const navigate = useNavigate()
@@ -19,7 +20,6 @@ function LoginForm() {
 
     const { mutate, isLoading } = useMutation(['merchantLogin'], merchantLogin, {
         onSuccess: async (data: any) => {
-            console.log(data)
             toast.success(data?.data?.message,)
             localStorage.setItem(VITE_TOKEN, data?.data?.data?.token)
             navigate('/dashboard');
@@ -44,7 +44,7 @@ function LoginForm() {
             <div className="w-[70%] flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]" >
                 <img src="MARKET.svg" alt="" className="max-[650px]:w-[80px]" />
                 <span className="flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]" >
-                    <h2 className="text-2xl max-[650px]:text-[15px]">Welcome  Back to MaarketPlaace</h2>
+                    <h2 className="text-2xl max-[650px]:text-[15px]">Welcome  back to maarketplaace</h2>
                     <p className="italic text-center max-[650px]:text-[12px] text-wrap">Continue selling and creating wonderful <br></br>products for our consumers</p>
                 </span>
             </div>
@@ -85,7 +85,7 @@ function LoginForm() {
                     disabled={isLoading}
                     className="w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg dark:text-[black]"
                 >
-                    {isLoading ? "Loading..." : "Login"}
+                    {isLoading ? <Loading/> : "Login"}
                 </button>
 
             </div>

@@ -1,19 +1,20 @@
 import { createHashRouter } from 'react-router-dom';
 import LazyImport from './LazyImport';
-import Signup from './components/onboarding/signup';
-import Verify from './components/onboarding/verify';
-import ForgotPassword from './components/onboarding/forgetpassword';
-import ResetPassword from './components/onboarding/resetpassword';
-import BusinessInfo from './components/onboarding/signup/BusinessInfo';
-import AdminSignupForm from './components/onboarding/signup/SignUpForm';
+import Signup from './components/auth/signup';
+import Verify from './components/auth/verify';
+import ForgotPassword from './components/auth/forgetpassword';
+import ResetPassword from './components/auth/resetpassword';
+import BusinessInfo from './components/auth/signup/BusinessInfo';
+import AdminSignupForm from './components/auth/signup/SignUpForm';
 import Merchant from './components/pages';
 import DashboardMain from './components/pages/dashboard';
 import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCourse';
 import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
 import Overview from './components/pages/dashboard/layout/overview';
 import Store from './components/pages/dashboard/layout/store';
-import Transaction from './components/pages/dashboard/transaction/Transaction';
-const LoginLoader = () => import('./components/onboarding/login');
+
+// eslint-disable-next-line react-refresh/only-export-components
+const LoginLoader = () => import('./components/auth/login');
 
 
 
@@ -81,10 +82,6 @@ const router = createHashRouter([
             {
                 path: '/dashboard/store',
                 element: <Store />
-            },
-            {
-                path: '/dashboard/transaction',
-                element: <Transaction />
             },
         ]
     }

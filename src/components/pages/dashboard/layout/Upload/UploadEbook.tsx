@@ -10,6 +10,7 @@ import { IAddEbook } from '../../../../../interface/UploadEbook';
 import { UploadEbookSchema } from '../../../../../schema/UploadEbookSchema';
 import { categories } from './category';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Loading from '../../../../../loader';
 
 function UploadEbook() {
     const navigate = useNavigate()
@@ -33,12 +34,11 @@ function UploadEbook() {
     const onSubmit: SubmitHandler<IAddEbook> = (data) => {
         const { eBook, productImage, ...others } = data;
         mutate({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
-        console.log({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
+        // console.log({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
     };
 
     const handleButtonClick = () => {
         handleSubmit(onSubmit)();
-        console.log('clicked');
     };
 
     const onDropProductImage = (acceptedFiles: File[]) => {
@@ -93,7 +93,7 @@ function UploadEbook() {
             <div className='flex w-[100%] gap-[20px] max-[650px]:flex-col'>
                 <div className='w-[40%] mt-[20px] flex flex-col items-center gap-[10px] max-[650px]:w-[100%] '>
                     <div className='w-[90%] flex flex-col gap-[10px] mt-[20px] '>
-                        <label className='max-[650px]:text-[15px]'>Product Name</label>
+                        <label className='max-[650px]:text-[15px]'>Book Name</label>
                         <input
                             placeholder='Product Name'
                             type='text'
@@ -104,7 +104,7 @@ function UploadEbook() {
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productName?.message}</b>
 
                     <div className='w-[90%] flex flex-col gap-[10px]'>
-                        <label className='max-[650px]:text-[15px]'>Product Price</label>
+                        <label className='max-[650px]:text-[15px]'>Book Price</label>
                         <input
                             placeholder='Product Price'
                             type='number'
@@ -123,16 +123,26 @@ function UploadEbook() {
                         />
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.discountPrice?.message}</b>
                     </div>
-                     {/* <div className='w-[90%] flex flex-col gap-[10px]'>
+                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Author Name</label>
                         <input
                             placeholder='Author Name'
                             type='text'
                             className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
-                            {...register('discountPrice')}
+                            {...register('author')}
                         />
-                        <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.discountPrice?.message}</b>
-                    </div> */}
+                        <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.author?.message}</b>
+                    </div>
+                    <div className='w-[90%] flex flex-col gap-[10px]'>
+                        <label className='max-[650px]:text-[15px]'>Duration</label>
+                        <input
+                            placeholder='Author Name'
+                            type='text'
+                            className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                            {...register('duration')}
+                        />
+                        <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.duration?.message}</b>
+                    </div>
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Number  Of Pages</label>
                         <input
@@ -144,7 +154,7 @@ function UploadEbook() {
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.pages?.message}</b>
                     </div> 
                     <div className='w-[90%] flex flex-col gap-[10px]'>
-                        <label className='max-[650px]:text-[15px]'>Product Description</label>
+                        <label className='max-[650px]:text-[15px]'>Book Description</label>
                         <ReactQuill
                             theme="snow"
                             onChange={(value) => {
@@ -156,7 +166,7 @@ function UploadEbook() {
                 </div>
                 <div className='mt-[40px] w-[40%] flex flex-col items-center  gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
                     <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
-                        <label className='max-[650px]:text-[15px]'>Product Location</label>
+                        <label className='max-[650px]:text-[15px]'>Book Location</label>
                         <input
                             placeholder='Product Location'
                             type='text'
@@ -166,7 +176,7 @@ function UploadEbook() {
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productLocation?.message}</b>
                     <div className='w-[100%] flex flex-col gap-[10px] mt-[10px] max-[650px]:w-[90%] max-[650px]:mt-[0px]'>
-                        <label className='max-[650px]:text-[15px] ' htmlFor="category">Select Category</label>
+                        <label className='max-[650px]:text-[15px] ' htmlFor="category">Book Category</label>
                         <input
                             id="category"
                             list="categoryList"
@@ -184,7 +194,7 @@ function UploadEbook() {
                             <>
                                 <label
                                     className='max-[650px]:text-[15px]'
-                                    htmlFor="subcategory">Select Subcategory</label>
+                                    htmlFor="subcategory">Book Subcategory</label>
                                 <input
                                     id="subcategory"
                                     list="subcategoryList"
@@ -202,7 +212,7 @@ function UploadEbook() {
                         )}
                     </div>
                     <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
-                        <label className='max-[650px]:text-[15px]'>Add Ebook Image</label>
+                        <label className='max-[650px]:text-[15px]'>Add Book Image</label>
                         <div {...getProductImageRootProps()} className='border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center '>
                             <input {...getProductImageInputProps()} />
                             <p className='text-center max-[650px]:text-[13px] '>Drag & drop an image here, or click to select file</p>
@@ -210,7 +220,7 @@ function UploadEbook() {
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productImage?.message}</b>
                     <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
-                        <label className='max-[650px]:text-[15px]'>Add Ebook</label>
+                        <label className='max-[650px]:text-[15px]'>Add Book</label>
                         <div {...getEbookRootProps()} className='border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center '>
                             <input {...getEbookInputProps()} />
                             <p className='text-center max-[650px]:text-[13px] '>Drag & drop ebook files here, or click to select files</p>
@@ -223,7 +233,7 @@ function UploadEbook() {
                         onClick={handleButtonClick}
                         disabled={isLoading}
                     >
-                        {isLoading ? "Uploading Product..." : "Upload Product"}
+                        {isLoading ? <Loading/> : "Upload Product"}
                     </button>
                 </div>
             </div>
