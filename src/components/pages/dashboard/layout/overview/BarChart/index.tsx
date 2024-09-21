@@ -57,7 +57,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-white flex-1 h-[40vh] rounded-md shadow-md p-4">
+    <div className="flex-1 h-[50vh] rounded-md shadow-md">
       <div className="w-full h-[10vh] flex flex-col gap-2 mb-4">
         <div className="w-full flex justify-between">
           <span className="text-sm">Total Revenue</span>

@@ -123,10 +123,10 @@ const Index: React.FC = () => {
       </div>
 
       <div className="flex items-center p-2 space-x-2">
-        <div className="h-[40vh] overflow-hidden rounded-md shadow-md flex-1">
+        <div className="h-[45vh] overflow-hidden rounded-md shadow-md flex-1">
           <BarChart data={barChartData} />
         </div>
-        <div className="w-[65vh] h-[40vh]">
+        <div className="w-[65vh] h-[45vh]">
           <MostSoldItems items={mostSoldItems} />
         </div>
       </div>
