@@ -29,3 +29,12 @@ body {
 .dark body {
   @apply bg-dark-bg text-dark-text;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
