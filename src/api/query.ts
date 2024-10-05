@@ -25,6 +25,7 @@ export const getOneMerchantAllProduct = async () => {
     })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getOneMerchantStoreProduct = async (data: any) => {
     return await axios.get(`${VITE_ENDPOINT}/merchants/${data?.queryKey[1]}/products`)
 }
@@ -38,6 +39,7 @@ export const getMerchantOrders = async ()=>{
     })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getOneProduct = async (id: any) => {
     // console.log(data?.queryKey[1])
     return await axios.get(`${VITE_ENDPOINT}/product/${id}`)

@@ -2,8 +2,10 @@
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { getMerchant } from '../api/query';
+import { IErrorResponse } from '../interface/ErrorInterface';
 
 interface MerchantContextType {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
     isLoading: boolean;
     err: string
@@ -18,14 +20,14 @@ export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }
         data,
         isLoading,
     } = useQuery(["getMerchant"], getMerchant, {
-        onError: (error: any) =>{
+        onError: (error: IErrorResponse) =>{
             setErr(error?.response?.data?.message)
         }
     });
 
     useEffect(()=>{
         setMerchant(data?.data?.data?.data)
-    }, [data])
+    }, [data,merchant ])
     const value: MerchantContextType = {
         data: merchant,
         isLoading,
@@ -39,6 +41,7 @@ export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useMerchant = (): MerchantContextType => {
     const context = useContext(MerchantContext);
     if (!context) {

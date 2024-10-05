@@ -12,6 +12,7 @@ import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCours
 import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
 import Overview from './components/pages/dashboard/layout/overview';
 import Store from './components/pages/dashboard/layout/store';
+import Order from './components/pages/dashboard/layout/order';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const LoginLoader = () => import('./components/auth/login');
@@ -82,6 +83,10 @@ const router = createHashRouter([
             {
                 path: '/dashboard/store',
                 element: <Store />
+            },
+            {
+                path: '/dashboard/order',
+                element: <Order />
             },
         ]
     }

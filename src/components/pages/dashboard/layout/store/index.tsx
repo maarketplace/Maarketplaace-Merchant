@@ -10,6 +10,7 @@ import { IProduct } from "../../../../../interface/ProductInterface";
 import { updateMerchantImage } from "../../../../../api/mutation";
 import { FaUser } from "react-icons/fa";
 import Loading from "../../../../../loader";
+import { IErrorResponse } from "../../../../../interface/ErrorInterface";
 
 const Store = () => {
     const queryClient = useQueryClient()
@@ -37,7 +38,7 @@ const Store = () => {
     } = useQuery(["getOneMerchantAllProduct", data?._id], getOneMerchantAllProduct, {
         enabled: !!localStorage.getItem(VITE_TOKEN),
         onSuccess: () => { },
-        onError: (error: any) => {
+        onError: (error: IErrorResponse) => {
             // console.log(error);
             setErr(error?.response?.data?.message)
         },
@@ -163,7 +164,7 @@ const Store = () => {
             )}
             {showModal && selectedProduct && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-5 rounded-lg shadow-lg dark:text-black">
+                    <div className="bg-white w-[60%] p-5 rounded-lg shadow-lg dark:text-black">
                         <img src={selectedProduct.productImage} alt="Product" className="w-[150px] h-[150px] object-cover mb-4" />
                         <h2 className="text-lg font-bold mb-2">{selectedProduct.productName}</h2>
                         <p className="text-sm">{selectedProduct.productDescription}</p>
