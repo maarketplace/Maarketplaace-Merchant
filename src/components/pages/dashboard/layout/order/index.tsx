@@ -22,7 +22,7 @@ const Order = () => {
 
     useEffect(() => {
         if (data?.data?.data) {
-            const reversedData = data?.data?.data?.data.reverse();
+            const reversedData = data?.data?.data?.reverse();
             setAllOrder(reversedData);
         }
     }, [data, selectedOrder]);
@@ -62,13 +62,13 @@ const Order = () => {
     };
 
     return (
-        <div className="w-[95%] max-[650px]:w-[100%] flex items-center justify-center mt-[50px] max-[650px]:mt-[40px]">
+        <div className="w-[95%] ml-[35px] max-[650px]:w-[100%] flex items-center justify-center mt-[50px]">
             <div className="w-[100%] mb-[50px] flex flex-col gap-[20px]">
                 <div className="flex justify-between items-center mb-4">
                     <select
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
-                        className="px-4 py-2 border rounded text-black outline-none"
+                        className="px-[10px] py-2 border rounded text-black outline-none"
                     >
                         <option value="All">All</option>
                         <option value="pending">Pending</option>

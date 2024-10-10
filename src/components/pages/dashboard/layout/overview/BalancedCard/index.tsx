@@ -8,12 +8,12 @@ interface BalanceCardProps {
 
 const BalanceCard: React.FC<BalanceCardProps> = ({ balance, title }) => {
   return (
-    <div className="flex space-x-14 bg-white p-1.5 shadow-md rounded-md">
+    <div className="flex w-[250px]  bg-white p-2 shadow-md rounded-md justify-between gap-[10px] max-[650px]:w-[100%] max-[650px]:justify-between">
       <div className="flex flex-col gap-3">
         <p>{title}</p>
-        <p>{balance.toFixed(2)}</p>
+        <p>{balance}</p>
       </div>
-      <div className="w-6 h-6 bg-black flex items-center justify-center text-white rounded-full">
+      <div className="w-[25px] h-[25px] bg-black flex items-center justify-center text-white rounded-full">
         <AiOutlineShoppingCart />
       </div>
     </div>

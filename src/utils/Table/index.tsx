@@ -72,7 +72,7 @@ const Table = <T extends object>({
                     placeholder="Search..."
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="px-4 py-2 border rounded w-full outline-none"
+                    className="px-4 py-2 border rounded w-full outline-none max-[650px]:bg-transparent"
                     disabled={loading} // Disable search when loading
                 />
             </div>
@@ -103,8 +103,8 @@ const Table = <T extends object>({
                                 return (
                                     <tr
                                         key={rowIndex}
-                                        className={`hover:bg-gray-300 cursor-pointer ${
-                                            shouldHaveGreyBackground ? "  " : "dark:bg-grey-400"
+                                        className={` cursor-pointer bg-[#f5f5f5] dark:bg-[#1b1a1a] ${
+                                            shouldHaveGreyBackground ? "" : ""
                                         }`}
                                         onClick={() => onRowClick?.(row)}
                                     >

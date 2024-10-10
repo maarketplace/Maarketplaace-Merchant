@@ -8,7 +8,7 @@ const DashboardMain = () => {
                 <div className="w-[100%] h-[15%] rounded-r-[50px] p-2">
                     <img src="LOGO.svg" alt="image" className="w-[180px] h-[100px]" />
                 </div>
-                <div className="w-[100%] h-[85%] bg-[#FFC300] rounded-tr-[50px] p-[10px]">
+                <div className="w-[100%] h-[85%] bg-[#FFC300] rounded-tr-[50px] p-[10px] sticky">
                     <SideBar />
                 </div>
             </div>

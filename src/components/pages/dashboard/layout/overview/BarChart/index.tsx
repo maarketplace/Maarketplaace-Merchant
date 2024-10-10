@@ -30,7 +30,7 @@ interface BarChartProps {
 const BarChart: React.FC<BarChartProps> = ({ data }) => {
   const options = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     plugins: {
       legend: {
         display: false,
@@ -57,8 +57,8 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex-1 h-[50vh] rounded-md shadow-md">
-      <div className="w-full h-[10vh] flex flex-col gap-2 mb-4">
+    <div className="flex-1 h-[100%] max-[650px]:h-[30%] rounded-md shadow-md p-[10px] w-[100%]">
+      <div className="w-[100%] h-[10vh] flex flex-col gap-2 mb-4">
         <div className="w-full flex justify-between">
           <span className="text-sm">Total Revenue</span>
           <div className="flex space-x-4">

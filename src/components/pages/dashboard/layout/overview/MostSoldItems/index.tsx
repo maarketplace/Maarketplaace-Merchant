@@ -11,7 +11,7 @@ interface MostSoldItemsProps {
 
 const MostSoldItems: React.FC<MostSoldItemsProps> = ({ items }) => {
   return (
-    <div className="bg-white w-[65vh] h-[45vh] rounded-md shadow-md p-4">
+    <div className="bg-white w-[100%] h-[100%] rounded-md shadow-md p-4">
       <h1 className="text-lg font-bold">Most Sold Items</h1>
 
       <div className="mt-4 space-y-4 h-[30vh] overflow-y-auto scrollbar-hide">

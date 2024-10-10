@@ -26,8 +26,8 @@ export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }
     });
 
     useEffect(()=>{
-        setMerchant(data?.data?.data?.data)
-    }, [data,merchant ])
+        setMerchant(data?.data?.data)
+    }, [data, merchant ])
     const value: MerchantContextType = {
         data: merchant,
         isLoading,

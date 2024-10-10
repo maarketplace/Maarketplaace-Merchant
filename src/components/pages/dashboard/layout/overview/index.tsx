@@ -1,10 +1,12 @@
 import React from "react";
-import BarChart from "../overview/BarChart"; 
+import BarChart from "../overview/BarChart";
 import BalanceCard from "../overview/BalancedCard";
 import MostSoldItems from "../overview/MostSoldItems";
-import LatestOrders from "../overview/LatestOrder";
+// import LatestOrders from "../overview/LatestOrder";
+import { useMerchant } from "../../../../../context/GetMerchant";
 
 const Index: React.FC = () => {
+  const {data} = useMerchant()
   const barChartData = {
     labels: [
       "Jan",
@@ -55,85 +57,30 @@ const Index: React.FC = () => {
     { name: "Doc2", percentage: 10 },
   ];
 
-  const latestOrders = [
-    {
-      product: "React",
-      orderId: "13235",
-      date: "2023-09-12",
-      customerName: "Yusuf",
-      status: "Cancelled",
-      amount: "$120.00",
-      action: "...",
-    },
-    {
-      product: "Javascript",
-      orderId: "34336",
-      date: "2023-09-11",
-      customerName: "Abu David",
-      status: "Pending",
-      amount: "$150.00",
-      action: "...",
-    },
-    {
-      product: "Vue",
-      orderId: "63737",
-      date: "2023-09-10",
-      customerName: "Mario",
-      status: "Delivered",
-      amount: "$100.00",
-      action: "...",
-    },
-    {
-      product: "Python",
-      orderId: "34434",
-      date: "2023-09-12",
-      customerName: "Destiny",
-      status: "Cancelled",
-      amount: "$120.00",
-      action: "...",
-    },
-    {
-      product: "Java",
-      orderId: "93790",
-      date: "2023-09-11",
-      customerName: "Suliton",
-      status: "Shipped",
-      amount: "$150.00",
-      action: "...",
-    },
-    {
-      product: "Kotlin",
-      orderId: "12347",
-      date: "2023-09-10",
-      customerName: "Adebayo",
-      status: "Delivered",
-      amount: "$100.00",
-      action: "...",
-    },
-  ];
+// console.log(data);
 
   return (
-    <div className="space-y-4 w-full">
-      <div className="flex space-x-5 p-2">
-        <BalanceCard title="Available Balance" balance={12345.67} />
-        <BalanceCard title="Total Withdraw" balance={5432.10} />
-        <BalanceCard title="Total Products" balance={1200} />
-        <BalanceCard title="Total Orders" balance={400} />
-        <BalanceCard title="Total Customers" balance={150} />
+    <div className="w-full overflow-scroll max-[650px]:flex max-[650px]:flex-col max-[650px]:w-[100%]">
+      <div className="flex gap-2 p-2 max-[650px]:flex-col max-[650px]:gap-[10px] max-[650px]:items-center max-[650px]:w-[100%]">
+        <BalanceCard title="Available Balance" balance={data?.balance} />
+        <BalanceCard title="Total Withdraw" balance={data?.totalWithdrawals} />
+        <BalanceCard title="Total Products" balance={data?.totalProducts} />
+        <BalanceCard title="Total Orders" balance={data?.totalOrders} />
+        <BalanceCard title="Total Customers" balance={data?.totalCustomers} />
       </div>
 
-      <div className="flex items-center p-2 space-x-2">
-        <div className="h-[45vh] overflow-hidden rounded-md shadow-md flex-1">
+      <div className="flex items-center p-2 w-full gap-2 max-[650px]:flex-col">
+        <div className="h-[40%] max-[650px]:w-[100%] max-[650px]:h-[30%] rounded-md shadow-md flex-1">
           <BarChart data={barChartData} />
         </div>
-        <div className="w-[65vh] h-[45vh]">
+        <div className="w-[65vh] max-[650px]:w-[100%] h-[45vh]">
           <MostSoldItems items={mostSoldItems} />
         </div>
       </div>
 
-      <div className="overflow-hidden border border-gray-300 rounded-md">
+      {/* <div className="max-[650px]:w-[100%] border border-gray-300 rounded-md">
         <LatestOrders orders={latestOrders} />
-      </div>
+      </div> */}
     </div>
   );
 };
