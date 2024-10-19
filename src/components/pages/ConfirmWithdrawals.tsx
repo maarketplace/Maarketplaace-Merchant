@@ -31,7 +31,7 @@ const ConfirmWithdrawal = () => {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white p-6 rounded-lg shadow-lg">
                 {isVerifying ? (
-                    <p>Loading...</p>
+                    <p className='dark:text-black'>Loading...</p>
                 ) : (
                     <div>
                         <h1 className={`text-lg font-bold ${isVerificationError ? 'text-red-500' : 'text-green-500'}`}>
@@ -41,8 +41,8 @@ const ConfirmWithdrawal = () => {
                                 ? 'Your withdrawal request has been successfully confirmed!'
                                 : 'Invalid withdrawal ID.'}
                         </h1>
-                        {isVerificationError && <p>Please contact support if you need assistance.</p>}
-                        {isSuccess && <p>Thank you for using our service!</p>}
+                        {isVerificationError && <p className='dark:text-black'>Please contact support if you need assistance.</p>}
+                        {isSuccess && <p className='dark:text-black'>Withdraw Successful Thank you for using our service!</p>}
                     </div>
                 )}
             </div>
