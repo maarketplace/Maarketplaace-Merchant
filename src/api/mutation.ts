@@ -4,6 +4,7 @@ const { VITE_ENDPOINT } = import.meta.env;
 const { VITE_TOKEN } = import.meta.env;
 
 // const token = localStorage.getItem(VITE_TOKEN)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const merchantSignup = async (data: any) => {
     console.log(data);
     return await axios.post(`${VITE_ENDPOINT}/merchant`, data,  {
@@ -13,9 +14,11 @@ export const merchantSignup = async (data: any) => {
     })
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const merchantLogin = async (data: any) => {
     return await axios.post(`${VITE_ENDPOINT}/merchant/login`, data)
 };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const merchantVerify = async (data: any) => {
     return await axios.put(`${VITE_ENDPOINT}/merchant/verify`, data)
 };
@@ -26,6 +29,7 @@ export const logOutMerchant = async (id: string) => {
     // console.log(id)
     return await axios.post(`${VITE_ENDPOINT}/merchant/logout/${id}`)
 };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const uploadEbook = async (data: any) => {
     const token = localStorage.getItem(VITE_TOKEN)
     return await axios.post(`${VITE_ENDPOINT}/product/ebook`, data, {
@@ -35,6 +39,7 @@ export const uploadEbook = async (data: any) => {
         },
     })
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const uploadCourse = async (data: any) => {
     const token = localStorage.getItem(VITE_TOKEN)
     return await axios.post(`${VITE_ENDPOINT}/product/course`, data, {
@@ -136,11 +141,28 @@ export const deleteProduct = async (id: string) =>{
     }
 } 
 
-export const verifyMerchantAccountNumber = async ({account_number,bank_code}: {account_number: string, bank_code: string}) =>{
-    const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.delete(`${VITE_ENDPOINT}/product/`), {account_number, bank_code}, {
+export const verifyMerchantAccountNumber = async ({account_number, bank_code}: {account_number: string, bank_code: string}) => {
+    const Token = localStorage.getItem(VITE_TOKEN);
+    return await axios.post(
+        `${VITE_ENDPOINT}/accounts/verify`,
+        { account_number, bank_code },
+        {
+            headers: {
+                'Authorization': `Bearer ${Token}`,
+            }
+        }
+    );
+}
+
+
+export const withdrawFunds = async ({amount, id}: {amount: number, id: string}) =>{
+    const Token = localStorage.getItem(VITE_TOKEN);
+    return await axios.post(`${VITE_ENDPOINT}/accounts/request/accounts/${id}`,{amount},{
         headers: {
             'Authorization': `Bearer ${Token}`,
-        }, 
-    }
+        } 
+    })
+}
+export const verifyWithdrawFunds = async ( id: string) =>{
+    return await axios.post(`${VITE_ENDPOINT}/transactions/accounts/withdraws/${id}`)
 }

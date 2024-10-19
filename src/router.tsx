@@ -14,6 +14,9 @@ import Overview from './components/pages/dashboard/layout/overview';
 import Store from './components/pages/dashboard/layout/store';
 import Order from './components/pages/dashboard/layout/order';
 import Customer from './components/pages/dashboard/layout/customer';
+import Transaction from './components/pages/dashboard/layout/transaction';
+import ConfirmWithdrawal from './components/pages/ConfirmWithdrawals';
+
 
 // eslint-disable-next-line react-refresh/only-export-components
 const LoginLoader = () => import('./components/auth/login');
@@ -93,8 +96,16 @@ const router = createHashRouter([
                 path: '/dashboard/customer',
                 element: <Customer />
             },
+            {
+                path: '/dashboard/transaction',
+                element: <Transaction />
+            },
         ]
-    }
+    },
+    {
+        path: '/account-withdraw/:id',
+        element: <ConfirmWithdrawal />
+    },
 ]);
 
 

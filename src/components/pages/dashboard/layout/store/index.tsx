@@ -32,7 +32,7 @@ const Store = () => {
                 localStorage.clear()
             }, 1000);
         }
-    })
+    }, [err, navigate])
     const {
         data: StoreData
     } = useQuery(["getOneMerchantAllProduct", data?._id], getOneMerchantAllProduct, {
@@ -45,7 +45,7 @@ const Store = () => {
     });
 
     useEffect(() => {
-        if (StoreData && StoreData.data && StoreData.data.data && Array.isArray(StoreData.data.data.data)) {
+        if (StoreData && StoreData.data && StoreData.data.data && Array.isArray(StoreData?.data?.data?.data)) {
             const reversedData = [...StoreData.data.data.data].reverse();
             setAllProduct(reversedData);
         }
@@ -84,6 +84,7 @@ const Store = () => {
             console.error("File input ref is not set");
         }
     };
+console.log(data);
 
     return (
         <div className="w-[100%] flex items-center justify-center flex-col">
@@ -91,18 +92,18 @@ const Store = () => {
                 <div className="w-[60%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:items-center ">
                     <div className=" w-[100%] flex items-center gap-5 max-[650px]:flex-col">
                         <span className="flex flex-col items-center gap-[10px] relative">
-                            {data?.image ? (
+                            {data?.data?.image ? (
                                 <>
-                                    <img src={data?.image} alt="" className="w-[150px] h-[150px] rounded-[100%] object-cover max-[650px]:w-[80px] max-[650px]:h-[80px] " />
+                                    <img src={data?.data?.image} alt="" className="w-[150px] h-[150px] rounded-[100%] object-cover max-[650px]:w-[80px] max-[650px]:h-[80px] " />
                                     <TbUserEdit
-                                        className=" text-[30px] absolute bottom-[20px] left-[120px] text-[black] cursor-pointer max-[650px]:left-[80px] max-[650px]:bottom-[40px] dark:text-white "
+                                        className=" text-[30px] absolute bottom-[20px] left-[120px] text-[black] cursor-pointer max-[650px]:left-[120px] max-[650px]:bottom-[40px] dark:text-white "
                                         onClick={triggerFileInput}
                                     />
                                 </>
                             ) : (
                                 <FaUser className="w-[150px] h-[150px] rounded-[100%] object-cover  max-[650px]:w-[80px] max-[650px]:h-[80px] dark:text-[#FFC300]" />
                             )}
-                            <p className="text-[10px] font-bold hidden max-[650px]:flex ">{data?.profession}</p>
+                            <p className="text-[10px] font-bold hidden max-[650px]:flex ">{data?.data?.profession}</p>
                             <input
                                 type="file"
                                 ref={fileInputRef}
@@ -112,13 +113,13 @@ const Store = () => {
                         </span>
                         <span className="h-[100px] w-[50%] gap-2 max-[650px]:w-[100%] max-[650px]:flex max-[650px]:items-center max-[650px]:flex-col">
                             {
-                                data?.business_name && <p className="text-clamp">@{data?.business_name}</p>
+                                data?.data?.business_name && <p className="text-clamp">@{data?.data?.business_name}</p>
                             }
-                            <p className="text-[12px] max-[650px]:text-center">{data?.bio}</p>
+                            <p className="text-[12px] max-[650px]:text-center">{data?.data?.bio}</p>
                         </span>
                     </div>
                     <div className="w-[100%] flex  items-center ">
-                        <p className="text-[12px] font-bold max-[650px]:hidden ">{data?.profession}</p>
+                        <p className="text-[12px] font-bold max-[650px]:hidden ">{data?.data?.profession}</p>
                     </div>
                 </div>
             </div>

@@ -60,7 +60,7 @@ const Index: React.FC = () => {
 // console.log(data);
 
   return (
-    <div className="w-full overflow-scroll max-[650px]:flex max-[650px]:flex-col max-[650px]:w-[100%]">
+    <div className="w-full overflow-scroll max-[650px]:flex max-[650px]:flex-col max-[650px]:w-[100%] max-[650px]:mt-[40px]">
       <div className="flex gap-2 p-2 max-[650px]:flex-col max-[650px]:gap-[10px] max-[650px]:items-center max-[650px]:w-[100%]">
         <BalanceCard title="Available Balance" balance={data?.balance} />
         <BalanceCard title="Total Withdraw" balance={data?.totalWithdrawals} />

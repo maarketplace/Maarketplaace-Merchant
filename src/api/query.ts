@@ -56,3 +56,22 @@ export const getOneProduct = async (id: any) => {
 // export const getBusinessName = async (name: BusinessName) => {
 //     return await axios.get(`${VITE_ENDPOINT}/product`, name)
 // }
+
+export const getMerchantBalance = async () => {
+    const token = localStorage.getItem(VITE_TOKEN)
+
+    return await axios.get(`${VITE_ENDPOINT}/merchant/account`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}
+
+export const fetchBanks = async () => {
+    // const token = "sk_test_urWV7e6PYR4dbeV1VduF9hXBA2UGvqamwptTMmAX"
+    return await axios.get("https://api.korapay.com/merchant/api/v1/misc/banks?countryCode=NG", {
+        headers: {
+            'Authorization': `Bearer pk_test_a4mBL7A3sbMHrGUq5m2kZynxfHifyTpWX17aChC3`,
+        }, 
+    });
+};
