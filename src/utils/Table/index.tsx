@@ -26,15 +26,15 @@ const Table = <T extends object>({
         setCurrentPage(1);
     };
 
-    const filteredData = data.filter(row =>
+    const filteredData = data?.filter(row =>
         columns.some(column =>
             String(row[column]).toLowerCase().includes(searchQuery.toLowerCase())
         )
     );
 
-    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+    const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
 
-    const currentData = filteredData.slice(
+    const currentData = filteredData?.slice(
         (currentPage - 1) * rowsPerPage,
         currentPage * rowsPerPage
     );
@@ -81,7 +81,7 @@ const Table = <T extends object>({
                 <table className="min-w-full">
                     <thead>
                         <tr>
-                            {columns.map((column) => (
+                            {columns?.map((column) => (
                                 <th
                                     key={String(column)}
                                     className="px-4 py-2 border-b-2 text-left text-sm font-semibold text-white bg-gray-800"
@@ -95,9 +95,9 @@ const Table = <T extends object>({
                     {/* Render loading skeleton or table data */}
                     {loading ? (
                         renderLoadingSkeleton()
-                    ) : currentData.length > 0 ? (
+                    ) : currentData?.length > 0 ? (
                         <tbody>
-                            {currentData.map((row, rowIndex) => {
+                            {currentData?.map((row, rowIndex) => {
                                 const shouldHaveGreyBackground = 
                                     rowIndex % 2 === 0;
                                 return (
@@ -108,7 +108,7 @@ const Table = <T extends object>({
                                         }`}
                                         onClick={() => onRowClick?.(row)}
                                     >
-                                        {columns.map((column) => (
+                                        {columns?.map((column) => (
                                             <td
                                                 key={String(column)}
                                                 className="px-4 py-2 text-sm border-b truncate"

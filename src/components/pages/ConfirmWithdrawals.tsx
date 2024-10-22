@@ -25,7 +25,7 @@ const ConfirmWithdrawal = () => {
         if (id) {
             mutate(id); // Trigger the mutation with the withdrawal ID
         }
-    }, [id]);
+    }, [id, mutate]);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">

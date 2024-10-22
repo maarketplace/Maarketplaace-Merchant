@@ -75,3 +75,12 @@ export const fetchBanks = async () => {
         }, 
     });
 };
+
+export const getTransaction = async () => {
+    const token = localStorage.getItem(VITE_TOKEN)
+    return await axios.get(`${VITE_ENDPOINT}/transactions`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}

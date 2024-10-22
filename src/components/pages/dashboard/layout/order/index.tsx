@@ -4,6 +4,7 @@ import { getMerchantOrders } from "../../../../../api/query";
 import Table from "../../../../../utils/Table";
 import { IProduct } from "../../../../../interface/ProductInterface";
 import { IOrder } from "../../../../../interface/OrderInterface";
+import { formatNumber } from "../../../../../utils/Utils";
 
 
 interface Order {
@@ -40,14 +41,15 @@ const Order = () => {
     ];
 
     const formattedData = allOrder.map(transaction => ({
-        "Amount": transaction?.amount || "N/A",
-        "Payment Amount": transaction?.payable_amount,
+        "Amount": formatNumber(transaction?.amount) || "N/A",
+        "Payment Amount": formatNumber(transaction?.payable_amount),
         "Country": transaction?.country || "Nigeria",
         "State": transaction?.state || 'Lagos',
         "Status": transaction.status,
         "Date": new Date(transaction?.createdAt).toLocaleDateString(),
         "id": transaction._id
     }));
+    
 
     const filteredOrders = formattedData.filter(order => {
         if (statusFilter === "All") {

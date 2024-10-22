@@ -2,7 +2,7 @@ import React from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 
 interface BalanceCardProps {
-  balance: number;
+  balance: string;
   title: string;
 }
 
