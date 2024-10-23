@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "react-query";
 import { useEffect, useState } from "react";
 import { fetchBanks, getMerchantBalance, getTransaction } from "../../../../../api/query";
 import { verifyMerchantAccountNumber, withdrawFunds } from "../../../../../api/mutation"; // Import withdrawFunds API
-import { formatNumber } from "../../../../../utils/Utils";
+import { capitalizeFirstLetter, formatNumber } from "../../../../../utils/Utils";
 import { IAccountDetails, IBanks } from "../../../../../interface/AccountDetails";
 import { IErrorResponse } from "../../../../../interface/ErrorInterface";
 import { useNavigate } from "react-router-dom";
@@ -123,17 +123,23 @@ const Transaction = () => {
         }
     };
     const columns: Array<keyof typeof formattedData[0]> = [
+        "Account Name",
+        "Payment Gateway",
         "Withdrawal Amount",
-        "Fee Amount",
+        "Transaction Type",
+        "Fee",
         "Status",
         "Date",
     ];
 
     const formattedData = allTransaction?.map(transaction => ({
+        "Account Name": transaction?.details?.account_name,
+        "Payment Gateway": transaction?.details?.gateway,
         "Withdrawal Amount": formatNumber(transaction?.amount) || "N/A",
-        "Fee Amount": formatNumber(transaction?.amount),
+        "Transaction Type": capitalizeFirstLetter(transaction?.transaction_type),
+        "Fee": formatNumber(transaction?.fee),
         "Status": transaction?.transaction_status,
-        "Date": new Date(transaction?.createdAt).toLocaleDateString(),
+        "Date": transaction?.createdTime,
         "id": transaction._id
     }));
     const filteredOrders = formattedData?.filter(order => {
@@ -243,11 +249,22 @@ const Transaction = () => {
                         {modalStep === 2 && verifiedAccountDetails && (
                             <div className="dark:text-black">
                                 <h2 className="text-[20px] font-light mb-4 dark:text-black">Enter Withdraw Amount</h2>
-                                <p className="mb-4">Account Name: {verifiedAccountDetails.details.account_name}</p>
-                                <p className="mb-4">Account Number: {verifiedAccountDetails.details.account_number}</p>
-                                <p className="mb-4">Merchant Name: {verifiedAccountDetails.name}</p>
-
-                                <p className="mb-4">Your withdrawable balance is NGN {balance}.00</p>
+                                <span className="w-[100%] flex justify-between mb-4">
+                                    <p className="text-[14px]">Account Name: </p>
+                                    <p className="text-[14px]">{verifiedAccountDetails.details.account_name}</p>
+                                </span>
+                                <span className="w-[100%] flex justify-between mb-4">
+                                    <p className="text-[14px]">Account Number: </p>
+                                    <p className="text-[14px]">{verifiedAccountDetails.details.account_number}</p>
+                                </span>
+                                <span className="w-[100%] flex justify-between mb-4">
+                                    <p className="text-[14px]">Merchant Name:</p>
+                                    <p className="text-[14px]">{verifiedAccountDetails.name}</p>
+                                </span>
+                                <span className="w-[100%] flex justify-between mb-4">
+                                    <p className="text-[14px]">Your withdrawable balance is </p>
+                                    <p className="text-[14px]">NGN {balance}.00</p>
+                                </span>
                                 <input
                                     type="number"
                                     placeholder="Amount to Withdraw"

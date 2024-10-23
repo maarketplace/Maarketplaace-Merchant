@@ -8,6 +8,7 @@ interface TableProps<T> {
     emptyMessage?: string;
     rowsPerPage?: number;
     onRowClick?: (row: T) => void;
+    imageColumns?: Array<keyof T>;
 }
 
 const Table = <T extends object>({
@@ -17,6 +18,7 @@ const Table = <T extends object>({
     emptyMessage = "No data available",
     rowsPerPage = 10,
     onRowClick,
+    // imageColumns = [],
 }: TableProps<T>) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
@@ -98,14 +100,13 @@ const Table = <T extends object>({
                     ) : currentData?.length > 0 ? (
                         <tbody>
                             {currentData?.map((row, rowIndex) => {
-                                const shouldHaveGreyBackground = 
+                                const shouldHaveGreyBackground =
                                     rowIndex % 2 === 0;
                                 return (
                                     <tr
                                         key={rowIndex}
-                                        className={` cursor-pointer bg-[#f5f5f5] dark:bg-[#1b1a1a] ${
-                                            shouldHaveGreyBackground ? "" : ""
-                                        }`}
+                                        className={` cursor-pointer bg-[#f5f5f5] dark:bg-[#1b1a1a] ${shouldHaveGreyBackground ? "" : ""
+                                            }`}
                                         onClick={() => onRowClick?.(row)}
                                     >
                                         {columns?.map((column) => (
@@ -114,9 +115,26 @@ const Table = <T extends object>({
                                                 className="px-4 py-2 text-sm border-b truncate"
                                                 data-label={String(column)}
                                             >
-                                                {String(row[column]).slice(0, 32)}
+                                                {column === "Product Image" ? (
+                                                    row["Product Image"] ? (
+                                                        <img
+                                                            src={String(row[column])}
+                                                            alt="Product"
+                                                            className="w-16 h-16 object-cover"
+                                                            onError={(e) => {
+                                                                e.currentTarget.src = '/path-to-placeholder-image.jpg'; // Fallback image if loading fails
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        "No image available"
+                                                    )
+                                                ) : (
+                                                    String(row[column]).slice(0, 32) // Limit the length for other columns
+                                                )}
                                             </td>
                                         ))}
+
+
                                     </tr>
                                 );
                             })}
@@ -162,3 +180,4 @@ const Table = <T extends object>({
 };
 
 export default Table;
+

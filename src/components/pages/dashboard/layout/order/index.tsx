@@ -4,7 +4,7 @@ import { getMerchantOrders } from "../../../../../api/query";
 import Table from "../../../../../utils/Table";
 import { IProduct } from "../../../../../interface/ProductInterface";
 import { IOrder } from "../../../../../interface/OrderInterface";
-import { formatNumber } from "../../../../../utils/Utils";
+import { capitalizeFirstLetter, formatNumber } from "../../../../../utils/Utils";
 
 
 interface Order {
@@ -13,7 +13,7 @@ interface Order {
     createdAt: string | number | Date;
     products: IProduct[];
     id: string;
-  }
+}
 const Order = () => {
     const [allOrder, setAllOrder] = useState<IOrder[]>([]);
     const [statusFilter, setStatusFilter] = useState<string>("All");
@@ -31,25 +31,30 @@ const Order = () => {
     if (isError) {
         return <p>An error occurred while fetching the data.</p>;
     }
+
     const columns: Array<keyof typeof formattedData[0]> = [
+        "Product Image",
         "Amount",
         "Payment Amount",
-        "Country",
-        "State",
+        "Name",
+        "Phone Number",
+        "Email",
         "Status",
         "Date",
     ];
 
     const formattedData = allOrder.map(transaction => ({
+        "Product Image": transaction?.products[0]?.productImage || "No image available",
+        "Name": transaction?.user_id?.fullName,
+        "Phone Number": transaction?.user_id?.phoneNumber,
+        "Email": transaction?.user_id?.email,
         "Amount": formatNumber(transaction?.amount) || "N/A",
         "Payment Amount": formatNumber(transaction?.payable_amount),
-        "Country": transaction?.country || "Nigeria",
-        "State": transaction?.state || 'Lagos',
-        "Status": transaction.status,
+        "Status": capitalizeFirstLetter(transaction.status),
         "Date": new Date(transaction?.createdAt).toLocaleDateString(),
         "id": transaction._id
     }));
-    
+
 
     const filteredOrders = formattedData.filter(order => {
         if (statusFilter === "All") {
@@ -59,12 +64,12 @@ const Order = () => {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleRowClick = async (row: any,) => {
-        setSelectedOrder(row); 
+    const handleRowClick = async (row: any) => {
+        setSelectedOrder(row);
     };
 
     return (
-        <div className="w-[95%]  max-[650px]:w-[100%] flex items-center justify-center mt-[50px]">
+        <div className="w-[95%] max-[650px]:w-[100%] flex items-center justify-center mt-[50px]">
             <div className="w-[100%] mb-[50px] flex flex-col gap-[20px]">
                 <div className="flex justify-between items-center mb-4">
                     <select
