@@ -116,13 +116,13 @@ const Table = <T extends object>({
                                                 data-label={String(column)}
                                             >
                                                 {column === "Product Image" ? (
-                                                    row["Product Image"] ? (
+                                                    row[column] ? (
                                                         <img
                                                             src={String(row[column])}
                                                             alt="Product"
                                                             className="w-16 h-16 object-cover"
                                                             onError={(e) => {
-                                                                e.currentTarget.src = '/path-to-placeholder-image.jpg'; // Fallback image if loading fails
+                                                                e.currentTarget.src = '/forex.png'; // Fallback image
                                                             }}
                                                         />
                                                     ) : (
@@ -133,8 +133,6 @@ const Table = <T extends object>({
                                                 )}
                                             </td>
                                         ))}
-
-
                                     </tr>
                                 );
                             })}

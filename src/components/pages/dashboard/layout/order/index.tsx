@@ -69,7 +69,7 @@ const Order = () => {
     };
 
     return (
-        <div className="w-[95%] max-[650px]:w-[100%] flex items-center justify-center mt-[50px]">
+        <div className="w-[95%] max-[650px]:w-[100%] flex items-center justify-center mt-[50px] overflow-scroll">
             <div className="w-[100%] mb-[50px] flex flex-col gap-[20px]">
                 <div className="flex justify-between items-center mb-4">
                     <select
@@ -90,6 +90,8 @@ const Order = () => {
                     columns={columns}
                     onRowClick={(row) => handleRowClick(row)}
                     loading={isLoading}
+                    rowsPerPage={5}
+                    imageColumns={['Product Image']}
                 />
             </div>
         </div>

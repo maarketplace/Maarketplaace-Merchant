@@ -17,7 +17,7 @@ const Transaction = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalStep, setModalStep] = useState(1);
     const [bankDetails, setBankDetails] = useState({ bankName: '', accountNumber: '', bankCode: '' });
-    const [amount, setWithdrawAmount] = useState(0);
+    const [amount, setWithdrawAmount] = useState();
     const [statusFilter, setStatusFilter] = useState<string>("All");
     const [verifiedAccountDetails, setVerifiedAccountDetails] = useState<IAccountDetails | null>(null); // Store verified account details here
     const [error, setError] = useState('')
@@ -221,8 +221,8 @@ const Transaction = () => {
 
                                     <input
                                         type="text"
-                                        placeholder="Account Number"
-                                        className="border p-2 mb-4 w-full dark:text-black outline-none text-[12px]"
+                                        placeholder="eg.1000"
+                                        className="border font-light p-2 mb-4 w-full dark:text-black outline-none text-[12px]"
                                         value={bankDetails.accountNumber}
                                         onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: e.target.value })}
                                     />
@@ -230,7 +230,7 @@ const Transaction = () => {
                                 <span className="w-[100%] bg-[#ebebeb] p-[10px] rounded-[8px]">
                                     <p className="text-[10px] font-light">Please, ensure that the customer or recipent's details are correct to avoid any potential issue with the transaction</p>
                                 </span>
-                                <div className="flex justify-between">
+                                <div className=" w-[100%] flex gap-2 justify-between">
                                     <button className="w-[50%] h-[30px] text-[14px] bg-gray-300 text-black rounded-md" onClick={closeModal}>
                                         Cancel
                                     </button>
@@ -247,44 +247,46 @@ const Transaction = () => {
                         )}
 
                         {modalStep === 2 && verifiedAccountDetails && (
-                            <div className="dark:text-black">
-                                <h2 className="text-[20px] font-light mb-4 dark:text-black">Enter Withdraw Amount</h2>
-                                <span className="w-[100%] flex justify-between mb-4">
-                                    <p className="text-[14px]">Account Name: </p>
-                                    <p className="text-[14px]">{verifiedAccountDetails.details.account_name}</p>
+                            <div className="dark:text-black w-[100%] flex flex-col gap-[20px]">
+                                <span className="w-[100%] flex justify-between">
+                                    <p className="text-[20px]">{verifiedAccountDetails.details.account_name}</p>
                                 </span>
-                                <span className="w-[100%] flex justify-between mb-4">
-                                    <p className="text-[14px]">Account Number: </p>
-                                    <p className="text-[14px]">{verifiedAccountDetails.details.account_number}</p>
+                                <span className="w-[100%] border-b-[1px] border-b-grey-500 h-[80px] ">
+                                    <h2 className="text-[18px] font-Semibold dark:text-black">Withdraw Funds to Bank Account</h2>
+                                    <p className="text-[12px] font-light">Please enter the details of the transaction to proceed</p>
                                 </span>
-                                <span className="w-[100%] flex justify-between mb-4">
-                                    <p className="text-[14px]">Merchant Name:</p>
-                                    <p className="text-[14px]">{verifiedAccountDetails.name}</p>
+                                <span className="w-[100%] bg-[#ebebeb] p-[10px] rounded-[8px]">
+                                    <p className="text-[10px] font-light">
+                                        A maximum of <strong>NGN 5,000,000.00</strong> can be withdrawn in a single transaction to your bank account per day and minimum of
+                                    </p>
                                 </span>
-                                <span className="w-[100%] flex justify-between mb-4">
-                                    <p className="text-[14px]">Your withdrawable balance is </p>
-                                    <p className="text-[14px]">NGN {balance}.00</p>
-                                </span>
-                                <input
-                                    type="number"
-                                    placeholder="Amount to Withdraw"
-                                    className="border p-2 mb-4 w-full outline-none"
-                                    value={amount}
-                                    onChange={(e) => setWithdrawAmount(e.target.value)}
-                                />
-                                <div className="flex justify-between">
+                                <div className="w-full flex flex-col gap-1">
+                                    <span className="flex w-full justify-between text-[10px]">
+                                        <p>Amount to withdraw</p>
+                                        <p className="text-[lightgrey]">Fee charged <strong className="text-black">100.00</strong></p>
+                                    </span>
+                                    <input
+                                        type="number"
+                                        placeholder="Amount to Withdraw"
+                                        className="border p-2 w-full outline-none text-[12px]"
+                                        value={amount}
+                                        onChange={(e) => setWithdrawAmount(e.target.value)}
+                                    />
+                                    <p className="text-[12px] text-[lightgrey]">Minimum amount <strong className="text-black text-[10px]">NGN 1,100.00</strong> </p>
+                                </div>
+                                <div className="flex justify-between w-full gap-2">
                                     <button
-                                        className="px-4 py-2 bg-gray-300 text-black rounded-md"
+                                        className="w-[50%] h-[30px] text-[14px] bg-gray-300 text-black rounded-md"
                                         onClick={() => setModalStep(1)}
                                     >
                                         Back
                                     </button>
                                     <button
-                                        className="px-4 py-2 bg-green-500 text-white rounded-md"
+                                        className="w-[50%] h-[30px] text-[14px] bg-blue-500 text-white rounded-md"
                                         onClick={handleWithdrawSubmit}
                                         disabled={isWithdrawing}
                                     >
-                                        {isWithdrawing ? "Processing..." : "Submit"}
+                                        {isWithdrawing ? "Processing..." : "Complete"}
                                     </button>
                                 </div>
                             </div>
