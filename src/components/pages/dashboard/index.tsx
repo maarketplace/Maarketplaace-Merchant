@@ -13,7 +13,7 @@ const DashboardMain = () => {
                 </div>
             </div>
             <div className="w-[85%] h-[100vh] flex justify-center max-[650px]:ml-[0px] scrollbar-hide max-[650px]:w-[100%]">
-                <div className="w-[100%] dark:bg-black h-[80%]">
+                <div className="w-[100%] dark:bg-black h-[100%] overflow-scroll scrollbar-hide">
                     <Layout />
                 </div>
             </div>

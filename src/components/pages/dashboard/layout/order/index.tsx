@@ -23,7 +23,7 @@ const Order = () => {
 
     useEffect(() => {
         if (data?.data?.data) {
-            const reversedData = data?.data?.data?.reverse();
+            const reversedData = data?.data?.data;
             setAllOrder(reversedData);
         }
     }, [data, selectedOrder]);
@@ -67,7 +67,7 @@ const Order = () => {
     const handleRowClick = async (row: any) => {
         setSelectedOrder(row);
     };
-
+    console.log(formattedData);
     return (
         <div className="w-[95%] max-[650px]:w-[100%] flex items-center justify-center mt-[50px] overflow-scroll">
             <div className="w-[100%] mb-[50px] flex flex-col gap-[20px]">
@@ -78,10 +78,10 @@ const Order = () => {
                         className="px-[10px] py-2 border rounded text-black outline-none"
                     >
                         <option value="All">All</option>
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
-                        <option value="completed">Completed</option>
-                        <option value="canceled">Canceled</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Processing">Processing</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Canceled">Canceled</option>
                     </select>
                 </div>
 
@@ -93,6 +93,7 @@ const Order = () => {
                     rowsPerPage={5}
                     imageColumns={['Product Image']}
                 />
+                {/* <img src={formattedData[0]["Product Image"]} alt="Product Image" /> */}
             </div>
         </div>
     );

@@ -7,7 +7,7 @@ export interface IProduct {
     paymentPrice: number;
     user_likes: string[];
     _id: string;
-    productDescription: any;
+    productDescription: string;
     productImage: string | undefined;
     id: number;
     productName: string;

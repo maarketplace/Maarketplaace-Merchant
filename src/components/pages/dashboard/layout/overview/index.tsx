@@ -78,10 +78,6 @@ const Index: React.FC = () => {
           <MostSoldItems items={mostSoldItems} />
         </div>
       </div>
-
-      {/* <div className="max-[650px]:w-[100%] border border-gray-300 rounded-md">
-        <LatestOrders orders={latestOrders} />
-      </div> */}
     </div>
   );
 };

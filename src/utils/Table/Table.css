@@ -36,6 +36,10 @@
     font-weight: 300;
     text-align: left;
   }
+  td[data-label="Product Image"] {
+    text-align: right;
+  }
+  
 }
 
 @media screen and (max-width: 650px) {

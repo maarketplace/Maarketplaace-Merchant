@@ -11,6 +11,7 @@ import { UploadEbookSchema } from '../../../../../schema/UploadEbookSchema';
 import { categories } from './category';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../../../../../loader';
+import { IErrorResponse } from '../../../../../interface/ErrorInterface';
 
 function UploadEbook() {
     const navigate = useNavigate()
@@ -27,7 +28,7 @@ function UploadEbook() {
         onSuccess: async (data: any) => {
             toast.success(`${data?.data?.message}`);
         },
-        onError: (err: any) => {
+        onError: (err: IErrorResponse) => {
             toast.error(err?.response?.data?.message);
         }
     });
@@ -69,9 +70,9 @@ function UploadEbook() {
         multiple: true,
     });
     return (
-        <div className="w-[100%] h-[100%] overflow-auto" >
+        <div className="w-[100%] h-[100%]" >
             <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
-            <span className="gap-[10px] flex w-[95%]">
+                <span className="gap-[10px] flex w-[95%]">
                     <button
                         className={`p-[5px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/course' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
                         onClick={() => navigate('/dashboard/course')}
@@ -123,7 +124,7 @@ function UploadEbook() {
                         />
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.discountPrice?.message}</b>
                     </div>
-                     <div className='w-[90%] flex flex-col gap-[10px]'>
+                    <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Author Name</label>
                         <input
                             placeholder='Author Name'
@@ -152,7 +153,7 @@ function UploadEbook() {
                             {...register('pages')}
                         />
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.pages?.message}</b>
-                    </div> 
+                    </div>
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Book Description</label>
                         <ReactQuill
@@ -164,7 +165,7 @@ function UploadEbook() {
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productDescription?.message}</b>
                 </div>
-                <div className='mt-[40px] w-[40%] flex flex-col items-center  gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
+                <div className='mt-[40px] w-[40%] flex flex-col items-center  gap-[10px] max-[650px]:w-[100%] max-[650px]:mb-[50px] max-[650px]:mt-[0px]'>
                     <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
                         <label className='max-[650px]:text-[15px]'>Book Location</label>
                         <input
@@ -233,7 +234,7 @@ function UploadEbook() {
                         onClick={handleButtonClick}
                         disabled={isLoading}
                     >
-                        {isLoading ? <Loading/> : "Upload Product"}
+                        {isLoading ? <Loading /> : "Upload Product"}
                     </button>
                 </div>
             </div>

@@ -45,7 +45,7 @@ function LoginForm() {
                 <img src="MARKET.svg" alt="" className="max-[650px]:w-[80px]" />
                 <span className="flex items-center justify-center flex-col gap-[10px] max-[650px]:w-[100%]" >
                     <h2 className="text-2xl max-[650px]:text-[15px]">Welcome  back to maarketplaace</h2>
-                    <p className="italic text-center max-[650px]:text-[12px] text-wrap">Continue selling and creating wonderful <br></br>products for our consumers</p>
+                    <p className="text-center max-[650px]:text-[12px] text-wrap">Continue creating wonderful <br></br>products for our consumers</p>
                 </span>
             </div>
             <div className='w-[70%] flex flex-col gap-[10px] max-[650px]:w-[90%] ' >

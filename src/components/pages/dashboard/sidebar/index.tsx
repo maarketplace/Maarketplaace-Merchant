@@ -31,8 +31,8 @@ const SideBar = ({setShowSidebar }: SideBarProps) => {
     };
 
     return (
-        <div className="w-[90%] h-[83vh] ">
-            <div className="w-[100%] flex flex-col gap-[10px]">
+        <div className="w-[90%] h-[85vh] ">
+            <div className="w-[100%] flex flex-col gap-[10px] dark:text-black">
                 <span
                     className={`flex items-center gap-[30px] justify-center h-[50px] cursor-pointer w-[100%] ${getActiveClass('/dashboard')}`}
                     onClick={() => handleNavigate('/dashboard')}

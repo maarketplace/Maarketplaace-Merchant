@@ -1,5 +1,4 @@
-// MerchantContext.tsx
-import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
 import { useQuery } from 'react-query';
 import { getMerchant } from '../api/query';
 import { IErrorResponse } from '../interface/ErrorInterface';
@@ -8,28 +7,23 @@ interface MerchantContextType {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
     isLoading: boolean;
-    err: string
+    err: string;
 }
 
 const MerchantContext = createContext<MerchantContextType | undefined>(undefined);
 
 export const MerchantProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [merchant, setMerchant] = useState()
-    const [err, setErr] = useState('')
     const {
         data,
         isLoading,
-    } = useQuery(["getMerchant"], getMerchant, {
-        onError: (error: IErrorResponse) =>{
-            setErr(error?.response?.data?.message)
-        }
-    });
+        error
+    } = useQuery(["getMerchant"], getMerchant);
 
-    useEffect(()=>{
-        setMerchant(data?.data?.data)
-    }, [data, merchant ])
+    // Extract the error message if an error occurs
+    const err = (error as IErrorResponse)?.response?.data?.message || '';
+
     const value: MerchantContextType = {
-        data: merchant,
+        data: data?.data?.data, // Accessing nested data directly
         isLoading,
         err,
     };

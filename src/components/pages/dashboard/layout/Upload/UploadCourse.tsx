@@ -11,6 +11,7 @@ import { uploadCourse } from "../../../../../api/mutation";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../../../../../loader";
+import { IErrorResponse } from "../../../../../interface/ErrorInterface";
 
 const UploadCourse = () => {
     const navigate = useNavigate()
@@ -30,9 +31,9 @@ const UploadCourse = () => {
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadCourse, {
         onSuccess: async (data: any) => {
             console.log(data);
-            toast.success(`${data?.data?.data?.message} We are currentlyreviewing your course`);
+            toast.success(`${data?.data?.data?.message} We are currently reviewing your course`);
         },
-        onError: (err: any) => {
+        onError: (err: IErrorResponse) => {
             toast.error(err?.response?.data?.message);
         }
     });
@@ -80,7 +81,7 @@ const UploadCourse = () => {
                 <h3 className='text-[25px]'>Upload a Course</h3>
                 <p className='text-[20px] max-[650px]:text-center max-[650px]:text-wrap'>Show the world what you are selling</p>
             </div>
-            <div className="flex w-[100%] gap-[20px] max-[650px]:flex-col">
+            <div className="flex w-[100%] gap-[20px] max-[650px]:flex-col ">
                 <div className='w-[40%] mt-[20px] flex flex-col items-center gap-[10px] max-[650px]:w-[100%]' >
                     <div className='w-[90%] flex flex-col gap-[10px] mt-[20px] '>
                         <label className='max-[650px]:text-[15px]'>Course Name</label>
@@ -167,7 +168,7 @@ const UploadCourse = () => {
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.topics?.message}</b>
                 </div>
-                <div className='mt-[40px] w-[40%] flex flex-col items-center  gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
+                <div className='mt-[40px] w-[40%] flex flex-col items-center max-[650px]:mb-[50px]  gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Category</label>
                         <input

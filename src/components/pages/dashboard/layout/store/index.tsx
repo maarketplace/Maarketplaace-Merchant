@@ -84,7 +84,6 @@ const Store = () => {
             console.error("File input ref is not set");
         }
     };
-console.log(data);
 
     return (
         <div className="w-[100%] flex items-center justify-center flex-col">

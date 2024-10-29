@@ -6,6 +6,7 @@ import { merchantVerify, resendMerchantVerify } from '../../../api/mutation';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import toast from 'react-hot-toast';
+import Loading from '../../../loader';
 
 interface VerificationFormData {
     verificationCode: string;
@@ -90,11 +91,11 @@ const Verify = () => {
     };
 
     const verificationCode = code.join('');
-    setValue('verificationCode', verificationCode);  // Ensure setValue is called initially and on every render
+    setValue('verificationCode', verificationCode);  
 
     return (
-        <div className='w-[100%] h-[100vh] flex items-center justify-center bg-[#FFC300] max-[650px]:bg-[white] max-[650px]:flex'>
-            <div className='w-[45%] h-[50vh] bg-[white] rounded-lg flex items-center justify-center flex-col gap-[20px] max-[650px]:w-[95%]'>
+        <div className='w-[100%] h-[100vh] flex items-center justify-center bg-[#FFC300] max-[650px]:bg-[white] max-[650px]:flex dark:bg-black dark:text-white'>
+            <div className='w-[45%] h-[50vh] bg-[white] rounded-lg flex items-center justify-center flex-col gap-[20px] max-[650px]:w-[95%] dark:bg-black dark:text-white'>
                 <img src="MARKET.svg" alt="" className="max-[650px]:w-[80px]" />
                 <div className="w-[70%] flex gap-[10px] items-center flex-col">
                     <label className='text-[25px] text-[#FFC300]'>
@@ -109,7 +110,7 @@ const Verify = () => {
                     {code.map((digit, index) => (
                         <input
                             key={index}
-                            className='w-[50px] h-[50px] border border-[#999BA1] outline-none text-center rounded-lg max-[650px]:w-[35px] max-[650px]:h-[35px]'
+                            className='w-[50px] h-[50px] border border-[#999BA1] dark:text-black outline-none text-center rounded-lg max-[650px]:w-[40px] max-[650px]:h-[40px]'
                             type="text"
                             maxLength={1}
                             value={digit}
@@ -127,11 +128,11 @@ const Verify = () => {
                 <b className='w-[50%] text-[red] text-[12px]'>{errors?.verificationCode?.message}</b>
                 <p>Didn't recieve a code <strong className='text-blue-500'>Resend code</strong></p>
                 <button type="submit"
-                    className='w-[55%] bg-[#FFC300] h-[40px] rounded-lg'
+                    className='w-[55%] bg-[#FFC300] h-[45px] text-black rounded-lg max-[650px]:w-[80%]'
                     onClick={handleFormSubmit}
                     disabled={isLoading}
                 >
-                    {isLoading ? "Verifying" : "Submit"}
+                    {isLoading ? <Loading/> : "Submit"}
                 </button>
             </div>
         </div>

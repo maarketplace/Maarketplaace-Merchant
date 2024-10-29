@@ -31,10 +31,13 @@ body {
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 }
 
 .scrollbar-hide {
+  /* display: none; */
   -ms-overflow-style: none; 
   scrollbar-width: none; 
 }

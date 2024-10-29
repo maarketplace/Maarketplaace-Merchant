@@ -21,11 +21,13 @@ const Transaction = () => {
     const [statusFilter, setStatusFilter] = useState<string>("All");
     const [verifiedAccountDetails, setVerifiedAccountDetails] = useState<IAccountDetails | null>(null); // Store verified account details here
     const [error, setError] = useState('')
+
+
     const { data: balanceData } = useQuery(['getMerchantBalance'], getMerchantBalance, {
         onError: (err: IErrorResponse) => {
             if (err.response.data.message == "Token expired login again") {
                 localStorage.clear();
-                navigate('/login')
+                navigate('/')
 
             }
         }
@@ -35,7 +37,7 @@ const Transaction = () => {
         onError: (err: IErrorResponse) => {
             if (err.response.data.message == "Token expired login again") {
                 localStorage.clear();
-                navigate('/login')
+                navigate('/')
 
             }
         }
@@ -73,9 +75,9 @@ const Transaction = () => {
     );
     useEffect(() => {
         if (transactionData?.data?.data) {
-            setAllTransaction(transactionData?.data?.data?.data);
+            setAllTransaction(transactionData?.data?.data);
         }
-        // console.log(allTransaction);
+        // console.log(transactionData);
 
     }, [transactionData]);
 
@@ -138,7 +140,7 @@ const Transaction = () => {
         "Withdrawal Amount": formatNumber(transaction?.amount) || "N/A",
         "Transaction Type": capitalizeFirstLetter(transaction?.transaction_type),
         "Fee": formatNumber(transaction?.fee),
-        "Status": transaction?.transaction_status,
+        "Status": capitalizeFirstLetter(transaction?.transaction_status),
         "Date": transaction?.createdTime,
         "id": transaction._id
     }));

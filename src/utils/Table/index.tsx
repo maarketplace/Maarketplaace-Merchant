@@ -112,7 +112,7 @@ const Table = <T extends object>({
                                         {columns?.map((column) => (
                                             <td
                                                 key={String(column)}
-                                                className="px-4 py-2 text-sm border-b truncate"
+                                                className={`px-4 py-2 text-sm border-b truncate max-[650px]:${column === 'Product Image' ? 'flex justify-end items-center' : 'justify-start'}`} // Add Flexbox for images
                                                 data-label={String(column)}
                                             >
                                                 {column === "Product Image" ? (
@@ -122,7 +122,7 @@ const Table = <T extends object>({
                                                             alt="Product"
                                                             className="w-16 h-16 object-cover"
                                                             onError={(e) => {
-                                                                e.currentTarget.src = '/forex.png'; // Fallback image
+                                                                e.currentTarget.src = '/fallback-image.png'; // Fallback image
                                                             }}
                                                         />
                                                     ) : (
@@ -133,6 +133,7 @@ const Table = <T extends object>({
                                                 )}
                                             </td>
                                         ))}
+
                                     </tr>
                                 );
                             })}
