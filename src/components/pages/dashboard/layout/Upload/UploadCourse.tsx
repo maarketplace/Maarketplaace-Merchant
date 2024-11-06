@@ -60,17 +60,17 @@ const UploadCourse = () => {
     });
 
     return (
-        <div className="w-[100%] h-[100%]">
+        <div className="w-[100%] h-[100%]  ">
             <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
-                <span className="gap-[10px] flex w-[95%]">
+                <span className="gap-[10px] flex w-[95%]  max-[650px]:justify-center max-[650px]:w-[100%]">
                     <button
-                        className={`p-[5px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/course' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
+                        className={`p-[2px] max-[650px]:text-[12px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/course' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
                         onClick={() => navigate('/dashboard/course')}
                     >
                         Upload Course
                     </button>
                     <button
-                        className={`p-[5px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/ebook' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
+                        className={`p-[2px] max-[650px]:text-[12px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/ebook' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
                         onClick={() => navigate('/dashboard/ebook')}
                     >
                         Upload Ebook

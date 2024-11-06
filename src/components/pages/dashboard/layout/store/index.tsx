@@ -130,15 +130,25 @@ const Store = () => {
                             <span className="w-full">
                                 <p className="max-[650px]:text-[12px] text-[14px]">{i?.productName}</p>
                             </span>
-                            <button
-                                className="w-full p-[2px] bg-[#FFC300] rounded-[4px]"
-                                onClick={() => {
-                                    setSelectedProduct(i);
-                                    setShowModal(true);
-                                }}
-                            >
-                                Edit
-                            </button>
+                            <span className="flex gap-2 w-full">
+                                <button
+                                    className="w-[50%] p-[2px] bg-[#FFC300] rounded-[4px]"
+                                    onClick={() => {
+                                        setSelectedProduct(i);
+                                        setShowModal(true);
+                                    }}
+                                >
+                                    Edit
+                                </button>
+                                <button
+                                    className="w-[50%] p-[2px] bg-[#FFC300] rounded-[4px]"
+                                    onClick={() => {
+                                        navigate(`/dashboard/quicks/${i?._id}`)
+                                    }}
+                                >
+                                    Add Quicks
+                                </button>
+                            </span>
                         </div>
                     ))
                 }

@@ -7,7 +7,7 @@ const { VITE_TOKEN } = import.meta.env;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const merchantSignup = async (data: any) => {
     console.log(data);
-    return await axios.post(`${VITE_ENDPOINT}/merchant`, data,  {
+    return await axios.post(`${VITE_ENDPOINT}/merchant`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
@@ -104,7 +104,7 @@ export const merchantLoginAsUser = async () => {
 }
 export const createCategory = async (category: string) => {
     const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT}/category`, {category}, {
+    return await axios.post(`${VITE_ENDPOINT}/category`, { category }, {
         headers: {
             'Authorization': `Bearer ${Token}`
         }
@@ -112,14 +112,14 @@ export const createCategory = async (category: string) => {
 }
 export const createSubCategory = async (sub: string) => {
     const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT}/sub-category`, {sub}, {
+    return await axios.post(`${VITE_ENDPOINT}/sub-category`, { sub }, {
         headers: {
             'Authorization': `Bearer ${Token}`
         }
     })
 }
 
-export const updateMerchantImage = async (file: string | Blob) =>{
+export const updateMerchantImage = async (file: string | Blob) => {
     const formData = new FormData();
     formData.append('image', file);
     const Token = localStorage.getItem(VITE_TOKEN)
@@ -132,16 +132,16 @@ export const updateMerchantImage = async (file: string | Blob) =>{
     });
 };
 
-export const deleteProduct = async (id: string) =>{
+export const deleteProduct = async (id: string) => {
     const Token = localStorage.getItem(VITE_TOKEN)
     return await axios.delete(`${VITE_ENDPOINT}/product/${id}`), {}, {
         headers: {
             'Authorization': `Bearer ${Token}`,
-        }, 
+        },
     }
-} 
+}
 
-export const verifyMerchantAccountNumber = async ({account_number, bank_code}: {account_number: string, bank_code: string}) => {
+export const verifyMerchantAccountNumber = async ({ account_number, bank_code }: { account_number: string, bank_code: string }) => {
     const Token = localStorage.getItem(VITE_TOKEN);
     return await axios.post(
         `${VITE_ENDPOINT}/accounts/verify`,
@@ -155,14 +155,35 @@ export const verifyMerchantAccountNumber = async ({account_number, bank_code}: {
 }
 
 
-export const withdrawFunds = async ({amount, id}: {amount: number, id: string}) =>{
+export const withdrawFunds = async ({ amount, id }: { amount: number, id: string }) => {
     const Token = localStorage.getItem(VITE_TOKEN);
-    return await axios.post(`${VITE_ENDPOINT}/accounts/request/accounts/${id}`,{amount},{
+    return await axios.post(`${VITE_ENDPOINT}/accounts/request/accounts/${id}`, { amount }, {
         headers: {
             'Authorization': `Bearer ${Token}`,
-        } 
+        }
     })
 }
-export const verifyWithdrawFunds = async ( id: string) =>{
+export const verifyWithdrawFunds = async (id: string) => {
     return await axios.post(`${VITE_ENDPOINT}/transactions/accounts/withdraws/${id}`)
 }
+
+export const uploadQuicks = async (id: string, data: { description: string; file: File; images: File[] }) => {
+    const Token = localStorage.getItem(VITE_TOKEN);
+
+    // Create a new FormData instance
+    const formData = new FormData();
+    formData.append('description', data.description);
+    formData.append('file', data.file);
+
+    // Append each image to the FormData
+    data.images.forEach((image, index) => {
+        formData.append(`images[${index}]`, image);
+    });
+
+    return await axios.post(`${VITE_ENDPOINT}/quicks/products/${id}`, formData, {
+        headers: {
+            'Authorization': `Bearer ${Token}`,
+            'Content-Type': 'multipart/form-data', // Important for sending FormData
+        },
+    });
+};

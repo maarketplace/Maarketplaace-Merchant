@@ -14,8 +14,9 @@ import Overview from './components/pages/dashboard/layout/overview';
 import Store from './components/pages/dashboard/layout/store';
 import Order from './components/pages/dashboard/layout/order';
 import Customer from './components/pages/dashboard/layout/customer';
-import Transaction from './components/pages/dashboard/layout/transaction';
 import ConfirmWithdrawal from './components/pages/ConfirmWithdrawals';
+import Withdrawal from './components/pages/dashboard/layout/withdrawal';
+import UploadQuicks from './components/pages/dashboard/layout/quicks';
 
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -85,6 +86,10 @@ const router = createHashRouter([
                 element: <UploadEbook />
             },
             {
+                path: '/dashboard/quicks/:id',
+                element: <UploadQuicks />
+            },
+            {
                 path: '/dashboard/store',
                 element: <Store />
             },
@@ -98,7 +103,7 @@ const router = createHashRouter([
             },
             {
                 path: '/dashboard/transaction',
-                element: <Transaction />
+                element: <Withdrawal />
             },
         ]
     },

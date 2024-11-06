@@ -7,7 +7,7 @@ import { useMerchant } from "../../../../../context/GetMerchant";
 import { formatNumber } from "../../../../../utils/Utils";
 
 const Index: React.FC = () => {
-  const {data} = useMerchant()
+  const { data } = useMerchant()
   const barChartData = {
     labels: [
       "Jan",
@@ -58,7 +58,7 @@ const Index: React.FC = () => {
     { name: "Doc2", percentage: 10 },
   ];
 
-// console.log(data);
+  // console.log(data);
 
   return (
     <div className="w-full overflow-scroll max-[650px]:flex max-[650px]:flex-col max-[650px]:w-[100%] max-[650px]:mt-[40px]">

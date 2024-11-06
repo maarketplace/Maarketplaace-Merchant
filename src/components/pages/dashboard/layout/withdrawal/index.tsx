@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { ITransactionHistory } from "../../../../../interface/TransactionHistoryInterface";
 import Table from "../../../../../utils/Table";
 
-const Transaction = () => {
+const Withdrawal = () => {
     const navigate = useNavigate()
     const [allTransaction, setAllTransaction] = useState<ITransactionHistory[]>([]);
     const [balance, setBalance] = useState(0);
@@ -168,7 +168,8 @@ const Transaction = () => {
                     </button>
                 </span>
             </div>
-            <div className="w-[95%]  max-[650px]:w-[100%] flex items-center justify-center mt-[50px]">
+            <div className="w-[95%]  max-[650px]:w-[100%] flex items-center justify-center mt-[50px] flex-col">
+                <p className="w-full mb-[20px] text-[18px]">Withdrawal History</p>
                 <div className="w-[100%] mb-[50px] flex flex-col gap-[20px]">
                     <div className="flex justify-between items-center mb-4">
                         <select
@@ -300,4 +301,4 @@ const Transaction = () => {
     );
 };
 
-export default Transaction;
+export default Withdrawal;
