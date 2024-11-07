@@ -125,14 +125,14 @@ const Store = () => {
             <div className="w-[95%] mt-[40px] flex flex-wrap gap-[10px] max-[650px]:justify-center max-[650px]:w-[100%]">
                 {
                     allProduct?.map((i: IProduct) => (
-                        <div className="w-[200px] border flex flex-col items-center p-[10px] gap-[10px] max-[650px]:w-[150px] rounded-[8px] max-[320px]:w-[90%]">
+                        <div className="w-[200px] border flex flex-col items-center p-[10px] gap-[10px] max-[650px]:w-[300px] rounded-[8px] max-[320px]:w-[90%]">
                             <img src={i?.productImage} alt="" className="w-[100%] h-[200px] object-cover aspect-square " />
                             <span className="w-full">
                                 <p className="max-[650px]:text-[12px] text-[14px]">{i?.productName}</p>
                             </span>
                             <span className="flex gap-2 w-full">
                                 <button
-                                    className="w-[50%] p-[2px] bg-[#FFC300] rounded-[4px]"
+                                    className="w-[50%] p-[2px] bg-[#FFC300] rounded-[4px] max-[650px]:text-[12px]"
                                     onClick={() => {
                                         setSelectedProduct(i);
                                         setShowModal(true);
@@ -141,7 +141,7 @@ const Store = () => {
                                     Edit
                                 </button>
                                 <button
-                                    className="w-[50%] p-[2px] bg-[#FFC300] rounded-[4px]"
+                                    className="w-[50%] p-[2px] bg-[#FFC300] rounded-[4px] text-[12px]"
                                     onClick={() => {
                                         navigate(`/dashboard/quicks/${i?._id}`)
                                     }}
