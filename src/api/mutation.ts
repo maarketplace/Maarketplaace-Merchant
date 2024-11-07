@@ -167,20 +167,9 @@ export const verifyWithdrawFunds = async (id: string) => {
     return await axios.post(`${VITE_ENDPOINT}/transactions/accounts/withdraws/${id}`)
 }
 
-export const uploadQuicks = async (id: string, data: { description: string; file: File; images: File[] }) => {
+export const uploadQuicks = async (id: string, data: { description: string; file: File; images?: File[] }) => {
     const Token = localStorage.getItem(VITE_TOKEN);
-
-    // Create a new FormData instance
-    const formData = new FormData();
-    formData.append('description', data.description);
-    formData.append('file', data.file);
-
-    // Append each image to the FormData
-    data.images.forEach((image, index) => {
-        formData.append(`images[${index}]`, image);
-    });
-
-    return await axios.post(`${VITE_ENDPOINT}/quicks/products/${id}`, formData, {
+    return await axios.post(`${VITE_ENDPOINT}/quicks/products/${id}`, data, {
         headers: {
             'Authorization': `Bearer ${Token}`,
             'Content-Type': 'multipart/form-data', // Important for sending FormData
