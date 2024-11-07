@@ -4,6 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import { uploadQuicks } from '../../../../../api/mutation';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import Loading from '../../../../../loader';
 
 const UploadQuicks: React.FC = () => {
     const { id } = useParams();
@@ -52,7 +53,6 @@ const UploadQuicks: React.FC = () => {
             },
         });
     };
-
 
     const { getRootProps: getFileRootProps, getInputProps: getFileInputProps, isDragActive: isFileDragActive } = useDropzone({
         onDrop: handleFileDrop,
@@ -116,7 +116,7 @@ const UploadQuicks: React.FC = () => {
 
             {/* Upload Button */}
             <button className="w-[30%] max-[650px]:w-full h-[40px] bg-[#FFC300] text-white rounded" onClick={handleUpload} disabled={mutation.isLoading}>
-                {mutation.isLoading ? "Uploading" : 'Upload Quicks'}
+                {mutation.isLoading ? <Loading/> : 'Upload Quicks'}
             </button>
         </div>
     );
