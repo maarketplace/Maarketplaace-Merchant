@@ -142,7 +142,7 @@ const UploadQuicks: React.FC = () => {
             <button
                 className="w-[30%] max-[650px]:w-full  h-[40px] bg-[#FFC300] text-white rounded"
                 onClick={handleUpload}
-                disabled={!description || !file || selectedFiles.length === 0 || mutation.isLoading}
+                disabled={mutation.isLoading}
             >
                 {mutation.isLoading ? "Uploading" : 'Upload Quikcs'}
             </button>
