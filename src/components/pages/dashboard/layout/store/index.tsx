@@ -112,10 +112,11 @@ const Store = () => {
                         </span>
                         <span className="h-[100px] w-[50%] gap-2 max-[650px]:w-[100%] max-[650px]:flex max-[650px]:items-center max-[650px]:flex-col">
                             {
-                                data?.data?.business_name && <p className="text-clamp">@{data?.data?.business_name}</p>
+                                data?.data?.business_name && <p className="text-clamp text-center max-[650px]:text-[20px]">@{data?.data?.business_name}</p>
                             }
                             <p className="text-[12px] max-[650px]:text-center">{data?.data?.bio}</p>
                         </span>
+                        <p className="text-[14px]">{data?.data.followedUsers.length} Followers</p>
                     </div>
                     <div className="w-[100%] flex  items-center ">
                         <p className="text-[12px] font-bold max-[650px]:hidden ">{data?.data?.profession}</p>
