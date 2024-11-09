@@ -56,7 +56,7 @@ const router = createHashRouter([
         element: <ForgotPassword />
     },
     {
-        path: '/reset-password',
+        path: '/reset-password/:id',
         element: <ResetPassword />
     },
     {
