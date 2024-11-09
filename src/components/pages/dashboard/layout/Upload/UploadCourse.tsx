@@ -163,7 +163,7 @@ const UploadCourse = () => {
                                 setTopics(value);
                                 setValue("topics", value);
                             }}
-                            placeholder="write your topic in a bullet style eg . Learn about forex "
+                            placeholder="write your topic in a bullet style "
                         />
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.topics?.message}</b>
@@ -171,18 +171,13 @@ const UploadCourse = () => {
                 <div className='mt-[40px] w-[40%] flex flex-col items-center max-[650px]:mb-[50px]  gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Category</label>
-                        <input
-                            placeholder='Course Category'
-                            list="options"
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
-                            id="option-input"
-                            {...register('courseCategory')}
-                        />
-                        <datalist id="options">
-                            <option value="category3" />
-                            <option value="Ticket" />
-                            <option value="Ebook" />
-                        </datalist>
+                        <select
+                        className='w-full h-[45px] outline-none p-10px border border-grey bg-transparent max-650px:text-12px'
+                        {...register('courseCategory')}
+                    >
+                        <option value="">Select Category</option>                  
+                            <option>courses</option>
+                    </select>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseCategory?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px] '>

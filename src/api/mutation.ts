@@ -22,8 +22,8 @@ export const merchantLogin = async (data: any) => {
 export const merchantVerify = async (data: any) => {
     return await axios.put(`${VITE_ENDPOINT}/merchant/verify`, data)
 };
-export const resendMerchantVerify = async () => {
-    return await axios.post(`${VITE_ENDPOINT}/merchant/verify`)
+export const resendMerchantVerify = async (email: string | null) => {
+    return await axios.post(`${VITE_ENDPOINT}/email?email=${email}&type=merchant`);
 };
 export const logOutMerchant = async (id: string) => {
     // console.log(id)

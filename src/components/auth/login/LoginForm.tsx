@@ -10,21 +10,24 @@ import { AdminLoginSchema } from "../../../schema/LoginSchema";
 import { merchantLogin } from "../../../api/mutation";
 import toast from "react-hot-toast";
 import Loading from "../../../loader";
+import { IResponseData } from "../../../interface/IResponseData";
+import { IErrorResponse } from "../../../interface/ErrorInterface";
 function LoginForm() {
     const [showPassword, setShow] = useState<boolean>(false);
     const navigate = useNavigate()
     const form = useForm<LoginInterface>({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: yupResolver(AdminLoginSchema) as any
     });
     const { register, handleSubmit, formState: { errors } } = form;
 
     const { mutate, isLoading } = useMutation(['merchantLogin'], merchantLogin, {
-        onSuccess: async (data: any) => {
+        onSuccess: async (data: IResponseData) => {
             toast.success(data?.data?.message,)
             localStorage.setItem(VITE_TOKEN, data?.data?.data?.token)
             navigate('/dashboard');
         },
-        onError: (err: any) => {
+        onError: (err: IErrorResponse) => {
             toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message);
             if(err?.response?.data?.message === "Please verify your account"){
                 navigate('/verify-account')
@@ -33,6 +36,7 @@ function LoginForm() {
     })
 
     const onSubmit: SubmitHandler<LoginInterface> = (data) => {
+        localStorage.setItem('merchantEmail', data.email);
         mutate(data)
     };
 

@@ -73,7 +73,7 @@ function UploadEbook() {
     });
     return (
         <div className="w-[100%] h-[100%] " >
-              <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
+            <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
                 <span className="gap-[10px] flex w-[95%] max-[650px]:justify-center max-[650px]:w-[100%]">
                     <button
                         className={`p-[2px] max-[650px]:text-[12px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/course' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
@@ -180,39 +180,36 @@ function UploadEbook() {
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productLocation?.message}</b>
                     <div className='w-[100%] flex flex-col gap-[10px] mt-[10px] max-[650px]:w-[90%] max-[650px]:mt-[0px]'>
                         <label className='max-[650px]:text-[15px] ' htmlFor="category">Book Category</label>
-                        <input
+                        <select
                             id="category"
-                            list="categoryList"
                             className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                             {...register('category')}
-                        />
-                        <datalist id="categoryList">
+                        >
                             <option value="">Select a category</option>
-                            {Object.keys(categories).map(categoryKey => (
-                                <option key={categoryKey} value={categoryKey}>{categories[categoryKey].name}</option>
+                            {Object.keys(categories).map((categoryKey) => (
+                                <option key={categoryKey} value={categoryKey}>
+                                    {categoryKey}
+                                </option>
                             ))}
-                        </datalist>
+                        </select>
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.category?.message}</b>
                         {selectedCategory && (
-                            <>
-                                <label
-                                    className='max-[650px]:text-[15px]'
-                                    htmlFor="subcategory">Book Subcategory</label>
-                                <input
+                            <div className='w-[100%] flex flex-col gap-[10px] mt-[10px] max-[650px]:w-[100%]'>
+                                <label className='max-[650px]:text-[15px]' htmlFor="subcategory">Book Subcategory</label>
+                                <select
                                     id="subcategory"
-                                    list="subcategoryList"
-                                    className='w-[100%] h-[45px] outline-none p-[10px]  text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                                    className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                                     {...register('subCategory')}
-                                />
-                                <datalist id="subcategoryList">
+                                >
                                     <option value="">Select a subcategory</option>
-                                    {categories[selectedCategory].subcategories.map(subcategory => (
+                                    {categories[selectedCategory]?.subcategories.map(subcategory => (
                                         <option key={subcategory} value={subcategory}>{subcategory}</option>
                                     ))}
-                                </datalist>
-                                <b className='upload_product_error_msg'>{errors.subCategory?.message}</b>
-                            </>
+                                </select>
+                                <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.subCategory?.message}</b>
+                            </div>
                         )}
+
                     </div>
                     <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
                         <label className='max-[650px]:text-[15px]'>Add Book Image</label>

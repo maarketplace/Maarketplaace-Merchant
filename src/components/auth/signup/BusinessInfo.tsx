@@ -9,16 +9,8 @@ import { BusinessInfoInterface } from "../../../interface/BusinessInfoInterface"
 import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { IErrorResponse } from "../../../interface/ErrorInterface";
 
-interface IErrorResponse {
-    message: any;
-    response: {
-        data: {
-            error: any;
-            message: string;
-        };
-    };
-}
 
 function BusinessInfo() {
     const navigate = useNavigate();
@@ -29,7 +21,7 @@ function BusinessInfo() {
     const { register, handleSubmit, formState: { errors }, setValue } = form;
 
     const { mutate, isLoading } = useMutation(['merchantSignup'], merchantSignup, {
-        onSuccess: async (data: any) => {
+        onSuccess: async (data) => {
             console.log(data);
             
             toast.success(`${data?.data?.message}, "A verification code has been sent to your email"`,)
@@ -52,9 +44,7 @@ function BusinessInfo() {
                     setValue('email', parsedData.email);
                     setValue('phoneNumber', parsedData.phoneNumber);
                     setValue('password', parsedData.password); 
-                } else {
-                   
-                }
+                } 
             } catch (error) {
                 console.error('Error parsing stored data:', error);
             }
@@ -70,9 +60,7 @@ function BusinessInfo() {
             fullName,
             image: image ? image[0] : null
         };
-
-        // console.log(payload);
-
+        localStorage.setItem('merchantEmail', data.email);
         mutate(payload);
     }
 
