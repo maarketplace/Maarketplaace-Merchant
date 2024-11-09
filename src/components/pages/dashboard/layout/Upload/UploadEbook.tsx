@@ -43,16 +43,7 @@ function UploadEbook() {
         
         console.log("Payload for API:", payload);
         
-        mutate(payload, {
-            onSuccess: (data) => {
-                console.log("Mutation Success:", data);
-                toast.success(`${data?.data?.message}`);
-            },
-            onError: (err) => {
-                console.error("Mutation Error:", err);
-                toast.error(err?.response?.data?.message);
-            }
-        });
+        mutate(payload);
     };
     
 
