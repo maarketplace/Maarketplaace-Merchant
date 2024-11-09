@@ -11,4 +11,6 @@ export interface IAddEbook {
     pages: number,
     author: string,
     duration: string,
+    whatToExpect: string;
+    topics: string
 }

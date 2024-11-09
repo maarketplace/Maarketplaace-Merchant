@@ -12,11 +12,12 @@ import { categories } from './category';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Loading from '../../../../../loader';
 import { IErrorResponse } from '../../../../../interface/ErrorInterface';
+import { useState } from 'react';
 
 function UploadEbook() {
     const navigate = useNavigate()
     const location = useLocation();
-
+    const [whatToExpect, setWhatToExpect] = useState('');
     const form = useForm<IAddEbook>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: yupResolver(UploadEbookSchema) as any,
@@ -34,11 +35,26 @@ function UploadEbook() {
             toast.error(err?.response?.data?.message);
         }
     });
-    const onSubmit: SubmitHandler<IAddEbook> = (data) => {
+    const onSubmit: SubmitHandler<IAddEbook> = async (data) => {
+        console.log("Submitting Data:", data);
+        
         const { eBook, productImage, ...others } = data;
-        mutate({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
-        // console.log({ ...others, productImage: productImage?.[0], eBook: eBook?.[0] });
+        const payload = { ...others, productImage: productImage?.[0], eBook: eBook?.[0] };
+        
+        console.log("Payload for API:", payload);
+        
+        mutate(payload, {
+            onSuccess: (data) => {
+                console.log("Mutation Success:", data);
+                toast.success(`${data?.data?.message}`);
+            },
+            onError: (err) => {
+                console.error("Mutation Error:", err);
+                toast.error(err?.response?.data?.message);
+            }
+        });
     };
+    
 
     const handleButtonClick = () => {
         handleSubmit(onSubmit)();
@@ -169,12 +185,15 @@ function UploadEbook() {
                 </div>
                 <div className='mt-[40px] w-[40%] flex flex-col items-center  gap-[10px] max-[650px]:w-[100%] max-[650px]:mb-[50px] max-[650px]:mt-[0px]'>
                     <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
-                        <label className='max-[650px]:text-[15px]'>Book Location</label>
-                        <input
-                            placeholder='Product Location'
-                            type='text'
-                            className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
-                            {...register('productLocation')}
+                        <label className='max-[650px]:text-[15px]'>What To Expect</label>
+                        <ReactQuill
+                            theme="snow"
+                            value={whatToExpect}
+                            onChange={(value) => {
+                                setWhatToExpect(value);
+                                setValue("whatToExpect", value);
+                            }}
+                            placeholder="Tell us what to learn in this ocurse "
                         />
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productLocation?.message}</b>

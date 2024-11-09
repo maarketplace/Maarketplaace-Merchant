@@ -31,6 +31,8 @@ export const logOutMerchant = async (id: string) => {
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const uploadEbook = async (data: any) => {
+    console.log('Data fro mutation',data);
+    
     const token = localStorage.getItem(VITE_TOKEN)
     return await axios.post(`${VITE_ENDPOINT}/product/ebook`, data, {
         headers: {
