@@ -18,6 +18,8 @@ function UploadEbook() {
     const navigate = useNavigate()
     const location = useLocation();
     const [whatToExpect, setWhatToExpect] = useState('');
+    const [productImageName, setProductImageName] = useState('');
+    const [eBookName, setEBookName] = useState('');
     const form = useForm<IAddEbook>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: yupResolver(UploadEbookSchema) as any,
@@ -56,12 +58,15 @@ function UploadEbook() {
         acceptedFiles.forEach(file => fileList.items.add(file));
         setValue('productImage', fileList.files);
 
+        setProductImageName(acceptedFiles[0]?.name || '');
+
     };
 
     const onDropEbook = (acceptedFiles: File[]) => {
         const fileList = new DataTransfer();
         acceptedFiles.forEach(file => fileList.items.add(file));
         setValue('eBook', fileList.files);
+        setEBookName(acceptedFiles[0]?.name || '');
     };
 
     const { getRootProps: getProductImageRootProps, getInputProps: getProductImageInputProps } = useDropzone({
@@ -225,7 +230,7 @@ function UploadEbook() {
                         <label className='max-[650px]:text-[15px]'>Add Book Image</label>
                         <div {...getProductImageRootProps()} className='border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center '>
                             <input {...getProductImageInputProps()} />
-                            <p className='text-center max-[650px]:text-[13px] '>Drag & drop an image here, or click to select file</p>
+                           <p className='text-center max-[650px]:text-[13px] '>{productImageName || 'Drag and drop a product image, or click to select one'}</p>
                         </div>
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productImage?.message}</b>
@@ -233,7 +238,7 @@ function UploadEbook() {
                         <label className='max-[650px]:text-[15px]'>Add Book</label>
                         <div {...getEbookRootProps()} className='border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center '>
                             <input {...getEbookInputProps()} />
-                            <p className='text-center max-[650px]:text-[13px] '>Drag & drop ebook files here, or click to select files</p>
+                            <p className='text-center max-[650px]:text-[13px] '>{eBookName || 'Drag and drop an eBook file, or click to select one'}</p>
                         </div>
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.eBook?.message}</b>

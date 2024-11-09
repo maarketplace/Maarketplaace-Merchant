@@ -29,7 +29,7 @@ const UploadQuicks: React.FC = () => {
 
     const handleUpload = () => {
         if (!description || !file) {  // Only check for description and file
-            alert("Please provide both a description and a file.");
+            toast.error("Please provide both a description and a file.");
             return;
         }
 
@@ -110,7 +110,7 @@ const UploadQuicks: React.FC = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Enter description"
-                className="w-[30%] max-[650px]:w-full h-[100px] outline-none p-2 border border-gray-300 rounded mb-4"
+                className="w-[30%] max-[650px]:w-full h-[100px] outline-none p-2 border border-gray-500 rounded mb-4 bg-transparent"
                 rows={4}
             />
 
