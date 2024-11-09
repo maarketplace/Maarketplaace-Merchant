@@ -95,7 +95,7 @@ const Store = () => {
                                 <>
                                     <img src={data?.data?.image} alt="" className="w-[150px] h-[150px] rounded-[100%] object-cover max-[650px]:w-[80px] max-[650px]:h-[80px] " />
                                     <TbUserEdit
-                                        className=" text-[30px] absolute bottom-[20px] left-[120px] text-[black] cursor-pointer max-[650px]:left-[120px] max-[650px]:bottom-[40px] dark:text-white "
+                                        className=" text-[30px] absolute bottom-[20px] left-[120px] text-[black] cursor-pointer max-[650px]:left-[65px] max-[650px]:bottom-[25px] dark:text-white "
                                         onClick={triggerFileInput}
                                     />
                                 </>
