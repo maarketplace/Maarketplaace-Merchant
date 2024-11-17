@@ -19,19 +19,23 @@ const UploadCourse = () => {
     const [description, setDescription] = useState('');
     const [topics, setTopics] = useState('');
     const [whatToExpect, setWhatToExpect] = useState('');
-
+    const [selectedFileName, setSelectedFileName] = useState('');
 
 
     const form = useForm<IAddCourse>({
         resolver: yupResolver(UploadCourseSchema) as any,
     });
-    const { register, handleSubmit, formState: { errors }, setValue, } = form;
+    const { register, handleSubmit, formState: { errors }, setValue, reset } = form;
 
 
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadCourse, {
-        onSuccess: async (data: any) => {
-            console.log(data);
+        onSuccess: async (data) => {
             toast.success(`${data?.data?.data?.message} We are currently reviewing your course`);
+            reset();
+            setSelectedFileName('');
+            setDescription('');
+            setTopics('');
+            setWhatToExpect('')
         },
         onError: (err: IErrorResponse) => {
             toast.error(err?.response?.data?.message);
@@ -52,6 +56,7 @@ const UploadCourse = () => {
         const fileList = new DataTransfer();
         acceptedFiles.forEach(file => fileList.items.add(file));
         setValue('courseImage', fileList.files);
+        setSelectedFileName(acceptedFiles[0]?.name || '');
     };
 
     const { getRootProps: getProductImageRootProps, getInputProps: getProductImageInputProps } = useDropzone({
@@ -172,12 +177,12 @@ const UploadCourse = () => {
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Category</label>
                         <select
-                        className='w-full h-[45px] outline-none p-10px border border-grey bg-transparent max-650px:text-12px'
-                        {...register('courseCategory')}
-                    >
-                        <option value="">Select Category</option>                  
+                            className='w-full h-[45px] outline-none p-10px border border-grey bg-transparent max-650px:text-12px'
+                            {...register('courseCategory')}
+                        >
+                            <option value="" className="">Select Category</option>
                             <option>courses</option>
-                    </select>
+                        </select>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseCategory?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
@@ -222,9 +227,16 @@ const UploadCourse = () => {
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.duration?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
                         <label className='max-[650px]:text-[15px]'>Add Course Image</label>
-                        <div {...getProductImageRootProps()} className='border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center '>
+                        <div
+                            {...getProductImageRootProps()}
+                            className="w-full h-[100px] border-dashed border-2 border-gray-400 flex items-center justify-center cursor-pointer"
+                        >
                             <input {...getProductImageInputProps()} />
-                            <p className='text-center max-[650px]:text-[13px] '>Drag & drop an image here, or click to select file</p>
+                            {selectedFileName ? (
+                                <span>{selectedFileName}</span>
+                            ) : (
+                                <span>Drag & drop an image here, or click to select</span>
+                            )}
                         </div>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseImage?.message}</b>
@@ -234,7 +246,7 @@ const UploadCourse = () => {
                         onClick={handleButtonClick}
                         disabled={isLoading}
                     >
-                        {isLoading ? <Loading/> : "Upload Course"}
+                        {isLoading ? <Loading /> : "Upload Course"}
                     </button>
                 </div>
             </div>
