@@ -25,13 +25,16 @@ function UploadEbook() {
         resolver: yupResolver(UploadEbookSchema) as any,
     });
 
-    const { register, watch, handleSubmit, formState: { errors }, setValue } = form;
+    const { register, watch, handleSubmit, formState: { errors }, setValue, reset } = form;
     const selectedCategory = watch('category');
 
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadEbook, {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onSuccess: async (data: any) => {
+        onSuccess: async (data) => {
             toast.success(`${data?.data?.message}`);
+            reset();
+            setWhatToExpect('');
+            setProductImageName('');
+            setEBookName(''); 
         },
         onError: (err: IErrorResponse) => {
             toast.error(err?.response?.data?.message);
