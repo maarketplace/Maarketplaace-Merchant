@@ -7,8 +7,8 @@ import { useMerchant } from "../../../../../context/GetMerchant";
 import { useNavigate } from "react-router-dom";
 import { TbUserEdit } from "react-icons/tb";
 import { IProduct } from "../../../../../interface/ProductInterface";
-import { updateMerchantImage } from "../../../../../api/mutation";
-import { FaUser } from "react-icons/fa";
+import { merchantDeleteProduct, updateMerchantImage } from "../../../../../api/mutation";
+import { FaEllipsisV, FaUser } from "react-icons/fa";
 import Loading from "../../../../../loader";
 import { IErrorResponse } from "../../../../../interface/ErrorInterface";
 
@@ -23,7 +23,7 @@ const Store = () => {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
     const [err, setErr] = useState('')
-
+    const [menuVisibility, setMenuVisibility] = useState<Record<string, boolean>>({});
     useEffect(() => {
         if (err === "Token expired login again") {
             toast.error(err);
@@ -62,7 +62,14 @@ const Store = () => {
             toast.error('Failed to update profile picture.');
         }
     });
-
+    const { mutate: DeleteProductMutate } = useMutation([''], merchantDeleteProduct, {
+        onSuccess: () => {
+            toast.success('Product Deleted sucessfully')
+        },
+        onError: () => {
+            toast.error('Error while trying to delete a product')
+        }
+    })
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             setSelectedFile(event.target.files[0]);
@@ -83,6 +90,13 @@ const Store = () => {
         } else {
             console.error("File input ref is not set");
         }
+    };
+
+    const toggleMenu = (productId: string) => {
+        setMenuVisibility((prev) => ({
+            ...prev,
+            [productId]: !prev[productId],
+        }));
     };
 
     return (
@@ -131,25 +145,39 @@ const Store = () => {
                             <span className="w-full">
                                 <p className="max-[650px]:text-[12px] text-[14px]">{i?.productName}</p>
                             </span>
-                            <span className="flex gap-2 w-full">
+                            <span className="flex gap-2 w-full justify-between">
                                 <button
-                                    className="w-[50%] p-[2px] bg-[#FFC300] rounded-[4px] max-[650px]:text-[12px]"
-                                    onClick={() => {
-                                        setSelectedProduct(i);
-                                        setShowModal(true);
-                                    }}
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    className="w-[50%] p-[2px] bg-[#FFC300] rounded-[4px] text-[12px]"
+                                    className="w-[50%] p-[2px] bg-[#FFC300] rounded-[4px] text-[12px] text-black"
                                     onClick={() => {
                                         navigate(`/dashboard/quicks/${i?._id}`)
                                     }}
                                 >
                                     Add Quicks
                                 </button>
+                                <FaEllipsisV
+                                    className="cursor-pointer"
+                                    onClick={() => toggleMenu(i._id)}
+                                />
                             </span>
+                            {menuVisibility[i._id] && (
+                                <div className="absolute top-100 right-2 bg-white shadow-lg rounded p-2 flex flex-col gap-2 z-10">
+                                    <button
+                                        className="text-red-500 text-sm"
+                                        onClick={() => DeleteProductMutate(i._id)}
+                                    >
+                                        Delete
+                                    </button>
+                                    <button
+                                        className="text-blue-500 text-sm"
+                                        onClick={() => {
+                                            setSelectedProduct(i);
+                                            setShowModal(true);
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     ))
                 }

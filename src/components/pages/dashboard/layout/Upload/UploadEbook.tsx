@@ -30,27 +30,55 @@ function UploadEbook() {
 
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadEbook, {
         onSuccess: async (data) => {
-            toast.success(`${data?.data?.message}`);
-            reset();
+            toast.success(`${data?.data?.message}`,
+                {
+                    duration: 10000,
+                    style: {
+                        border: '1px solid #FFC300',
+                        padding: '16px',
+                        color: '#333',
+                        backgroundColor: '#FFF9E6',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        textAlign: 'center',
+                    },
+                    icon: '📘',
+                }
+            );
+            reset({
+                productName: '',
+                productDescription: '',
+                productPrice: 0,
+                discountPrice: 0,
+                category: '',
+                subCategory: '',
+                productLocation: '',
+                productImage: null,
+                eBook: null,
+                pages: 0,
+                author: '',
+                duration: '',
+                whatToExpect: '',
+                topics: ''
+            });
             setWhatToExpect('');
             setProductImageName('');
-            setEBookName(''); 
+            setEBookName('');
+            navigate('/dashboard')
         },
         onError: (err: IErrorResponse) => {
             toast.error(err?.response?.data?.message);
         }
     });
     const onSubmit: SubmitHandler<IAddEbook> = async (data) => {
-        console.log("Submitting Data:", data);
-        
         const { eBook, productImage, ...others } = data;
         const payload = { ...others, productImage: productImage?.[0], eBook: eBook?.[0] };
-        
+
         console.log("Payload for API:", payload);
-        
+
         mutate(payload);
     };
-    
+
 
     const handleButtonClick = () => {
         handleSubmit(onSubmit)();
@@ -233,7 +261,7 @@ function UploadEbook() {
                         <label className='max-[650px]:text-[15px]'>Add Book Image</label>
                         <div {...getProductImageRootProps()} className='border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center '>
                             <input {...getProductImageInputProps()} />
-                           <p className='text-center max-[650px]:text-[13px] '>{productImageName || 'Drag and drop a product image, or click to select one'}</p>
+                            <p className='text-center max-[650px]:text-[13px] '>{productImageName || 'Drag and drop a product image, or click to select one'}</p>
                         </div>
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productImage?.message}</b>

@@ -134,9 +134,9 @@ export const updateMerchantImage = async (file: string | Blob) => {
     });
 };
 
-export const deleteProduct = async (id: string) => {
+export const merchantDeleteProduct = async (id: string) => {
     const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.delete(`${VITE_ENDPOINT}/product/${id}`), {}, {
+    return await axios.delete(`${VITE_ENDPOINT}/product/${id}`), {
         headers: {
             'Authorization': `Bearer ${Token}`,
         },

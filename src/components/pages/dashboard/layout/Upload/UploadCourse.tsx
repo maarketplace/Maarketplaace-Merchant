@@ -23,6 +23,7 @@ const UploadCourse = () => {
 
 
     const form = useForm<IAddCourse>({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: yupResolver(UploadCourseSchema) as any,
     });
     const { register, handleSubmit, formState: { errors }, setValue, reset } = form;
@@ -30,12 +31,42 @@ const UploadCourse = () => {
 
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadCourse, {
         onSuccess: async (data) => {
-            toast.success(`${data?.data?.data?.message} We are currently reviewing your course`);
-            reset();
+            toast.success(
+                `${data?.data?.data?.message} We are currently reviewing your course it will take atleast 24 hours or less`,
+                {
+                    duration: 10000,
+                    style: {
+                        border: '1px solid #FFC300',
+                        padding: '16px',
+                        color: '#333',
+                        backgroundColor: '#FFF9E6',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        textAlign: 'center',
+                    },
+                    icon: '📘',
+                }
+            );
+            reset({
+                courseName: '',
+                coursePrice: 0,
+                courseDiscountedPrice: 0,
+                courseDescription: '',
+                courseCategory: '',
+                courseSubCategory: '',
+                courseLocation: '',
+                courseURL: '',
+                courseImage: null,
+                author: '',
+                duration: '',
+                topics: '',
+                whatToExpect: '',
+            });
             setSelectedFileName('');
             setDescription('');
             setTopics('');
             setWhatToExpect('')
+            navigate('/dashboard')
         },
         onError: (err: IErrorResponse) => {
             toast.error(err?.response?.data?.message);
@@ -120,19 +151,17 @@ const UploadCourse = () => {
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseDiscountedPrice?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Location</label>
-                        <input
-                            placeholder='Course Location'
-                            list="location"
-                            type='text'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
+                        <select
+                            className='w-full h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                             {...register('courseLocation')}
-                        />
-                        <datalist id="location">
-                            <option value="Telegram" />
-                            <option value="Google Drive" />
-                            <option value="others" />
-                        </datalist>
+                        >
+                            <option value="">Select Location</option>
+                            <option value="Telegram">Telegram</option>
+                            <option value="Google Drive">Google Drive</option>
+                            <option value="others">Others</option>
+                        </select>
                     </div>
+
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseLocation?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Course Description</label>
@@ -177,11 +206,11 @@ const UploadCourse = () => {
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Category</label>
                         <select
-                            className='w-full h-[45px] outline-none p-10px border border-grey bg-transparent max-650px:text-12px'
+                            className='w-full h-[45px] outline-none p-[10px] border border-grey bg-transparent max-[650px]:text-[12px]'
                             {...register('courseCategory')}
                         >
                             <option value="" className="">Select Category</option>
-                            <option>courses</option>
+                            <option value='courses'>courses</option>
                         </select>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseCategory?.message}</b>
@@ -235,7 +264,7 @@ const UploadCourse = () => {
                             {selectedFileName ? (
                                 <span>{selectedFileName}</span>
                             ) : (
-                                <span>Drag & drop an image here, or click to select</span>
+                                <span className="text-center">Drag & drop an image here, or click to select</span>
                             )}
                         </div>
                     </div>
