@@ -134,13 +134,13 @@ export const updateMerchantImage = async (file: string | Blob) => {
     });
 };
 
-export const deleteProduct = async (id: string) => {
+export const merchantDeleteProduct = async (id: string) => {
     const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.delete(`${VITE_ENDPOINT}/product/${id}`), {}, {
+    return await axios.delete(`${VITE_ENDPOINT}/product/${id}`, {
         headers: {
             'Authorization': `Bearer ${Token}`,
         },
-    }
+    })
 }
 
 export const verifyMerchantAccountNumber = async ({ account_number, bank_code }: { account_number: string, bank_code: string }) => {

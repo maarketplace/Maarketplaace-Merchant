@@ -169,7 +169,7 @@ const Withdrawal = () => {
                 </span>
             </div>
             <div className="w-[95%]  max-[650px]:w-[100%] flex items-center justify-center mt-[50px] flex-col">
-                <p className="w-full mb-[20px] text-[18px]">Withdrawal History</p>
+                <p className="w-full mb-[20px] text-[18px]">Transaction History</p>
                 <div className="w-[100%] mb-[50px] flex flex-col gap-[20px]">
                     <div className="flex justify-between items-center mb-4">
                         <select
@@ -197,34 +197,39 @@ const Withdrawal = () => {
                     <div className="bg-white p-6 rounded-lg w-[30%] max-[650px]:w-[95%]">
                         {modalStep === 1 && (
                             <div className="w-[100%] flex flex-col gap-[30px]">
-                                <span className="w-[100%] border-b-[1px] border-b-grey-500 h-[100px] ">
-                                    <h2 className="text-[20px] font-Semibold mb-4 dark:text-black">Withdraw Funds to Bank Account</h2>
+                                <span className="w-[100%] border-b-[1px] border-b-grey-500 h-[150px] p-2 ">
+                                    <h2 className="text-[20px] font-Semibold mb-4 dark:text-black text-center">Withdraw Funds to Bank Account</h2>
                                     <p className="text-[14px] font-light">Select your destination account and fill in the details to withdraw.</p>
                                 </span>
                                 <span>
-                                    <select
-                                        className="border p-2 mb-4 w-full dark:text-black outline-none text-black text-[12px]"
-                                        onChange={(e) => {
-                                            const selectedBank = banksData?.data?.data.find((bank: { name: string }) => bank.name === e.target.value);
-                                            setBankDetails({
-                                                ...bankDetails,
-                                                bankName: selectedBank?.name,
-                                                bankCode: selectedBank?.code,
-                                            });
-                                        }}
-                                        value={bankDetails.bankName}
-                                    >
-                                        <option value="" className="dark:text-black font-light ">Select a bank</option>
-                                        {!isBanksLoading && banksData?.data?.data.map((bank: IBanks) => (
-                                            <option key={bank.code} value={bank.name} className="dark:text-black">
-                                                {bank.name}
-                                            </option>
-                                        ))}
-                                    </select>
-
+                                    <span>
+                                        <input
+                                            type="text"
+                                            list="banks"
+                                            placeholder="Select a bank"
+                                            className="border p-2 mb-4 w-full dark:text-black outline-none text-black text-[12px]"
+                                            value={bankDetails.bankName}
+                                            onChange={(e) => {
+                                                const selectedBank = banksData?.data?.data.find(
+                                                    (bank: { name: string }) => bank.name === e.target.value
+                                                );
+                                                setBankDetails({
+                                                    ...bankDetails,
+                                                    bankName: e.target.value,
+                                                    bankCode: selectedBank?.code || '', // Update code if bank exists
+                                                });
+                                            }}
+                                        />
+                                        <datalist id="banks">
+                                            {!isBanksLoading &&
+                                                banksData?.data?.data.map((bank: IBanks) => (
+                                                    <option key={bank.code} value={bank.name} />
+                                                ))}
+                                        </datalist>
+                                    </span>
                                     <input
                                         type="text"
-                                        placeholder="eg.1000"
+                                        placeholder="Account Number"
                                         className="border font-light p-2 mb-4 w-full dark:text-black outline-none text-[12px]"
                                         value={bankDetails.accountNumber}
                                         onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: e.target.value })}
