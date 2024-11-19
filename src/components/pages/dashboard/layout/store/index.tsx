@@ -11,6 +11,7 @@ import { merchantDeleteProduct, updateMerchantImage } from "../../../../../api/m
 import { FaEllipsisV, FaUser } from "react-icons/fa";
 import Loading from "../../../../../loader";
 import { IErrorResponse } from "../../../../../interface/ErrorInterface";
+import { copyToClipboard } from "../../../../../utils/Utils";
 
 const Store = () => {
     const queryClient = useQueryClient()
@@ -62,14 +63,23 @@ const Store = () => {
             toast.error('Failed to update profile picture.');
         }
     });
-    const { mutate: DeleteProductMutate } = useMutation([''], merchantDeleteProduct, {
-        onSuccess: () => {
-            toast.success('Product Deleted sucessfully')
-        },
-        onError: () => {
-            toast.error('Error while trying to delete a product')
+    const { mutate: DeleteProductMutate } = useMutation(
+        (productId: string) => merchantDeleteProduct(productId),
+        {
+            onSuccess: () => {
+                toast.success('Product deleted successfully', {
+                    style: {
+                        textAlign: 'center'
+                    }
+                });
+                queryClient.invalidateQueries("getOneMerchantAllProduct");
+            },
+            onError: (error: IErrorResponse) => {
+                console.error('Error deleting product:', error);
+                toast.error(error.response?.data?.message || 'An error occurred while deleting the product.');
+            },
         }
-    })
+    );
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             setSelectedFile(event.target.files[0]);
@@ -130,7 +140,15 @@ const Store = () => {
                             }
                             <p className="text-[12px] max-[650px]:text-center">{data?.data?.bio}</p>
                         </span>
-                        <p className="text-[14px]">{data?.data.followedUsers.length} Followers</p>
+                        <span className="flex gap-2 w-[40%] justify-center max-[650px]:w-[100%]">
+                            <p className="text-[12px] bg-[#eae7e7] p-1 rounded-[4px] dark:bg-[#2c2c2c]">{data?.data.followedUsers.length} Followers</p>
+                            <p
+                                className="text-[12px] bg-[#eae7e7] p-1 rounded-[4px] dark:bg-[#2c2c2c]"
+                                onClick={() => copyToClipboard(`https://maarketplaace.com/#/home/store/${data?.data?.business_name}`)}
+                            >
+                                Share store
+                            </p>
+                        </span>
                     </div>
                     <div className="w-[100%] flex  items-center ">
                         <p className="text-[12px] font-bold max-[650px]:hidden ">{data?.data?.profession}</p>
