@@ -22,7 +22,7 @@ const Store = () => {
     const [showModal, setShowModal] = useState(false);  // State for modal visibility
     const [imagePreview, setImagePreview] = useState<string | null>(null);  // State for image preview
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+    // const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
     const [err, setErr] = useState('')
     const [menuVisibility, setMenuVisibility] = useState<Record<string, boolean>>({});
     useEffect(() => {
@@ -185,7 +185,7 @@ const Store = () => {
                                     >
                                         Delete
                                     </button>
-                                    <button
+                                    {/* <button
                                         className="text-blue-500 text-sm"
                                         onClick={() => {
                                             setSelectedProduct(i);
@@ -193,7 +193,7 @@ const Store = () => {
                                         }}
                                     >
                                         Edit
-                                    </button>
+                                    </button> */}
                                 </div>
                             )}
                         </div>
@@ -219,7 +219,7 @@ const Store = () => {
                     </div>
                 </div>
             )}
-            {showModal && selectedProduct && (
+            {/* {showModal && selectedProduct && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white w-[60%] p-5 rounded-lg shadow-lg dark:text-black">
                         <img src={selectedProduct.productImage} alt="Product" className="w-[150px] h-[150px] object-cover mb-4" />
@@ -227,7 +227,7 @@ const Store = () => {
                         <p className="text-sm">{selectedProduct.productDescription}</p>
                         <div className="flex justify-between mt-4">
                             <button
-                                onClick={() => {/* handle the save/update logic here */ }}
+                                onClick={() => {}}
                                 className="p-[5px] w-[80px] rounded-[4px] bg-[#FFC300] text-[12px]"
                             >
                                 Save
@@ -241,7 +241,7 @@ const Store = () => {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
 
         </div>
     );
