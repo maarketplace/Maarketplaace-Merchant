@@ -8,8 +8,8 @@ import BusinessInfo from './components/auth/signup/BusinessInfo';
 import AdminSignupForm from './components/auth/signup/SignUpForm';
 import Merchant from './components/pages';
 import DashboardMain from './components/pages/dashboard';
-import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCourse';
-import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
+// import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCourse';
+// import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
 import Overview from './components/pages/dashboard/layout/overview';
 import Store from './components/pages/dashboard/layout/store';
 import Order from './components/pages/dashboard/layout/order';
@@ -17,6 +17,7 @@ import Customer from './components/pages/dashboard/layout/customer';
 import ConfirmWithdrawal from './components/pages/ConfirmWithdrawals';
 import Withdrawal from './components/pages/dashboard/layout/withdrawal';
 import UploadQuicks from './components/pages/dashboard/layout/quicks';
+import Upload from './components/pages/dashboard/layout/Upload';
 
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -78,12 +79,8 @@ const router = createHashRouter([
                 element: <Overview/>
             },
             {
-                path: '/dashboard/course',
-                element: <UploadCourse />
-            },
-            {
-                path: '/dashboard/ebook',
-                element: <UploadEbook />
+                path: '/dashboard/upload',
+                element: <Upload />
             },
             {
                 path: '/dashboard/quicks/:id',

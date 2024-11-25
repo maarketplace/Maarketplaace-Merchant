@@ -9,15 +9,15 @@ import { uploadEbook } from '../../../../../api/mutation';
 import { IAddEbook } from '../../../../../interface/UploadEbook';
 import { UploadEbookSchema } from '../../../../../schema/UploadEbookSchema';
 import { categories } from './category';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Loading from '../../../../../loader';
 import { IErrorResponse } from '../../../../../interface/ErrorInterface';
 import { useState } from 'react';
+import pako from 'pako';
 
 function UploadEbook() {
     const navigate = useNavigate()
-    const location = useLocation();
-    const [whatToExpect, setWhatToExpect] = useState('');
+    // const [whatToExpect, setWhatToExpect] = useState('');
     const [productImageName, setProductImageName] = useState('');
     const [eBookName, setEBookName] = useState('');
     const form = useForm<IAddEbook>({
@@ -37,12 +37,11 @@ function UploadEbook() {
                         border: '1px solid #FFC300',
                         padding: '16px',
                         color: '#333',
-                        backgroundColor: '#FFF9E6',
+                        backgroundColor: 'white',
                         borderRadius: '8px',
                         fontSize: '14px',
                         textAlign: 'center',
                     },
-                    icon: '📘',
                 }
             );
             reset({
@@ -61,7 +60,7 @@ function UploadEbook() {
                 whatToExpect: '',
                 topics: ''
             });
-            setWhatToExpect('');
+            // setWhatToExpect('');
             setProductImageName('');
             setEBookName('');
             navigate('/dashboard')
@@ -70,12 +69,30 @@ function UploadEbook() {
             toast.error(err?.response?.data?.message);
         }
     });
+    const compressFile = async (file: File) => {
+        return new Promise<File>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const compressedData = pako.gzip(reader.result as ArrayBuffer, { level: 9 });
+                    const compressedFile = new File(
+                        [compressedData],
+                        `${file.name.split('.')[0]}-compressed.gz`,
+                        { type: 'application/gzip' }
+                    );
+                    resolve(compressedFile);
+                } catch (err) {
+                    reject(err);
+                }
+            };
+            reader.onerror = (err) => reject(err);
+            reader.readAsArrayBuffer(file);
+        });
+    };
+
     const onSubmit: SubmitHandler<IAddEbook> = async (data) => {
         const { eBook, productImage, ...others } = data;
         const payload = { ...others, productImage: productImage?.[0], eBook: eBook?.[0] };
-
-        console.log("Payload for API:", payload);
-
         mutate(payload);
     };
 
@@ -88,16 +105,29 @@ function UploadEbook() {
         const fileList = new DataTransfer();
         acceptedFiles.forEach(file => fileList.items.add(file));
         setValue('productImage', fileList.files);
-
         setProductImageName(acceptedFiles[0]?.name || '');
 
     };
 
-    const onDropEbook = (acceptedFiles: File[]) => {
-        const fileList = new DataTransfer();
-        acceptedFiles.forEach(file => fileList.items.add(file));
-        setValue('eBook', fileList.files);
-        setEBookName(acceptedFiles[0]?.name || '');
+    const onDropEbook = async (acceptedFiles: File[]) => {
+        try {
+            const compressedFile = await compressFile(acceptedFiles[0]);
+
+            const fileList = new DataTransfer();
+            fileList.items.add(compressedFile);
+            console.log(compressedFile);
+            if (compressedFile.size <= 3 * 1024 * 1024) {
+                console.log("Compression successful:", compressedFile);
+            } else {
+                console.error("File is still too large after compression.");
+            }
+            setValue('eBook', fileList.files);
+            setEBookName(compressedFile.name || '');
+            toast.success('eBook compressed and ready for upload!');
+        } catch (error) {
+            toast.error('Failed to compress the eBook file.');
+            console.error(error);
+        }
     };
 
     const { getRootProps: getProductImageRootProps, getInputProps: getProductImageInputProps } = useDropzone({
@@ -116,22 +146,6 @@ function UploadEbook() {
     });
     return (
         <div className="w-[100%] h-[100%] " >
-            <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
-                <span className="gap-[10px] flex w-[95%] max-[650px]:justify-center max-[650px]:w-[100%]">
-                    <button
-                        className={`p-[2px] max-[650px]:text-[12px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/course' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
-                        onClick={() => navigate('/dashboard/course')}
-                    >
-                        Upload Course
-                    </button>
-                    <button
-                        className={`p-[2px] max-[650px]:text-[12px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/ebook' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
-                        onClick={() => navigate('/dashboard/ebook')}
-                    >
-                        Upload Ebook
-                    </button>
-                </span>
-            </div>
             <div className='w-[90%]  ml-[30px] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center '>
                 <h3 className='text-[25px]'>Upload an Ebook</h3>
                 <p className='text-[20px] max-[650px]:text-center'>Show the world what you are selling</p>
@@ -192,7 +206,7 @@ function UploadEbook() {
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Number  Of Pages</label>
                         <input
-                            placeholder='Number Pages'
+                            placeholder='Number Of Pages'
                             type='number'
                             className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                             {...register('pages')}
@@ -211,7 +225,7 @@ function UploadEbook() {
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productDescription?.message}</b>
                 </div>
                 <div className='mt-[40px] w-[40%] flex flex-col items-center  gap-[10px] max-[650px]:w-[100%] max-[650px]:mb-[50px] max-[650px]:mt-[0px]'>
-                    <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
+                    {/* <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
                         <label className='max-[650px]:text-[15px]'>What To Expect</label>
                         <ReactQuill
                             theme="snow"
@@ -223,7 +237,7 @@ function UploadEbook() {
                             placeholder="Tell us what to learn in this ocurse "
                         />
                     </div>
-                    <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productLocation?.message}</b>
+                    <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productLocation?.message}</b> */}
                     <div className='w-[100%] flex flex-col gap-[10px] mt-[10px] max-[650px]:w-[90%] max-[650px]:mt-[0px]'>
                         <label className='max-[650px]:text-[15px] ' htmlFor="category">Book Category</label>
                         <select

@@ -48,10 +48,10 @@ const SideBar = ({setShowSidebar }: SideBarProps) => {
                     <p className="text-[15px] w-[80%]">Store</p>
                 </span>
                 <span
-                    className={`flex items-center gap-[30px] justify-center h-[50px] cursor-pointer w-[100%] ${getActiveClass('/dashboard/course')}`}
+                    className={`flex items-center gap-[30px] justify-center h-[50px] cursor-pointer w-[100%] ${getActiveClass('/dashboard/upload')}`}
                     onClick={() => {
                         setShowDropdown(!showDropdown);
-                        handleNavigate('/dashboard/course');
+                        handleNavigate('/dashboard/upload');
                     }}
                 >
                     <IoCartOutline className="w-[20%] h-[15px]" />
