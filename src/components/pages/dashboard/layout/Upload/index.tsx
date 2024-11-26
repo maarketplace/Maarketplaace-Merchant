@@ -5,7 +5,7 @@ const Upload = () => {
     const [showMerchantTable, setShowMerchantTable] = useState(true);
     return (
         <div className='w-full flex items-center flex-col'>
-            <div className="flex gap-[10px] w-full ml-[20px] border-b border-[grey] p-[10px]">
+            <div className="flex gap-[10px] w-full ml-[20px] max-[650px]:ml-0 mt-[30px] border-b border-[grey] p-[10px]">
                 <button
                     type="button"
                     onClick={() => setShowMerchantTable(true)}
@@ -21,7 +21,7 @@ const Upload = () => {
                     Upload Course
                 </button>
             </div>
-            <div className='marquee flex w-[70%] justify-center '>
+            <div className='marquee flex w-[70%] justify-center max-[650px]:w-[100%] '>
                 <p>The ebook file size must be below 9.5 MB. If your file exceeds this limit, please compress it using this <a href="https://www.ilovepdf.com/compress_pdf" className='text-blue-500'>PDF compressor</a>.</p>
             </div>
             <div className='w-full'>

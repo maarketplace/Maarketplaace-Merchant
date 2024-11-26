@@ -283,7 +283,7 @@ function UploadEbook() {
                         <label className='max-[650px]:text-[15px]'>Add Book</label>
                         <div {...getEbookRootProps()} className='border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center '>
                             <input {...getEbookInputProps()} />
-                            <p className='text-center max-[650px]:text-[13px] '>{eBookName || 'Drag and drop an eBook file, or click to select one'}</p>
+                            <p className='text-center max-[650px]:text-[13px] '>{eBookName || 'Drag and drop an eBook file, or click to select one max size is 9.5mb'}</p>
                         </div>
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.eBook?.message}</b>
