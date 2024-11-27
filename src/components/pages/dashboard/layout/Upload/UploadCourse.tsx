@@ -9,13 +9,12 @@ import { UploadCourseSchema } from "../../../../../schema/UploadCourseSchema";
 import { useMutation } from "react-query";
 import { uploadCourse } from "../../../../../api/mutation";
 import toast from "react-hot-toast";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../loader";
 import { IErrorResponse } from "../../../../../interface/ErrorInterface";
 
 const UploadCourse = () => {
     const navigate = useNavigate()
-    const location = useLocation();
     const [description, setDescription] = useState('');
     const [topics, setTopics] = useState('');
     const [whatToExpect, setWhatToExpect] = useState('');
@@ -97,22 +96,6 @@ const UploadCourse = () => {
 
     return (
         <div className="w-[100%] h-[100%]  ">
-            <div className="w-[100%] flex items-end justify-center h-[60px] border-b-2 border-b-lightgrey-500 mb-[10px]">
-                <span className="gap-[10px] flex w-[95%]  max-[650px]:justify-center max-[650px]:w-[100%]">
-                    <button
-                        className={`p-[2px] max-[650px]:text-[12px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/course' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
-                        onClick={() => navigate('/dashboard/course')}
-                    >
-                        Upload Course
-                    </button>
-                    <button
-                        className={`p-[2px] max-[650px]:text-[12px] rounded-tl-[4px] rounded-tr-[4px] ${location.pathname === '/dashboard/ebook' ? 'bg-[#FFc300] text-black' : 'bg-[#D9D9D9]'}`}
-                        onClick={() => navigate('/dashboard/ebook')}
-                    >
-                        Upload Ebook
-                    </button>
-                </span>
-            </div>
             <div className='w-[100%] ml-[20px] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center max-[650px]:justify-center'>
                 <h3 className='text-[25px]'>Upload a Course</h3>
                 <p className='text-[20px] max-[650px]:text-center max-[650px]:text-wrap'>Show the world what you are selling</p>
