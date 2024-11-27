@@ -1,11 +1,13 @@
 import axios from "axios";
+import { IAddEbook } from "../interface/UploadEbook";
+import { IAddCourse } from "../interface/UploadCourse";
+import { LoginInterface } from "../interface/LoginInterface";
+import { SignUpInterface } from "../interface/SignUpInterface";
 
 const { VITE_ENDPOINT_STAGING } = import.meta.env;
 const { VITE_TOKEN } = import.meta.env;
 
-// const token = localStorage.getItem(VITE_TOKEN)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const merchantSignup = async (data: any) => {
+export const merchantSignup = async (data: SignUpInterface) => {
     console.log(data);
     return await axios.post(`${VITE_ENDPOINT_STAGING}/merchant`, data, {
         headers: {
@@ -14,8 +16,7 @@ export const merchantSignup = async (data: any) => {
     })
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const merchantLogin = async (data: any) => {
+export const merchantLogin = async (data: LoginInterface) => {
     return await axios.post(`${VITE_ENDPOINT_STAGING}/merchant/login`, data)
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,10 +30,7 @@ export const logOutMerchant = async (id: string) => {
     // console.log(id)
     return await axios.post(`${VITE_ENDPOINT_STAGING}/merchant/logout/${id}`)
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const uploadEbook = async (data: any) => {
-    console.log('Data fro mutation', data);
-
+export const uploadEbook = async (data: IAddEbook) => {
     const token = localStorage.getItem(VITE_TOKEN)
     return await axios.post(`${VITE_ENDPOINT_STAGING}/product/ebook`, data, {
         headers: {
@@ -41,8 +39,8 @@ export const uploadEbook = async (data: any) => {
         },
     })
 }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const uploadCourse = async (data: any) => {
+
+export const uploadCourse = async (data: IAddCourse) => {
     const token = localStorage.getItem(VITE_TOKEN)
     return await axios.post(`${VITE_ENDPOINT_STAGING}/product/course`, data, {
         headers: {
@@ -178,3 +176,14 @@ export const uploadQuicks = async (id: string, data: { description: string; file
         },
     });
 };
+
+export const updateEbook = async (data: IAddEbook, id: string) => {
+    const token = localStorage.getItem(VITE_TOKEN)
+    return await axios.put(`${VITE_ENDPOINT_STAGING}/product/${id}/update`, data, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            'Authorization': `Bearer ${token}`
+        },
+    })
+}
+

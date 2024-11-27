@@ -18,6 +18,7 @@ import ConfirmWithdrawal from './components/pages/ConfirmWithdrawals';
 import Withdrawal from './components/pages/dashboard/layout/withdrawal';
 import UploadQuicks from './components/pages/dashboard/layout/quicks';
 import Upload from './components/pages/dashboard/layout/Upload';
+import EditEbook from './components/pages/dashboard/layout/edit/Edit-Ebook';
 
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -76,7 +77,7 @@ const router = createHashRouter([
         children: [
             {
                 path: '',
-                element: <Overview/>
+                element: <Overview />
             },
             {
                 path: '/dashboard/upload',
@@ -101,6 +102,10 @@ const router = createHashRouter([
             {
                 path: '/dashboard/transaction',
                 element: <Withdrawal />
+            },
+            {
+                path: '/dashboard/edit-product/:id',
+                element: <EditEbook />
             },
         ]
     },

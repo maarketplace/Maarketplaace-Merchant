@@ -19,10 +19,9 @@ const Store = () => {
     const { data } = useMerchant();
     const [allProduct, setAllProduct] = useState<IProduct[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [showModal, setShowModal] = useState(false);  // State for modal visibility
-    const [imagePreview, setImagePreview] = useState<string | null>(null);  // State for image preview
+    const [showModal, setShowModal] = useState(false); 
+    const [imagePreview, setImagePreview] = useState<string | null>(null); 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    // const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
     const [err, setErr] = useState('')
     const [menuVisibility, setMenuVisibility] = useState<Record<string, boolean>>({});
     useEffect(() => {
@@ -119,7 +118,7 @@ const Store = () => {
                                 <>
                                     <img src={data?.data?.image} alt="" className="w-[150px] h-[150px] rounded-[100%] object-cover max-[650px]:w-[80px] max-[650px]:h-[80px] " />
                                     <TbUserEdit
-                                        className=" text-[30px] absolute bottom-[20px] left-[120px] text-[black] cursor-pointer max-[650px]:left-[65px] max-[650px]:bottom-[25px] dark:text-white "
+                                        className=" text-[30px] absolute bottom-[20px] left-[120px] text-[black] cursor-pointer max-[650px]:left-[110px] max-[650px]:bottom-[25px] dark:text-white "
                                         onClick={triggerFileInput}
                                     />
                                 </>
@@ -158,7 +157,7 @@ const Store = () => {
             <div className="w-[95%] mt-[40px] flex flex-wrap gap-[10px] max-[650px]:justify-center max-[650px]:w-[100%]">
                 {
                     allProduct?.map((i: IProduct) => (
-                        <div className="w-[200px] border flex flex-col items-center p-[10px] gap-[10px] max-[650px]:w-[300px] rounded-[8px] max-[320px]:w-[90%]">
+                        <div className="w-[200px] border relative flex flex-col items-center p-[10px] gap-[10px] max-[650px]:w-[300px] rounded-[8px] max-[320px]:w-[90%]">
                             <img src={i?.productImage} alt="" className="w-[100%] h-[200px] object-cover aspect-square " />
                             <span className="w-full">
                                 <p className="max-[650px]:text-[12px] text-[14px]">{i?.productName}</p>
@@ -178,22 +177,19 @@ const Store = () => {
                                 />
                             </span>
                             {menuVisibility[i._id] && (
-                                <div className="absolute top-100 right-2 bg-white shadow-lg rounded p-2 flex flex-col gap-2 z-10">
+                                <div className="absolute bottom-10 right-2 bg-white shadow-lg rounded p-2 flex flex-col gap-2 z-10">
                                     <button
                                         className="text-red-500 text-sm"
                                         onClick={() => DeleteProductMutate(i._id)}
                                     >
                                         Delete
                                     </button>
-                                    {/* <button
+                                    <button
                                         className="text-blue-500 text-sm"
-                                        onClick={() => {
-                                            setSelectedProduct(i);
-                                            setShowModal(true);
-                                        }}
+                                        onClick={() => navigate(`/dashboard/edit-product/${i._id}`)}
                                     >
                                         Edit
-                                    </button> */}
+                                    </button>
                                 </div>
                             )}
                         </div>
@@ -219,30 +215,6 @@ const Store = () => {
                     </div>
                 </div>
             )}
-            {/* {showModal && selectedProduct && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white w-[60%] p-5 rounded-lg shadow-lg dark:text-black">
-                        <img src={selectedProduct.productImage} alt="Product" className="w-[150px] h-[150px] object-cover mb-4" />
-                        <h2 className="text-lg font-bold mb-2">{selectedProduct.productName}</h2>
-                        <p className="text-sm">{selectedProduct.productDescription}</p>
-                        <div className="flex justify-between mt-4">
-                            <button
-                                onClick={() => {}}
-                                className="p-[5px] w-[80px] rounded-[4px] bg-[#FFC300] text-[12px]"
-                            >
-                                Save
-                            </button>
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="p-[5px] text-[12px]"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )} */}
-
         </div>
     );
 };

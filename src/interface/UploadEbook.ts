@@ -6,7 +6,7 @@ export interface IAddEbook {
     category: string,
     subCategory: string,
     productLocation: string,
-    productImage: FileList | null,
+    productImage:  FileList | null;
     eBook: FileList | null;
     pages: number,
     author: string,
