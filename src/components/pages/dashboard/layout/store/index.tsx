@@ -116,7 +116,7 @@ const Store = () => {
                         <span className="flex flex-col items-center gap-[10px] relative">
                             {data?.data?.image ? (
                                 <>
-                                    <img src={data?.data?.image} alt="" className="w-[150px] h-[150px] rounded-[100%] object-cover max-[650px]:w-[80px] max-[650px]:h-[80px] " />
+                                    <img src={data?.data?.image} alt="" className="w-[250px] h-[150px] rounded-[100%] object-cover max-[650px]:w-[80px] max-[650px]:h-[80px] " />
                                     <TbUserEdit
                                         className=" text-[30px] absolute bottom-[20px] left-[120px] text-[black] cursor-pointer max-[650px]:left-[110px] max-[650px]:bottom-[25px] dark:text-white "
                                         onClick={triggerFileInput}

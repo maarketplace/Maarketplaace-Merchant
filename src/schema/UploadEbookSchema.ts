@@ -20,13 +20,11 @@ export const UploadEbookSchema = yup.object({
         .string()
         .required("Subcategory is required"),
     productImage: yup
-        .mixed()
-        .required("Product image is required").test({
-            name: "required",
-            message: "Image is required",
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            test: (value: any) => value?.length > 0
-        }),
+        .mixed<File>()
+        .required('Product image is required')
+        .test('fileType', 'Only image files are allowed', (value) =>
+            value ? ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type) : false
+        ),
     eBook: yup
         .mixed(),
     pages: yup.number(),
