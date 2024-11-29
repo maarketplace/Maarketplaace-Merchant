@@ -62,7 +62,7 @@ const Store = () => {
             toast.error('Failed to update profile picture.');
         }
     });
-    const { mutate: DeleteProductMutate } = useMutation(
+    const { mutate: DeleteProductMutate, isLoading: DeleteIsloading } = useMutation(
         (productId: string) => merchantDeleteProduct(productId),
         {
             onSuccess: () => {
@@ -182,7 +182,10 @@ const Store = () => {
                                         className="text-red-500 text-sm"
                                         onClick={() => DeleteProductMutate(i._id)}
                                     >
-                                        Delete
+                                        {
+                                            DeleteIsloading ? "Deleting...." : "Delete"
+                                        }
+                                        
                                     </button>
                                     <button
                                         className="text-blue-500 text-sm"
