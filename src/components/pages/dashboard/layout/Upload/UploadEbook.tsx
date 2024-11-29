@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import Loading from '../../../../../loader';
 import { IErrorResponse } from '../../../../../interface/ErrorInterface';
 import { useState } from 'react';
-import pako from 'pako';
 
 function UploadEbook() {
     const navigate = useNavigate()
@@ -69,27 +68,6 @@ function UploadEbook() {
             toast.error(err?.response?.data?.message);
         }
     });
-    const compressFile = async (file: File) => {
-        return new Promise<File>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                try {
-                    const compressedData = pako.gzip(reader.result as ArrayBuffer, { level: 9 });
-                    const compressedFile = new File(
-                        [compressedData],
-                        `${file.name.split('.')[0]}-compressed.gz`,
-                        { type: 'application/gzip' }
-                    );
-                    resolve(compressedFile);
-                } catch (err) {
-                    reject(err);
-                }
-            };
-            reader.onerror = (err) => reject(err);
-            reader.readAsArrayBuffer(file);
-        });
-    };
-
     const onSubmit: SubmitHandler<IAddEbook> = async (data) => {
         const { eBook, productImage, ...others } = data;
         const payload = { ...others, productImage: productImage?.[0], eBook: eBook?.[0] };
@@ -109,26 +87,13 @@ function UploadEbook() {
 
     };
 
-    const onDropEbook = async (acceptedFiles: File[]) => {
-        try {
-            const compressedFile = await compressFile(acceptedFiles[0]);
-
-            const fileList = new DataTransfer();
-            fileList.items.add(compressedFile);
-            console.log(compressedFile);
-            if (compressedFile.size <= 3 * 1024 * 1024) {
-                console.log("Compression successful:", compressedFile);
-            } else {
-                console.error("File is still too large after compression.");
-            }
-            setValue('eBook', fileList.files);
-            setEBookName(compressedFile.name || '');
-            toast.success('eBook compressed and ready for upload!');
-        } catch (error) {
-            toast.error('Failed to compress the eBook file.');
-            console.error(error);
-        }
+    const onDropEbook = (acceptedFiles: File[]) => {
+        const fileList = new DataTransfer();
+        fileList.items.add(acceptedFiles[0]);
+        setValue('eBook', fileList.files);
+        setEBookName(acceptedFiles[0]?.name || '');
     };
+
 
     const { getRootProps: getProductImageRootProps, getInputProps: getProductImageInputProps } = useDropzone({
         onDrop: onDropProductImage,

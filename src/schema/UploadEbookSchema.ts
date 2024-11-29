@@ -20,11 +20,40 @@ export const UploadEbookSchema = yup.object({
         .string()
         .required("Subcategory is required"),
     productImage: yup
-        .mixed<File>()
-        .required('Product image is required')
-        .test('fileType', 'Only image files are allowed', (value) =>
-            value ? ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type) : false
-        ),
+        .mixed()
+        .required("Product image is required").test({
+            name: "required",
+            message: "Image is required",
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            test: (value: any) => value?.length > 0
+        }),
+    eBook: yup
+        .mixed(),
+    pages: yup.number(),
+    author: yup.string(),
+    duration: yup.string(),
+    topics: yup.string().optional(),
+    whatToExpect: yup
+        .string()
+        .optional(),
+}).required();
+
+export const UpdateEbookSchema = yup.object({
+    productName: yup
+        .string()
+        .required("Product name is required"),
+    productDescription: yup
+        .string()
+        .required("Product description is required"),
+    productPrice: yup
+        .number()
+        .required("Product price is required"),
+    discountPrice: yup
+        .number()
+        .notRequired(),
+    productImage: yup
+        .mixed()
+        .notRequired(),
     eBook: yup
         .mixed(),
     pages: yup.number(),

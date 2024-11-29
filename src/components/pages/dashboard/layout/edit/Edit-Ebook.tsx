@@ -7,8 +7,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import 'react-quill/dist/quill.snow.css';
 import { updateEbook } from '../../../../../api/mutation';
 import { getOneProduct } from '../../../../../api/query';
-import { IAddEbook } from '../../../../../interface/UploadEbook';
-import { UploadEbookSchema } from '../../../../../schema/UploadEbookSchema';
+import { IUpdateEbook } from '../../../../../interface/UploadEbook';
+import { UpdateEbookSchema} from '../../../../../schema/UploadEbookSchema';
 import Loading from '../../../../../loader';
 import { useEffect, useState } from 'react';
 import { IErrorResponse } from '../../../../../interface/ErrorInterface';
@@ -19,7 +19,7 @@ function EditEbook() {
     const { id } = useParams();
     const [productImageName, setProductImageName] = useState('');
     const [eBookName, setEBookName] = useState('');
-    const [product, setProduct] = useState<IAddEbook>({
+    const [product, setProduct] = useState<IUpdateEbook>({
         productName: '',
         productPrice: 0,
         discountPrice: 0,
@@ -43,23 +43,14 @@ function EditEbook() {
     }, [product?.productDescription]);
 
 
-    const form = useForm<IAddEbook>({
+    const form = useForm<IUpdateEbook>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        resolver: yupResolver(UploadEbookSchema) as any,
+        resolver: yupResolver(UpdateEbookSchema) as any,
     });
     const { register, handleSubmit, setValue, formState: { errors } } = form;
-
-    const { data } = useQuery(['ebookDetails', id], () => getOneProduct(id), {
+    const { data: productDetails, isLoading: detailsLoading } = useQuery(['ebookDetails', id], () => getOneProduct(id), {
         onSuccess: () => {
-            setProduct(data?.data?.data?.data?.product[0])
-            setValue('productName', product.productName);
-            setValue('productPrice', product.productPrice);
-            setValue('discountPrice', product.discountPrice);
-            setValue('author', product.author);
-            setValue('duration', product.duration);
-            setValue('productDescription', product.productDescription);
-            setValue('pages', product.pages);
-            setValue('category', product.category);
+            setProduct(productDetails?.data?.data?.data?.product[0])
         },
         onError: () => {
             toast.error('Failed to fetch eBook details');
@@ -67,22 +58,23 @@ function EditEbook() {
     });
 
     useEffect(() => {
-        if (data?.data?.data?.data?.product[0]) {
-            const fetchedProduct = data.data.data.data.product[0];
-            setProduct(fetchedProduct);
-            Object.keys(fetchedProduct).forEach((key) => {
-                setValue(key as keyof IAddEbook, fetchedProduct[key]);
-            });
+        if (productDetails?.data?.data?.data?.product[0]) {
+            setValue('productName', product?.productName);
+            setValue('productPrice', product?.productPrice);
+            setValue('discountPrice', product?.discountPrice);
+            setValue('author', product?.author);
+            setValue('duration', product?.duration);
+            setValue('productDescription', product?.productDescription);
+            setValue('pages', product?.pages);
         }
-    }, [data, setValue]);
+    }, [product?.author, product?.discountPrice, product?.duration, product?.pages, product?.productDescription, product?.productName, product?.productPrice, productDetails, setValue]);
 
     const { mutate, isLoading } = useMutation(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ({ data, id }: { data: any; id: string | undefined }) => updateEbook(data, id as string),
+        ({ data, id }: { data: IUpdateEbook; id: string | undefined }) => updateEbook(data, id as string),
         {
-            onSuccess: (response) => {
-                const { productName } = response.data;
-                toast.success(`Ebook '${productName}' updated successfully!`);
+            onSuccess: () => {
+                toast.success(`Ebook updated successfully!`);
                 navigate('/dashboard/store')
             },
             onError: (err: IErrorResponse) => {
@@ -92,9 +84,8 @@ function EditEbook() {
     );
 
     const onDropProductImage = (acceptedFiles: File[]) => {
-        const fileList = new DataTransfer();
-        acceptedFiles.forEach((file) => fileList.items.add(file));
-        setValue('productImage', fileList.files);
+        setValue('productImage', acceptedFiles[0]);
+        console.log(acceptedFiles[0]);
         setProductImageName(acceptedFiles[0]?.name || '');
     };
 
@@ -115,14 +106,15 @@ function EditEbook() {
         accept: { 'application/pdf': ['.pdf'], 'application/msword': ['.doc', '.docx'] },
     });
 
-    const onSubmit: SubmitHandler<IAddEbook> = (data) => {
-        const { productImage, eBook, ...otherFields } = data;
+    const onSubmit: SubmitHandler<IUpdateEbook> = (info) => {
+        const { productImage, eBook, ...otherFields } = info;
+        console.log(info);
         mutate({
             id,
             data: {
                 ...otherFields,
-                productImage: productImage?.[0],
-                eBook: eBook?.[0],
+                productImage: productImage,
+                eBook: eBook,
             },
         });
 
@@ -146,6 +138,7 @@ function EditEbook() {
                                 type='text'
                                 className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
                                 {...register('productName')}
+                                disabled={detailsLoading}
                             />
                         </div>
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productName?.message}</b>
@@ -157,6 +150,7 @@ function EditEbook() {
                                 type='number'
                                 className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                                 {...register('productPrice')}
+                                disabled={detailsLoading}
                             />
                             <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productPrice?.message}</b>
                         </div>
@@ -167,6 +161,7 @@ function EditEbook() {
                                 type='number'
                                 className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                                 {...register('discountPrice')}
+                                disabled={detailsLoading}
                             />
                             <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.discountPrice?.message}</b>
                         </div>
@@ -177,16 +172,18 @@ function EditEbook() {
                                 type='text'
                                 className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                                 {...register('author')}
+                                disabled={detailsLoading}
                             />
                             <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.author?.message}</b>
                         </div>
                         <div className='w-[90%] flex flex-col gap-[10px]'>
                             <label className='max-[650px]:text-[15px]'>Duration</label>
                             <input
-                                placeholder='Author Name'
+                                placeholder='Duration'
                                 type='text'
                                 className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                                 {...register('duration')}
+                                disabled={detailsLoading}
                             />
                             <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.duration?.message}</b>
                         </div>
@@ -197,6 +194,7 @@ function EditEbook() {
                                 type='number'
                                 className='w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
                                 {...register('pages')}
+                                disabled={detailsLoading}
                             />
                             <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.pages?.message}</b>
                         </div>
@@ -237,9 +235,9 @@ function EditEbook() {
                         type="submit"
                         disabled={isLoading}
                         onClick={handleButtonClick}
-                        className='w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg text-[20px] dark:text-[black] max-[650px]:w-[90%] '
-
-                    >
+                        className={`w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg text-[20px] dark:text-[black] max-[650px]:w-[90%] ${
+                            isLoading ? 'cursor-not-allowed opacity-50' : ''
+                        }`}                    >
                         {isLoading ? <Loading /> : 'Update eBook'}
                     </button>
                 </div>
