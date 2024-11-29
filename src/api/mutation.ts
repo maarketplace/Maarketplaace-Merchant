@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IAddEbook } from "../interface/UploadEbook";
+import { IAddEbook, IUpdateEbook } from "../interface/UploadEbook";
 import { IAddCourse } from "../interface/UploadCourse";
 import { LoginInterface } from "../interface/LoginInterface";
 import { SignUpInterface } from "../interface/SignUpInterface";
@@ -177,7 +177,7 @@ export const uploadQuicks = async (id: string, data: { description: string; file
     });
 };
 
-export const updateEbook = async (data: IAddEbook, id: string) => {
+export const updateEbook = async (data: IUpdateEbook, id: string) => {
     const token = localStorage.getItem(VITE_TOKEN)
     return await axios.put(`${VITE_ENDPOINT}/product/${id}/update`, data, {
         headers: {
