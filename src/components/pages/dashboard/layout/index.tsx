@@ -1,12 +1,15 @@
 import { Outlet } from "react-router-dom"
 import { useMerchant } from "../../../../context/GetMerchant"
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SideBar from "../sidebar";
 import { HiMenuAlt2 } from "react-icons/hi";
 const Layout = () => {
     const navigate = useNavigate()
-    const { data, err } = useMerchant();
+    const { data, err, fetchMerchant } = useMerchant();
+    useEffect(() => {
+        fetchMerchant();
+    }, [fetchMerchant]);
 
     if (err === "Token expired login again") {
         navigate('/')
