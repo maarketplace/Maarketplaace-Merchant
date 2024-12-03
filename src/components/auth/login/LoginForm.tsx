@@ -25,6 +25,7 @@ function LoginForm() {
         onSuccess: async (data: IResponseData) => {
             toast.success(data?.data?.message,)
             localStorage.setItem(VITE_TOKEN, data?.data?.data?.token)
+            
             navigate('/dashboard');
         },
         onError: (err: IErrorResponse) => {
