@@ -134,15 +134,12 @@ const UploadCourse = () => {
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseDiscountedPrice?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Location</label>
-                        <select
-                            className='w-full h-[45px] outline-none p-[10px] border border-[grey] bg-transparent max-[650px]:text-[12px]'
+                        <input
+                            placeholder='Course Discounted Price'
+                            type='text'
+                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
                             {...register('courseLocation')}
-                        >
-                            <option value="">Select Location</option>
-                            <option value="Telegram">Telegram</option>
-                            <option value="Google Drive">Google Drive</option>
-                            <option value="others">Others</option>
-                        </select>
+                        />
                     </div>
 
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseLocation?.message}</b>
