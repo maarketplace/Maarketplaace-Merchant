@@ -21,7 +21,7 @@ const Upload = () => {
                     Upload Course
                 </button>
             </div>
-            <div className='marquee flex w-[70%] justify-center max-[650px]:w-[100%] '>
+            <div className={showMerchantTable ? 'marquee flex w-[70%] justify-center max-[650px]:w-[100%]' : 'hidden'}>
                 <p>The ebook file size must be below 9.5 MB. If your file exceeds this limit, please compress it using this <a href="https://www.ilovepdf.com/compress_pdf" className='text-blue-500'>PDF compressor</a>.</p>
             </div>
             <div className='w-full'>
