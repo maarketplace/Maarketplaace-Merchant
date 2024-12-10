@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../loader";
 import { IErrorResponse } from "../../../../../interface/ErrorInterface";
+import courseCategories from "./category/courseCategory";
+import { courseLocations } from "./category/courseCategory";
 
 const UploadCourse = () => {
     const navigate = useNavigate()
@@ -25,7 +27,8 @@ const UploadCourse = () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: yupResolver(UploadCourseSchema) as any,
     });
-    const { register, handleSubmit, formState: { errors }, setValue, reset } = form;
+    const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = form;
+    const selectedCategory = watch("courseCategory");
 
 
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadCourse, {
@@ -93,7 +96,8 @@ const UploadCourse = () => {
         onDrop: onDropProductImage,
         accept: { 'image/*': ['.png', '.jpg', '.jpeg', '.gif'] },
     });
-
+    const filteredSubCategories =
+        courseCategories.find((category) => category.name === selectedCategory)?.courseSubcategories || [];
     return (
         <div className="w-[100%] h-[100%]  ">
             <div className='w-[100%] ml-[20px] flex flex-col gap-[5px] max-[650px]:w-[100%] max-[650px]:ml-[0px] max-[650px]:items-center max-[650px]:justify-center'>
@@ -139,7 +143,13 @@ const UploadCourse = () => {
                             type='text'
                             className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
                             {...register('courseLocation')}
-                        />
+                        >
+                            {courseLocations.map((location, index) => (
+                                <option key={index} value={location}>
+                                    {location}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseLocation?.message}</b>
@@ -187,21 +197,35 @@ const UploadCourse = () => {
                         <label className='max-[650px]:text-[15px]'>Course Category</label>
                         <select
                             className='w-full h-[45px] outline-none p-[10px] border border-grey bg-transparent max-[650px]:text-[12px]'
-                            {...register('courseCategory')}
+                            {...register("courseCategory")}
                         >
-                            <option value="" className="">Select Category</option>
-                            <option value='courses'>courses</option>
+                            <option value="" disabled>
+                                Select a category
+                            </option>
+                            {courseCategories.map((category) => (
+                                <option key={category.id} value={category.name}>
+                                    {category.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseCategory?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Sub Category</label>
-                        <input
-                            placeholder='Course Sub Category'
-                            type='text'
-                            className='w-[100%] h-[45px] outline-none p-[10px] border border-[grey]  bg-transparent max-[650px]:text-[12px]'
-                            {...register('courseSubCategory')}
-                        />
+                        <select
+                            className='w-full h-[45px] outline-none p-[10px] border border-grey bg-transparent max-[650px]:text-[12px]'
+                            {...register("courseSubCategory")}
+                            disabled={!selectedCategory}
+                        >
+                            <option value="" disabled>
+                                Select a subcategory
+                            </option>
+                            {filteredSubCategories.map((subCategory) => (
+                                <option key={subCategory.id} value={subCategory.name}>
+                                    {subCategory.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseSubCategory?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px] '>

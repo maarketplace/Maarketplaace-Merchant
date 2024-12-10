@@ -34,3 +34,5 @@ export const categories: { [key: string]: Category } = {
         ],
     },
 };
+
+
