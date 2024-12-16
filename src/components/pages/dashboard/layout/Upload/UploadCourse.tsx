@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDropzone } from "react-dropzone";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { IAddCourse } from "../../../../../interface/UploadCourse";
@@ -21,6 +21,7 @@ const UploadCourse = () => {
     const [topics, setTopics] = useState('');
     const [whatToExpect, setWhatToExpect] = useState('');
     const [selectedFileName, setSelectedFileName] = useState('');
+    const [paymentPrice, setPaymentPrice] = useState(0);
 
 
     const form = useForm<IAddCourse>({
@@ -29,6 +30,13 @@ const UploadCourse = () => {
     });
     const { register, handleSubmit, formState: { errors }, setValue, reset, watch } = form;
     const selectedCategory = watch("courseCategory");
+    const productPrice = watch('coursePrice');
+    const discountPrice = watch('courseDiscountedPrice');
+
+    useEffect(() => {
+        const calculatedPaymentPrice = (productPrice || 0) - (discountPrice || 0);
+        setPaymentPrice(calculatedPaymentPrice >= 0 ? calculatedPaymentPrice : 0); // Ensure it's not negative
+    }, [productPrice, discountPrice]);
 
 
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadCourse, {
@@ -118,6 +126,7 @@ const UploadCourse = () => {
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseName?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px]  '>
                         <label className='max-[650px]:text-[15px]'>Course Price</label>
+                        <p className='text-[12px] text-[grey]'>(original price)</p>
                         <input
                             placeholder='Course Price'
                             type='text'
@@ -128,6 +137,7 @@ const UploadCourse = () => {
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.coursePrice?.message}</b>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Discounted Price</label>
+                        <p className='text-[12px] text-[grey]'>(amount to remove from the original price)</p>
                         <input
                             placeholder='Course Discounted Price'
                             type='text'
@@ -136,6 +146,16 @@ const UploadCourse = () => {
                         />
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.courseDiscountedPrice?.message}</b>
+                    <div className="w-[90%] flex flex-col gap-[10px]">
+                        <label className="max-[650px]:text-[15px]">Payment Price</label>
+                        <p className='text-[12px] text-[grey]'>(payment price for buyers)</p>
+                        <input
+                            type="number"
+                            value={paymentPrice}
+                            disabled
+                            className="w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-gray-200 max-[650px]:text-[12px]"
+                        />
+                    </div>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
                         <label className='max-[650px]:text-[15px]'>Course Location</label>
                         <select

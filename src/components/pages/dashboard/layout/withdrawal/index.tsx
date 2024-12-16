@@ -198,7 +198,7 @@ const Withdrawal = () => {
                         {modalStep === 1 && (
                             <div className="w-[100%] flex flex-col gap-[30px]">
                                 <span className="w-[100%] border-b-[1px] border-b-grey-500 h-[150px] p-2 ">
-                                    <h2 className="text-[20px] font-Semibold mb-4 dark:text-black text-center">Withdraw Funds to Bank Account</h2>
+                                    <h2 className="text-[20px] font-Semibold mb-4 dark:text-white text-center">Withdraw Funds to Bank Account</h2>
                                     <p className="text-[14px] font-light">Select your destination account and fill in the details to withdraw.</p>
                                 </span>
                                 <span>
@@ -207,7 +207,7 @@ const Withdrawal = () => {
                                             type="text"
                                             list="banks"
                                             placeholder="Select a bank"
-                                            className="border p-2 mb-4 w-full dark:text-black outline-none text-black text-[12px]"
+                                            className="border p-2 mb-4 w-full dark:text-white outline-none text-black text-[12px]"
                                             value={bankDetails.bankName}
                                             onChange={(e) => {
                                                 const selectedBank = banksData?.data?.data.find(
@@ -230,7 +230,7 @@ const Withdrawal = () => {
                                     <input
                                         type="text"
                                         placeholder="Account Number"
-                                        className="border font-light p-2 mb-4 w-full dark:text-black outline-none text-[12px]"
+                                        className="border font-light p-2 mb-4 w-full dark:text-white outline-none text-[12px]"
                                         value={bankDetails.accountNumber}
                                         onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: e.target.value })}
                                     />
@@ -255,12 +255,12 @@ const Withdrawal = () => {
                         )}
 
                         {modalStep === 2 && verifiedAccountDetails && (
-                            <div className="dark:text-black w-[100%] flex flex-col gap-[20px]">
+                            <div className="dark:text-white w-[100%] flex flex-col gap-[20px]">
                                 <span className="w-[100%] flex justify-between">
                                     <p className="text-[20px]">{verifiedAccountDetails.details.account_name}</p>
                                 </span>
                                 <span className="w-[100%] border-b-[1px] border-b-grey-500 h-[80px] ">
-                                    <h2 className="text-[18px] font-Semibold dark:text-black">Withdraw Funds to Bank Account</h2>
+                                    <h2 className="text-[18px] font-Semibold dark:text-white">Withdraw Funds to Bank Account</h2>
                                     <p className="text-[12px] font-light">Please enter the details of the transaction to proceed</p>
                                 </span>
                                 <span className="w-[100%] bg-[#ebebeb] p-[10px] rounded-[8px]">

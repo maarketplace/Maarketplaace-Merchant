@@ -11,13 +11,14 @@ function AdminSignupForm() {
     const [showPassword, setShow] = useState<boolean>(false);
     const [showConfirmassword, setShowConfirmPassword] = useState<boolean>(false);
     const form = useForm<SignUpInterface>({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: yupResolver(AdminSignUpSchema) as any
     });
     const { register, handleSubmit, formState: { errors } } = form;
 
     const onSubmit: SubmitHandler<SignUpInterface> = (data) => {
         const { confirmPassword, ...others } = data;
-        const userData = { ...others };
+        const userData = { ...others, confirmPassword };
         localStorage.setItem('merchantData', JSON.stringify(userData));
         navigate('/create-account/business-info')
     };

@@ -54,22 +54,22 @@ function LoginForm() {
                 </span>
             </div>
             <div className='w-[70%] flex flex-col gap-[10px] max-[650px]:w-[90%] ' >
-                <label htmlFor="email" className="max-[650px]:text-[15px]">Enter your email</label>
+                <label htmlFor="email" className="max-[650px]:text-[15px]">Email</label>
                 <input
                     required
                     type="email"
                     {...register('email')}
-                    placeholder="Email"
+                    placeholder="Enter Your Email"
                     className="w-[100%] h-[50px] outline-none p-2 border border-[#999BA1] max-[650px]:h-[40px] bg-transparent"
                 />
             </div>
             <b className='w-[70%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.email?.message}</b>
             <div className='w-[70%] flex gap-[10px] flex-col max-[650px]:w-[90%] '  >
-                <label htmlFor="password" className="max-[650px]:text-[15px]">Enter your password</label>
+                <label htmlFor="password" className="max-[650px]:text-[15px]">Password</label>
                 <div className=" w-[100%] border border-[#999BA1] flex items-center  ">
                     <input
                         type={showPassword ? "text" : "password"}
-                        placeholder="Password"
+                        placeholder="Enter Your Password"
                         className="w-[90%] h-[50px] outline-none p-2 max-[650px]:h-[40px]  bg-transparent"
                         {...register('password')}
                     />
