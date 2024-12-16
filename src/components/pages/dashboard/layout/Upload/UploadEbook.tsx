@@ -12,13 +12,14 @@ import { categories } from './category';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../../../../../loader';
 import { IErrorResponse } from '../../../../../interface/ErrorInterface';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function UploadEbook() {
     const navigate = useNavigate()
     // const [whatToExpect, setWhatToExpect] = useState('');
     const [productImageName, setProductImageName] = useState('');
     const [eBookName, setEBookName] = useState('');
+    const [paymentPrice, setPaymentPrice] = useState(0);
     const form = useForm<IAddEbook>({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: yupResolver(UploadEbookSchema) as any,
@@ -26,6 +27,13 @@ function UploadEbook() {
 
     const { register, watch, handleSubmit, formState: { errors }, setValue, reset } = form;
     const selectedCategory = watch('category');
+    const productPrice = watch('productPrice');
+    const discountPrice = watch('discountPrice');
+
+    useEffect(() => {
+        const calculatedPaymentPrice = (productPrice || 0) - (discountPrice || 0);
+        setPaymentPrice(calculatedPaymentPrice >= 0 ? calculatedPaymentPrice : 0); // Ensure it's not negative
+    }, [productPrice, discountPrice]);
 
     const { mutate, isLoading } = useMutation(['uploadebook'], uploadEbook, {
         onSuccess: async (data) => {
@@ -130,6 +138,7 @@ function UploadEbook() {
 
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Book Price</label>
+                        <p className='text-[12px] text-[grey]'>(original price)</p>
                         <input
                             placeholder='Product Price'
                             type='number'
@@ -140,6 +149,7 @@ function UploadEbook() {
                     </div>
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Discounted Price</label>
+                        <p className='text-[12px] text-[grey]'>(amount to remove from the original price)</p>
                         <input
                             placeholder='Discounted Price'
                             type='number'
@@ -147,6 +157,16 @@ function UploadEbook() {
                             {...register('discountPrice')}
                         />
                         <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.discountPrice?.message}</b>
+                    </div>
+                    <div className="w-[90%] flex flex-col gap-[10px]">
+                        <label className="max-[650px]:text-[15px]">Payment Price</label>
+                        <p className='text-[12px] text-[grey]'>(payment price for buyers)</p>
+                        <input
+                            type="number"
+                            value={paymentPrice}
+                            disabled
+                            className="w-[100%] h-[45px] outline-none p-[10px] text-[12px] border border-[grey] bg-gray-200 max-[650px]:text-[12px]"
+                        />
                     </div>
                     <div className='w-[90%] flex flex-col gap-[10px]'>
                         <label className='max-[650px]:text-[15px]'>Author Name</label>
