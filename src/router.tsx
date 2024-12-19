@@ -8,8 +8,6 @@ import BusinessInfo from './components/auth/signup/BusinessInfo';
 import AdminSignupForm from './components/auth/signup/SignUpForm';
 import Merchant from './components/pages';
 import DashboardMain from './components/pages/dashboard';
-// import UploadCourse from './components/pages/dashboard/layout/Upload/UploadCourse';
-// import UploadEbook from './components/pages/dashboard/layout/Upload/UploadEbook';
 import Overview from './components/pages/dashboard/layout/overview';
 import Store from './components/pages/dashboard/layout/store';
 import Order from './components/pages/dashboard/layout/order';

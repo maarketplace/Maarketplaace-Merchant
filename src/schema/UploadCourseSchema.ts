@@ -38,12 +38,6 @@ export const UploadCourseSchema = yup.object({
   duration: yup
     .string()
     .notRequired(),
-  topics: yup
-    .string()
-    .notRequired(),
-  whatToExpect: yup
-    .string()
-    .required('Course Expectation is required')
 
 })
 
