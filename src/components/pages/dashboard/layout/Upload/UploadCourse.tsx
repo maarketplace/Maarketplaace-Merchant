@@ -18,8 +18,6 @@ import { courseLocations } from "./category/courseCategory";
 const UploadCourse = () => {
     const navigate = useNavigate()
     const [description, setDescription] = useState('');
-    const [topics, setTopics] = useState('');
-    const [whatToExpect, setWhatToExpect] = useState('');
     const [selectedFileName, setSelectedFileName] = useState('');
     const [paymentPrice, setPaymentPrice] = useState(0);
 
@@ -69,17 +67,17 @@ const UploadCourse = () => {
                 courseImage: null,
                 author: '',
                 duration: '',
-                topics: '',
-                whatToExpect: '',
             });
             setSelectedFileName('');
             setDescription('');
-            setTopics('');
-            setWhatToExpect('')
             navigate('/dashboard')
         },
         onError: (err: IErrorResponse) => {
             toast.error(err?.response?.data?.message);
+            if (err?.response?.data?.message === "Authorization denied. merchant not found! ") {
+                toast.error("session expired please login again")
+                navigate('/')
+            }
         }
     });
 
@@ -183,7 +181,7 @@ const UploadCourse = () => {
                         />
                     </div>
                     <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.courseDescription?.message}</b>
-                    <div className='w-[90%] flex flex-col gap-[10px] mt-[20px]'>
+                    {/* <div className='w-[90%] flex flex-col gap-[10px] mt-[20px]'>
                         <label className='max-[650px]:text-[15px]'>What to learn on this course</label>
                         <ReactQuill
                             theme="snow"
@@ -208,7 +206,7 @@ const UploadCourse = () => {
                             placeholder="write your topic in a bullet style "
                         />
                     </div>
-                    <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.topics?.message}</b>
+                    <b className='w-[100%] text-[red] text-[12px] mt-[10px] max-[650px]:w-[90%]'>{errors.topics?.message}</b> */}
                 </div>
                 <div className='mt-[40px] w-[40%] flex flex-col items-center max-[650px]:mb-[50px]  gap-[10px] max-[650px]:w-[100%] max-[650px]:mt-[0px]'>
                     <div className='w-[90%] flex flex-col gap-[10px] '>
