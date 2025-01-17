@@ -8,7 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import { updateEbook } from '../../../../../api/mutation';
 import { getOneProduct } from '../../../../../api/query';
 import { IUpdateEbook } from '../../../../../interface/UploadEbook';
-import { UpdateEbookSchema } from '../../../../../schema/UploadEbookSchema';
+import { UpdateEbookSchema} from '../../../../../schema/UploadEbookSchema';
 import Loading from '../../../../../loader';
 import { useEffect, useState } from 'react';
 import { IErrorResponse } from '../../../../../interface/ErrorInterface';
@@ -56,7 +56,7 @@ function EditEbook() {
             toast.error('Failed to fetch eBook details');
         },
     });
-    const productType = productDetails?.data?.data?.data?.product[0]?.productType
+
     useEffect(() => {
         if (productDetails?.data?.data?.data?.product[0]) {
             setValue('productName', product?.productName);
@@ -65,6 +65,7 @@ function EditEbook() {
             setValue('author', product?.author);
             setValue('duration', product?.duration);
             setValue('productDescription', product?.productDescription);
+            setValue('pages', product?.pages);
         }
     }, [product?.author, product?.discountPrice, product?.duration, product?.pages, product?.productDescription, product?.productName, product?.productPrice, productDetails, setValue]);
 
@@ -73,7 +74,7 @@ function EditEbook() {
         ({ data, id }: { data: IUpdateEbook; id: string | undefined }) => updateEbook(data, id as string),
         {
             onSuccess: () => {
-                toast.success(`Product updated successfully!`);
+                toast.success(`Ebook updated successfully!`);
                 navigate('/dashboard/store')
             },
             onError: (err: IErrorResponse) => {
@@ -210,27 +211,22 @@ function EditEbook() {
                         </div>
                     </div>
                     <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.productImage?.message}</b>
-                    {productType !== 'course' && (
-                        <div className="w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]">
-                            <label className="max-[650px]:text-[15px]">Update eBook</label>
-                            <div
-                                {...getEbookRootProps()}
-                                className="border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center"
-                            >
-                                <input {...getEbookInputProps()} />
-                                <p className="text-center max-[650px]:text-[13px]">
-                                    {eBookName || 'Drag and drop an eBook, or click to select one'}
-                                </p>
-                            </div>
+                    <div className='w-[100%] flex flex-col gap-[10px] max-[650px]:w-[90%]'>
+                        <label className='max-[650px]:text-[15px]'>Update Book File</label>
+                        <div {...getEbookRootProps()} className='border-dashed border-2 border-[grey] h-[80px] flex items-center justify-center '>
+                            <input {...getEbookInputProps()} />
+                            <p className='text-center max-[650px]:text-[13px] '>{eBookName || 'Drag and drop an eBook file, or click to select one max size is 9.5mb'}</p>
                         </div>
-                    )}
+                    </div>
+                    <b className='w-[90%] text-[red] text-[12px] max-[650px]:w-[90%]'>{errors.eBook?.message}</b>
 
                     <button
                         type="submit"
                         disabled={isLoading}
                         onClick={handleButtonClick}
-                        className={`w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg text-[20px] dark:text-[black] max-[650px]:w-[90%] ${isLoading ? 'cursor-not-allowed opacity-50' : ''
-                            }`}                    >
+                        className={`w-[100%] h-[50px] outline-none p-2 bg-[#FFC300] rounded-lg text-[20px] dark:text-[black] max-[650px]:w-[90%] ${
+                            isLoading ? 'cursor-not-allowed opacity-50' : ''
+                        }`}                    >
                         {isLoading ? <Loading /> : 'Update eBook'}
                     </button>
                 </div>

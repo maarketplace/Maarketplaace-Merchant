@@ -84,7 +84,6 @@ const UploadCourse = () => {
     const onSubmit: SubmitHandler<IAddCourse> = (data) => {
         const { courseImage, ...others } = data;
         mutate({ ...others, courseImage: courseImage?.[0] });
-        console.log({ ...others, courseImage: courseImage?.[0] });
     };
 
     const handleButtonClick = () => {
