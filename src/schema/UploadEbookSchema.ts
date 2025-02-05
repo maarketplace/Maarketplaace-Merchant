@@ -55,10 +55,10 @@ export const UpdateEbookSchema = yup.object({
         .mixed()
         .notRequired(),
     eBook: yup
-        .mixed(),
-    pages: yup.number(),
+        .mixed().notRequired(),
+    pages: yup.number().optional().notRequired(),
     author: yup.string(),
-    duration: yup.string(),
+    duration: yup.string().optional(),
     topics: yup.string().optional(),
     whatToExpect: yup
         .string()

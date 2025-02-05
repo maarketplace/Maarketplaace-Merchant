@@ -41,3 +41,7 @@ export const UploadCourseSchema = yup.object({
 
 })
 
+
+export const UpdateCourseSchema = yup.object({
+  
+})
