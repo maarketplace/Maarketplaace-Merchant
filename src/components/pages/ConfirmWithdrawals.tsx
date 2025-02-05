@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { verifyWithdrawFunds } from '../../api/mutation';
+import toast from 'react-hot-toast';
 
 const ConfirmWithdrawal = () => {
     const { id } = useParams<{ id: string }>(); 
@@ -10,20 +11,18 @@ const ConfirmWithdrawal = () => {
         verifyWithdrawFunds,
         {
             onSuccess: () => {
-                // Success message will be displayed on successful verification
-                console.log('Verification successful!');
+                toast.success('Withdrawal Successful')
             },
             onError: (error) => {
                 console.error('Error verifying withdrawal:', error);
-                alert('Failed to verify withdrawal. Please try again.');
+                toast.error('Failed to verify withdrawal. Please try again.');
             },
         }
     );
 
     useEffect(() => {
-        // Call the API to verify the withdrawal
         if (id) {
-            mutate(id); // Trigger the mutation with the withdrawal ID
+            mutate(id);
         }
     }, [id, mutate]);
 
@@ -41,8 +40,8 @@ const ConfirmWithdrawal = () => {
                                 ? 'Your withdrawal request has been successfully confirmed!'
                                 : 'Invalid withdrawal ID.'}
                         </h1>
-                        {isVerificationError && <p className='dark:text-black'>Please contact support if you need assistance.</p>}
-                        {isSuccess && <p className='dark:text-black'>Withdraw Successful Thank you for using our service!</p>}
+                        {isVerificationError && <p className='dark:text-white text-black'>Please contact support if you need assistance.</p>}
+                        {isSuccess && <p className='dark:text-white text-black'>Withdraw Successful Thank you for using our service!</p>}
                     </div>
                 )}
             </div>

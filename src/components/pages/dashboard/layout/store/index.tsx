@@ -19,8 +19,8 @@ const Store = () => {
     const { data } = useMerchant();
     const [allProduct, setAllProduct] = useState<IProduct[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [showModal, setShowModal] = useState(false); 
-    const [imagePreview, setImagePreview] = useState<string | null>(null); 
+    const [showModal, setShowModal] = useState(false);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [err, setErr] = useState('')
     const [menuVisibility, setMenuVisibility] = useState<Record<string, boolean>>({});
@@ -111,14 +111,14 @@ const Store = () => {
     return (
         <div className="w-[100%] flex items-center justify-center flex-col">
             <div className="w-[95%] mt-[30px] h-[auto] p-[2%] shadow-lg shadow-grey-500/50 bg-slate-50  dark:bg-[#1D1C1C] dark:shadow-white-500/50 rounded-[16px]  max-[650px]:w-[95%] max-[650px]:p-[2%]">
-                <div className="w-[60%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:items-center ">
+                <div className="w-[80%] flex flex-col gap-[10px] max-[650px]:w-[100%] max-[650px]:items-center ">
                     <div className=" w-[100%] flex items-center gap-5 max-[650px]:flex-col">
                         <span className="flex flex-col items-center gap-[10px] relative">
                             {data?.data?.image ? (
                                 <>
-                                    <img src={data?.data?.image} alt="" className="w-[250px] h-[150px] rounded-[100%] object-cover max-[650px]:w-[80px] max-[650px]:h-[80px] " />
+                                    <img src={data?.data?.image} alt="" className="w-[250px] h-[200px] rounded-[100%] object-cover max-[650px]:w-[80px] max-[650px]:h-[80px] " />
                                     <TbUserEdit
-                                        className=" text-[30px] absolute bottom-[20px] left-[120px] text-[black] cursor-pointer max-[650px]:left-[110px] max-[650px]:bottom-[25px] dark:text-white "
+                                        className=" text-[30px] absolute bottom-[20px] left-[160px] text-[black] cursor-pointer max-[650px]:left-[60px] max-[650px]:bottom-[25px] dark:text-white "
                                         onClick={triggerFileInput}
                                     />
                                 </>
@@ -135,11 +135,11 @@ const Store = () => {
                         </span>
                         <span className="h-[100px] w-[50%] gap-2 max-[650px]:w-[100%] max-[650px]:flex max-[650px]:items-center max-[650px]:flex-col">
                             {
-                                data?.data?.business_name && <p className="text-clamp text-center max-[650px]:text-[20px]">@{data?.data?.business_name}</p>
+                                data?.data?.business_name && <p className="text-clamp max-[650px]:text-center max-[650px]:text-[20px]">{data?.data?.business_name}</p>
                             }
                             <p className="text-[12px] max-[650px]:text-center">{data?.data?.bio}</p>
                         </span>
-                        <span className="flex gap-2 w-[40%] justify-center max-[650px]:w-[100%]">
+                        <span className="flex gap-4 w-[40%] justify-center max-[650px]:w-[100%]">
                             <p className="text-[12px] bg-[#eae7e7] p-1 rounded-[4px] dark:bg-[#2c2c2c]">{data?.data.followedUsers.length} Followers</p>
                             <p
                                 className="text-[12px] bg-[#eae7e7] p-1 rounded-[4px] dark:bg-[#2c2c2c]"
@@ -185,7 +185,7 @@ const Store = () => {
                                         {
                                             DeleteIsloading ? "Deleting...." : "Delete"
                                         }
-                                        
+
                                     </button>
                                     <button
                                         className="text-blue-500 text-sm"

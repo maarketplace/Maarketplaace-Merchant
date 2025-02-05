@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ForgotPasswordInterface } from '../../../interface/ForgetPasswordInterface';
 import { ForgotPasswordSchema } from '../../../schema/LoginSchema';
 import { merchantForgotPassword } from '../../../api/mutation';
+import { IErrorResponse } from '../../../interface/ErrorInterface';
 
 function ForgotPassword() {
     const navigate = useNavigate()
@@ -18,8 +19,8 @@ function ForgotPassword() {
             console.log(data)
             toast.success(data?.data?.data?.message)
         },
-        onError: (error: any) => {
-            console.log(error)
+        onError: (error: IErrorResponse) => {
+            toast.error(error.response.data.message)
         }
     });
 

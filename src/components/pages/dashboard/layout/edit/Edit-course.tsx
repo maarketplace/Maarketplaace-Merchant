@@ -13,13 +13,14 @@ import Loading from '../../../../../loader';
 import { useEffect, useState } from 'react';
 import { IErrorResponse } from '../../../../../interface/ErrorInterface';
 import ReactQuill from 'react-quill';
+import { IUpdateCourse } from '../../../../../interface/UploadCourse';
 
 function EditEbook() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [productImageName, setProductImageName] = useState('');
     const [eBookName, setEBookName] = useState('');
-    const [product, setProduct] = useState<IUpdateEbook>({
+    const [product, setProduct] = useState<IUpdateCourse>({
         productName: '',
         productPrice: 0,
         discountPrice: 0,
