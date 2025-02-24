@@ -162,7 +162,8 @@ export const withdrawFunds = async ({ amount, id }: { amount: number, id: string
             'Authorization': `Bearer ${Token}`,
         }
     })
-}
+};
+
 export const verifyWithdrawFunds = async (id: string) => {
     return await axios.post(`${VITE_ENDPOINT_STAGING}/transactions/accounts/withdraws/${id}`)
 }
