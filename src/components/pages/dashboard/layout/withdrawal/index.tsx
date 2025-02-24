@@ -168,7 +168,7 @@ const Withdrawal = () => {
                     </button>
                 </span>
             </div>
-            <div className="w-[95%]  max-[650px]:w-[100%] flex items-center justify-center mt-[50px] flex-col">
+            <div className="w-[95%]  max-[650px]:w-[100%] flex items-center justify-center mt-[50px] flex-col dark:text-white">
                 <p className="w-full mb-[20px] text-[18px]">Transaction History</p>
                 <div className="w-[100%] mb-[50px] flex flex-col gap-[20px]">
                     <div className="flex justify-between items-center mb-4">
@@ -198,8 +198,8 @@ const Withdrawal = () => {
                         {modalStep === 1 && (
                             <div className="w-[100%] flex flex-col gap-[30px]">
                                 <span className="w-[100%] border-b-[1px] border-b-grey-500 h-[150px] p-2 ">
-                                    <h2 className="text-[20px] font-Semibold mb-4 dark:text-white text-center">Withdraw Funds to Bank Account</h2>
-                                    <p className="text-[14px] font-light">Select your destination account and fill in the details to withdraw.</p>
+                                    <h2 className="text-[20px] font-Semibold mb-4 dark:text-black text-center">Withdraw Funds to Bank Account</h2>
+                                    <p className="text-[14px] font-light dark:text-black ">Select your destination account and fill in the details to withdraw.</p>
                                 </span>
                                 <span>
                                     <span>
@@ -207,7 +207,7 @@ const Withdrawal = () => {
                                             type="text"
                                             list="banks"
                                             placeholder="Select a bank"
-                                            className="border p-2 mb-4 w-full dark:text-white outline-none text-black text-[12px]"
+                                            className="border p-2 mb-4 w-full dark:text-black outline-none text-black text-[12px]"
                                             value={bankDetails.bankName}
                                             onChange={(e) => {
                                                 const selectedBank = banksData?.data?.data.find(
@@ -220,7 +220,7 @@ const Withdrawal = () => {
                                                 });
                                             }}
                                         />
-                                        <datalist id="banks">
+                                        <datalist id="banks"> 
                                             {!isBanksLoading &&
                                                 banksData?.data?.data.map((bank: IBanks) => (
                                                     <option key={bank.code} value={bank.name} />
@@ -230,13 +230,13 @@ const Withdrawal = () => {
                                     <input
                                         type="text"
                                         placeholder="Account Number"
-                                        className="border font-light p-2 mb-4 w-full dark:text-white outline-none text-[12px]"
+                                        className="border font-light p-2 mb-4 w-full dark:text-black outline-none text-[12px]"
                                         value={bankDetails.accountNumber}
                                         onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: e.target.value })}
                                     />
                                 </span>
                                 <span className="w-[100%] bg-[#ebebeb] p-[10px] rounded-[8px]">
-                                    <p className="text-[10px] font-light">Please, ensure that the customer or recipent's details are correct to avoid any potential issue with the transaction</p>
+                                    <p className="text-[10px] font-light dark:text-black">Please, ensure that the customer or recipent's details are correct to avoid any potential issue with the transaction</p>
                                 </span>
                                 <div className=" w-[100%] flex gap-2 justify-between">
                                     <button className="w-[50%] h-[30px] text-[14px] bg-gray-300 text-black rounded-md" onClick={closeModal}>
@@ -257,14 +257,14 @@ const Withdrawal = () => {
                         {modalStep === 2 && verifiedAccountDetails && (
                             <div className="dark:text-white w-[100%] flex flex-col gap-[20px]">
                                 <span className="w-[100%] flex justify-between">
-                                    <p className="text-[20px]">{verifiedAccountDetails.details.account_name}</p>
+                                    <p className="text-[20px] dark:text-black">{verifiedAccountDetails.details.account_name}</p>
                                 </span>
                                 <span className="w-[100%] border-b-[1px] border-b-grey-500 h-[80px] ">
-                                    <h2 className="text-[18px] font-Semibold dark:text-white">Withdraw Funds to Bank Account</h2>
-                                    <p className="text-[12px] font-light">Please enter the details of the transaction to proceed</p>
+                                    <h2 className="text-[18px] font-Semibold dark:text-black">Withdraw Funds to Bank Account</h2>
+                                    <p className="text-[12px] font-light dark:text-black">Please enter the details of the transaction to proceed</p>
                                 </span>
                                 <span className="w-[100%] bg-[#ebebeb] p-[10px] rounded-[8px]">
-                                    <p className="text-[10px] font-light">
+                                    <p className="text-[10px] font-light dark:text-black">
                                         A maximum of <strong>NGN 5,000,000.00</strong> can be withdrawn in a single transaction to your bank account per day and minimum of
                                     </p>
                                 </span>
@@ -276,7 +276,7 @@ const Withdrawal = () => {
                                     <input
                                         type="number"
                                         placeholder="Amount to Withdraw"
-                                        className="border p-2 w-full outline-none text-[12px]"
+                                        className="border p-2 w-full outline-none text-[12px] dark:text-black"
                                         value={amount}
                                         onChange={(e) => setWithdrawAmount(e.target.value)}
                                     />
@@ -290,7 +290,7 @@ const Withdrawal = () => {
                                         Back
                                     </button>
                                     <button
-                                        className="w-[50%] h-[30px] text-[14px] bg-blue-500 text-white rounded-md"
+                                        className="w-[50%] h-[30px] text-[14px] bg-blue-500 text-white dark:text-black rounded-md"
                                         onClick={handleWithdrawSubmit}
                                         disabled={isWithdrawing}
                                     >

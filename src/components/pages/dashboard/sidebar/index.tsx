@@ -9,7 +9,7 @@ interface SideBarProps {
     setShowSidebar?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SideBar = ({setShowSidebar }: SideBarProps) => {
+const SideBar = ({ setShowSidebar }: SideBarProps) => {
     const navigate = useNavigate();
     const location = useLocation(); // useLocation for active state
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
@@ -22,7 +22,7 @@ const SideBar = ({setShowSidebar }: SideBarProps) => {
     };
 
     const getActiveClass = (path: string) => {
-        return location.pathname === path ? "bg-black text-white border-l-4 border-[#FFC300]" : ""; // Active state class
+        return location.pathname === path ? "bg-black text-white border-l-4 border-[#FFC300]" : "";
     };
 
     const handleLogoutClick = async () => {
