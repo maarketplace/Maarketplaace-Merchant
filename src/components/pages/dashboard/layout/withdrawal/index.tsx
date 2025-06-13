@@ -152,7 +152,7 @@ const Withdrawal = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br bg-white dark:bg-black">
             <div className="container mx-auto px-4 py-8 max-w-7xl">
-                <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 mb-8 border border-slate-200 dark:border-slate-700">
+                <div className="bg-white dark:bg-black rounded-2xl shadow-xl p-8 mb-8">
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
                         <div className="flex-1">
                             <div className="flex items-center gap-3 mb-4">
