@@ -22,21 +22,17 @@ const Customer = () => {
     if (isError) {
         return <p>An error occurred while fetching the data.</p>;
     }
-    const columns: Array<keyof typeof formattedData[0]> = [
-        "Full Name",
-        "Email",
-        "Phone Number",
-        // "State",
-        "Date",
+    const columns: { key: "Full Name" | "Email" | "Phone Number" | "Date" | "id"; label: string }[] = [
+        { key: "Full Name", label: "Full Name" },
+        { key: "Email", label: "Email" },
+        { key: "Phone Number", label: "Phone Number" },
+        { key: "Date", label: "Date" },
     ];
 
     const formattedData = allCustomer.map(i => ({
         "Full Name": i?.fullName || "N/A",
         "Email": i?.email,
         "Phone Number": i?.phoneNumber,
-        // "Country": i?.country || "Nigeria",
-        // "State": i?.state || 'Lagos',
-        // "Status": i.status,
         "Date": new Date(i?.createdAt).toLocaleDateString(),
         "id": i._id
     }));
