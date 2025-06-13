@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "react-query";
 import { useEffect, useState } from "react";
 import { fetchBanks, getMerchantBalance, getTransaction } from "../../../../../api/query";
-import { verifyMerchantAccountNumber, withdrawFunds } from "../../../../../api/mutation"; // Import withdrawFunds API
+import { verifyMerchantAccountNumber, withdrawFunds } from "../../../../../api/mutation";
 import { capitalizeFirstLetter, formatNumber } from "../../../../../utils/Utils";
 import { IAccountDetails, IBanks } from "../../../../../interface/AccountDetails";
 import { IErrorResponse } from "../../../../../interface/ErrorInterface";
@@ -17,18 +17,16 @@ const Withdrawal = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalStep, setModalStep] = useState(1);
     const [bankDetails, setBankDetails] = useState({ bankName: '', accountNumber: '', bankCode: '' });
-    const [amount, setWithdrawAmount] = useState();
+    const [amount, setWithdrawAmount] = useState<string | undefined>();
     const [statusFilter, setStatusFilter] = useState<string>("All");
-    const [verifiedAccountDetails, setVerifiedAccountDetails] = useState<IAccountDetails | null>(null); // Store verified account details here
+    const [verifiedAccountDetails, setVerifiedAccountDetails] = useState<IAccountDetails | null>(null);
     const [error, setError] = useState('')
-
 
     const { data: balanceData } = useQuery(['getMerchantBalance'], getMerchantBalance, {
         onError: (err: IErrorResponse) => {
             if (err.response.data.message == "Token expired login again") {
                 localStorage.clear();
                 navigate('/')
-
             }
         }
     });
@@ -38,10 +36,10 @@ const Withdrawal = () => {
             if (err.response.data.message == "Token expired login again") {
                 localStorage.clear();
                 navigate('/')
-
             }
         }
     });
+
     const { data: banksData, isLoading: isBanksLoading } = useQuery('fetchBanks', fetchBanks);
 
     const { mutate: verifyAccount, isLoading: isVerifying, isError: isVerificationError } = useMutation(
@@ -49,8 +47,8 @@ const Withdrawal = () => {
         verifyMerchantAccountNumber,
         {
             onSuccess: (data) => {
-                setVerifiedAccountDetails(data?.data?.data); // Save the response to state
-                setModalStep(2); // Move to the second modal step
+                setVerifiedAccountDetails(data?.data?.data);
+                setModalStep(2);
             },
             onError: (error: IErrorResponse) => {
                 setError(error?.response?.data?.message)
@@ -73,19 +71,17 @@ const Withdrawal = () => {
             },
         }
     );
+
     useEffect(() => {
         if (transactionData?.data?.data) {
             setAllTransaction(transactionData?.data?.data);
         }
-        // console.log(transactionData);
-
     }, [transactionData]);
 
     useEffect(() => {
         if (balanceData?.data?.data) {
             setBalance(balanceData?.data?.data?.data?.balance);
         }
-
     }, [balanceData]);
 
     const openModal = () => {
@@ -95,7 +91,7 @@ const Withdrawal = () => {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        setModalStep(1); // Reset to step 1 when closing
+        setModalStep(1);
     };
 
     const handleBankDetailsSubmit = () => {
@@ -111,7 +107,7 @@ const Withdrawal = () => {
 
     const handleWithdrawSubmit = () => {
         if (amount && verifiedAccountDetails) {
-            const amountAsNumber = Number(amount); // Convert to number
+            const amountAsNumber = Number(amount);
             if (isNaN(amountAsNumber)) {
                 toast.error("Please enter a valid number for the withdrawal amount.");
                 return;
@@ -124,14 +120,15 @@ const Withdrawal = () => {
             toast.error("Please enter an amount to withdraw.");
         }
     };
-    const columns: Array<keyof typeof formattedData[0]> = [
-        "Account Name",
-        "Payment Gateway",
-        "Withdrawal Amount",
-        "Transaction Type",
-        "Fee",
-        "Status",
-        "Date",
+
+    const columns: { key: "id" | "Account Name" | "Payment Gateway" | "Withdrawal Amount" | "Transaction Type" | "Fee" | "Status" | "Date"; label: string }[] = [
+        { key: "Account Name", label: "Account Name" },
+        { key: "Payment Gateway", label: "Payment Gateway" },
+        { key: "Withdrawal Amount", label: "Withdrawal Amount" },
+        { key: "Transaction Type", label: "Transaction Type" },
+        { key: "Fee", label: "Fee" },
+        { key: "Status", label: "Status" },
+        { key: "Date", label: "Date" },
     ];
 
     const formattedData = allTransaction?.map(transaction => ({
@@ -144,6 +141,7 @@ const Withdrawal = () => {
         "Date": transaction?.createdTime,
         "id": transaction._id
     }));
+
     const filteredOrders = formattedData?.filter(order => {
         if (statusFilter === "All") {
             return true;
@@ -152,62 +150,117 @@ const Withdrawal = () => {
     });
 
     return (
-        <div className="w-[100%] flex flex-col justify-center p-[10px] max-[650px]:p-0">
-            <div className="w-[90%] h-[150px] flex justify-between items-center border-b-[1px] border-b-grey-500 max-[650px]:h-[200px] max-[650px]:flex-col max-[650px]:mt-[40px] max-[650px]:gap-[10px]">
-                <span className="w-[50%] flex flex-col gap-2 max-[650px]:w-[100%]">
-                    <p className="font-light text-[12px]">Account Balance (NGN)</p>
-                    <p className="text-[30px] font-medium">{formatNumber(balance)}.00</p>
-                    <p className="font-light text-[12px]">Withdrawable balance</p>
-                </span>
-                <span className="w-[50%] flex justify-end max-[650px]:w-[100%] max-[650px]:justify-start max-[650px]:mb-[10px]">
-                    <button
-                        className="w-[120px] h-[30px] rounded-[4px] bg-[#FFc300] font-medium text-[14px]"
-                        onClick={openModal}
-                    >
-                        Withdraw
-                    </button>
-                </span>
-            </div>
-            <div className="w-[95%]  max-[650px]:w-[100%] flex items-center justify-center mt-[50px] flex-col dark:text-white">
-                <p className="w-full mb-[20px] text-[18px]">Transaction History</p>
-                <div className="w-[100%] mb-[50px] flex flex-col gap-[20px]">
-                    <div className="flex justify-between items-center mb-4">
-                        <select
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
-                            className="px-[10px] py-2 border rounded text-black outline-none"
-                        >
-                            <option value="All">All</option>
-                            <option value="pending">Pending</option>
-                            <option value="processing">Processing</option>
-                            <option value="completed">Completed</option>
-                            <option value="canceled">Canceled</option>
-                        </select>
+        <div className="min-h-screen bg-gradient-to-br bg-white dark:bg-black">
+            <div className="container mx-auto px-4 py-8 max-w-7xl">
+                <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 mb-8 border border-slate-200 dark:border-slate-700">
+                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+                        <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
+                                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Account Balance</p>
+                                    <p className="text-xs text-slate-500 dark:text-slate-500">Nigerian Naira (NGN)</p>
+                                </div>
+                            </div>
+                            <div className="mb-2">
+                                <p className="text-4xl font-bold text-slate-900 dark:text-white mb-1">
+                                    ₦{formatNumber(balance)}.00
+                                </p>
+                                <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">
+                                    Available for withdrawal
+                                </p>
+                            </div>
+                        </div>
+                        <div className="lg:text-right">
+                            <button
+                                onClick={openModal}
+                                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                                </svg>
+                                Withdraw Funds
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white  rounded-2xl shadow-xl dark:bg-black overflow-hidden w-full">
+                    <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-700">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div>
+                                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
+                                    Transaction History
+                                </h2>
+                                <p className="text-sm text-slate-600 dark:text-slate-400">
+                                    Track all your withdrawal transactions
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Filter:
+                                </label>
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value)}
+                                    className="px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
+                                >
+                                    <option value="All">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="canceled">Canceled</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
-                    <Table
-                        data={filteredOrders}
-                        columns={columns}
-                        loading={isLoading}
-                    />
+                    <div className="p-6 sm:p-6">
+                        <Table
+                            data={filteredOrders}
+                            columns={columns}
+                            loading={isLoading}
+                        />
+                    </div>
                 </div>
             </div>
+
             {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg w-[30%] max-[650px]:w-[95%]">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={closeModal}></div>
+                    <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-slate-200 dark:border-slate-700">
                         {modalStep === 1 && (
-                            <div className="w-[100%] flex flex-col gap-[30px]">
-                                <span className="w-[100%] border-b-[1px] border-b-grey-500 h-[150px] p-2 ">
-                                    <h2 className="text-[20px] font-Semibold mb-4 dark:text-black text-center">Withdraw Funds to Bank Account</h2>
-                                    <p className="text-[14px] font-light dark:text-black ">Select your destination account and fill in the details to withdraw.</p>
-                                </span>
-                                <span>
-                                    <span>
+                            <div className="p-6">
+                                {/* Modal Header */}
+                                <div className="text-center mb-6 pb-6 border-b border-slate-200 dark:border-slate-700">
+                                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                        </svg>
+                                    </div>
+                                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                                        Withdraw to Bank
+                                    </h2>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                                        Enter your bank details to proceed with withdrawal
+                                    </p>
+                                </div>
+
+                                {/* Bank Selection */}
+                                <div className="space-y-4 mb-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                            Select Bank
+                                        </label>
                                         <input
                                             type="text"
                                             list="banks"
-                                            placeholder="Select a bank"
-                                            className="border p-2 mb-4 w-full dark:text-black outline-none text-black text-[12px]"
+                                            placeholder="Choose your bank"
+                                            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                             value={bankDetails.bankName}
                                             onChange={(e) => {
                                                 const selectedBank = banksData?.data?.data.find(
@@ -216,85 +269,158 @@ const Withdrawal = () => {
                                                 setBankDetails({
                                                     ...bankDetails,
                                                     bankName: e.target.value,
-                                                    bankCode: selectedBank?.code || '', // Update code if bank exists
+                                                    bankCode: selectedBank?.code || '',
                                                 });
                                             }}
                                         />
-                                        <datalist id="banks"> 
+                                        <datalist id="banks">
                                             {!isBanksLoading &&
                                                 banksData?.data?.data.map((bank: IBanks) => (
                                                     <option key={bank.code} value={bank.name} />
                                                 ))}
                                         </datalist>
-                                    </span>
-                                    <input
-                                        type="text"
-                                        placeholder="Account Number"
-                                        className="border font-light p-2 mb-4 w-full dark:text-black outline-none text-[12px]"
-                                        value={bankDetails.accountNumber}
-                                        onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: e.target.value })}
-                                    />
-                                </span>
-                                <span className="w-[100%] bg-[#ebebeb] p-[10px] rounded-[8px]">
-                                    <p className="text-[10px] font-light dark:text-black">Please, ensure that the customer or recipent's details are correct to avoid any potential issue with the transaction</p>
-                                </span>
-                                <div className=" w-[100%] flex gap-2 justify-between">
-                                    <button className="w-[50%] h-[30px] text-[14px] bg-gray-300 text-black rounded-md" onClick={closeModal}>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                            Account Number
+                                        </label>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter 10-digit account number"
+                                            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            value={bankDetails.accountNumber}
+                                            onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Warning Notice */}
+                                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-6">
+                                    <div className="flex items-start gap-3">
+                                        <svg className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                        </svg>
+                                        <div>
+                                            <p className="text-sm font-medium text-amber-800 dark:text-amber-200 mb-1">
+                                                Important Notice
+                                            </p>
+                                            <p className="text-xs text-amber-700 dark:text-amber-300">
+                                                Please ensure all bank details are correct to avoid transaction issues
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Error Message */}
+                                {isVerificationError && (
+                                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+                                        <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
+                                    </div>
+                                )}
+
+                                {/* Action Buttons */}
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={closeModal}
+                                        className="flex-1 px-4 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-all duration-200"
+                                    >
                                         Cancel
                                     </button>
                                     <button
-                                        className="w-[50%] h-[30px] text-[14px] bg-blue-500 text-white rounded-md"
                                         onClick={handleBankDetailsSubmit}
                                         disabled={isVerifying}
+                                        className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
-                                        {isVerifying ? "Verifying..." : "Next"}
+                                        {isVerifying ? (
+                                            <div className="flex items-center justify-center gap-2">
+                                                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Verifying...
+                                            </div>
+                                        ) : "Verify Account"}
                                     </button>
                                 </div>
-                                {isVerificationError && <p className="text-red-500 text-[14px] mt-2">{error}</p>}
                             </div>
                         )}
 
                         {modalStep === 2 && verifiedAccountDetails && (
-                            <div className="dark:text-white w-[100%] flex flex-col gap-[20px]">
-                                <span className="w-[100%] flex justify-between">
-                                    <p className="text-[20px] dark:text-black">{verifiedAccountDetails.details.account_name}</p>
-                                </span>
-                                <span className="w-[100%] border-b-[1px] border-b-grey-500 h-[80px] ">
-                                    <h2 className="text-[18px] font-Semibold dark:text-black">Withdraw Funds to Bank Account</h2>
-                                    <p className="text-[12px] font-light dark:text-black">Please enter the details of the transaction to proceed</p>
-                                </span>
-                                <span className="w-[100%] bg-[#ebebeb] p-[10px] rounded-[8px]">
-                                    <p className="text-[10px] font-light dark:text-black">
-                                        A maximum of <strong>NGN 5,000,000.00</strong> can be withdrawn in a single transaction to your bank account per day and minimum of
+                            <div className="p-6">
+                                {/* Modal Header */}
+                                <div className="text-center mb-6 pb-6 border-b border-slate-200 dark:border-slate-700">
+                                    <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
+                                        {verifiedAccountDetails.details.account_name}
+                                    </h2>
+                                    <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">
+                                        Account verified successfully
                                     </p>
-                                </span>
-                                <div className="w-full flex flex-col gap-1">
-                                    <span className="flex w-full justify-between text-[10px]">
-                                        <p>Amount to withdraw</p>
-                                        <p className="text-[lightgrey]">Fee charged <strong className="text-black">100.00</strong></p>
-                                    </span>
-                                    <input
-                                        type="number"
-                                        placeholder="Amount to Withdraw"
-                                        className="border p-2 w-full outline-none text-[12px] dark:text-black"
-                                        value={amount}
-                                        onChange={(e) => setWithdrawAmount(e.target.value)}
-                                    />
-                                    <p className="text-[12px] text-[lightgrey]">Minimum amount <strong className="text-black text-[10px]">NGN 1,100.00</strong> </p>
                                 </div>
-                                <div className="flex justify-between w-full gap-2">
+
+                                {/* Transaction Limits */}
+                                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                                    <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
+                                        Transaction Limits
+                                    </h3>
+                                    <div className="space-y-1 text-xs text-blue-700 dark:text-blue-300">
+                                        <p>• Maximum: <span className="font-bold">₦5,000,000.00</span> per day</p>
+                                        <p>• Minimum: <span className="font-bold">₦1,100.00</span> per transaction</p>
+                                        <p>• Processing fee: <span className="font-bold">₦100.00</span></p>
+                                    </div>
+                                </div>
+
+                                {/* Amount Input */}
+                                <div className="mb-6">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                            Withdrawal Amount
+                                        </label>
+                                        <span className="text-xs text-slate-500 dark:text-slate-400">
+                                            Fee: <span className="font-semibold text-red-600 dark:text-red-400">₦100.00</span>
+                                        </span>
+                                    </div>
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-500 dark:text-slate-400 font-medium">
+                                            ₦
+                                        </span>
+                                        <input
+                                            type="number"
+                                            placeholder="0.00"
+                                            className="w-full pl-8 pr-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-200 text-lg font-medium"
+                                            value={amount}
+                                            onChange={(e) => setWithdrawAmount(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex gap-3">
                                     <button
-                                        className="w-[50%] h-[30px] text-[14px] bg-gray-300 text-black rounded-md"
                                         onClick={() => setModalStep(1)}
+                                        className="flex-1 px-4 py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-300 dark:hover:bg-slate-600 transition-all duration-200"
                                     >
                                         Back
                                     </button>
                                     <button
-                                        className="w-[50%] h-[30px] text-[14px] bg-blue-500 text-white dark:text-black rounded-md"
                                         onClick={handleWithdrawSubmit}
                                         disabled={isWithdrawing}
+                                        className="flex-1 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
-                                        {isWithdrawing ? "Processing..." : "Complete"}
+                                        {isWithdrawing ? (
+                                            <div className="flex items-center justify-center gap-2">
+                                                <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                                Processing...
+                                            </div>
+                                        ) : "Complete Withdrawal"}
                                     </button>
                                 </div>
                             </div>
