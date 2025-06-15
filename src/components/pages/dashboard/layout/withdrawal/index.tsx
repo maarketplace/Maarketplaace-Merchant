@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery, useMutation } from "react-query";
 import { useEffect, useState } from "react";
 import { fetchBanks, getMerchantBalance, getTransaction } from "../../../../../api/query";
@@ -10,6 +11,15 @@ import toast from "react-hot-toast";
 import { ITransactionHistory } from "../../../../../interface/TransactionHistoryInterface";
 import Table from "../../../../../utils/Table";
 
+type TableColumnKey = "id" | "Account Name" | "Payment Gateway" | "Withdrawal Amount" | "Transaction Type" | "Fee" | "Status" | "Date";
+interface TableColumn {
+    key: TableColumnKey;
+    label: string;
+    sortable?: boolean;
+    type?: "number" | "text" | "image" | "date";
+    width?: string;
+    render?: (value: any, row: any) => React.ReactNode;
+}
 const Withdrawal = () => {
     const navigate = useNavigate()
     const [allTransaction, setAllTransaction] = useState<ITransactionHistory[]>([]);
@@ -121,14 +131,59 @@ const Withdrawal = () => {
         }
     };
 
-    const columns: { key: "id" | "Account Name" | "Payment Gateway" | "Withdrawal Amount" | "Transaction Type" | "Fee" | "Status" | "Date"; label: string }[] = [
-        { key: "Account Name", label: "Account Name" },
-        { key: "Payment Gateway", label: "Payment Gateway" },
-        { key: "Withdrawal Amount", label: "Withdrawal Amount" },
-        { key: "Transaction Type", label: "Transaction Type" },
-        { key: "Fee", label: "Fee" },
-        { key: "Status", label: "Status" },
-        { key: "Date", label: "Date" },
+    const columns: TableColumn[] = [
+        {
+            key: "Account Name",
+            label: "Account Name"
+        },
+        {
+            key: "Payment Gateway",
+            label: "Payment Gateway"
+        },
+        {
+            key: "Withdrawal Amount",
+            label: "Withdrawal Amount"
+        },
+        {
+            key: "Transaction Type",
+            label: "Transaction Type"
+        },
+        {
+            key: "Fee",
+            label: "Fee"
+        },
+        {
+            key: "Status",
+            label: "Status",
+            type: "text",
+            sortable: true,
+            render: (value: string) => {
+                const getStatusColor = (status: string) => {
+                    switch (status.toLowerCase()) {
+                        case 'completed':
+                            return 'bg-green-100 text-green-800';
+                        case 'pending':
+                            return 'bg-yellow-100 text-yellow-800';
+                        case 'processing':
+                            return 'bg-blue-100 text-blue-800';
+                        case 'canceled':
+                            return 'bg-red-100 text-red-800';
+                        default:
+                            return 'bg-gray-100 text-gray-800';
+                    }
+                };
+
+                return (
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(value)}`}>
+                        {value}
+                    </span>
+                );
+            }
+        },
+        {
+            key: "Date",
+            label: "Date",
+        }
     ];
 
     const formattedData = allTransaction?.map(transaction => ({
