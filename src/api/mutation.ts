@@ -32,7 +32,7 @@ export const logOutMerchant = async (id: string) => {
 };
 export const uploadEbook = async (data: IAddEbook) => {
     const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT_STAGING}/product/ebook`, data, {
+    return await axios.post(`${VITE_ENDPOINT_STAGING}/products/ebook`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
             'Authorization': `Bearer ${token}`
@@ -42,7 +42,7 @@ export const uploadEbook = async (data: IAddEbook) => {
 
 export const uploadCourse = async (data: IAddCourse) => {
     const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT_STAGING}/product/course`, data, {
+    return await axios.post(`${VITE_ENDPOINT_STAGING}/products/course`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
             'Authorization': `Bearer ${token}`
@@ -52,7 +52,7 @@ export const uploadCourse = async (data: IAddCourse) => {
 export const merchantLike = async (id: string) => {
     const token = localStorage.getItem(VITE_TOKEN)
     // console.log(id)
-    return await axios.post(`${VITE_ENDPOINT_STAGING}/product/${id}/like/merchant`, {}, {
+    return await axios.post(`${VITE_ENDPOINT_STAGING}/products/${id}/like/merchant`, {}, {
         headers: {
             'Authorization': `Bearer ${token}`
         },
@@ -60,7 +60,7 @@ export const merchantLike = async (id: string) => {
 }
 export const merchantAddProductToCart = async ({ id, data }: { id: string, data: number }) => {
     const merchantToken = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT_STAGING}/carts/product/${id}/merchants`, data, {
+    return await axios.post(`${VITE_ENDPOINT_STAGING}/carts/products/${id}/merchants`, data, {
         headers: {
             'Authorization': `Bearer ${merchantToken}`
         }
@@ -134,7 +134,7 @@ export const updateMerchantImage = async (file: string | Blob) => {
 
 export const merchantDeleteProduct = async (id: string) => {
     const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.delete(`${VITE_ENDPOINT_STAGING}/product/${id}`, {
+    return await axios.delete(`${VITE_ENDPOINT_STAGING}/products/${id}`, {
         headers: {
             'Authorization': `Bearer ${Token}`,
         },
@@ -180,7 +180,7 @@ export const uploadQuicks = async (id: string, data: { description: string; file
 
 export const updateEbook = async (data: IUpdateEbook, id: string) => {
     const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.put(`${VITE_ENDPOINT_STAGING}/product/${id}/update`, data, {
+    return await axios.put(`${VITE_ENDPOINT_STAGING}/products/${id}/update`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
             'Authorization': `Bearer ${token}`
