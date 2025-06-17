@@ -32,7 +32,7 @@ export const logOutMerchant = async (id: string) => {
 };
 export const uploadEbook = async (data: IAddEbook) => {
     const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT}/product/ebook`, data, {
+    return await axios.post(`${VITE_ENDPOINT}/products/ebook`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
             'Authorization': `Bearer ${token}`
@@ -42,7 +42,7 @@ export const uploadEbook = async (data: IAddEbook) => {
 
 export const uploadCourse = async (data: IAddCourse) => {
     const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_ENDPOINT}/product/course`, data, {
+    return await axios.post(`${VITE_ENDPOINT}/products/course`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
             'Authorization': `Bearer ${token}`
@@ -134,7 +134,7 @@ export const updateMerchantImage = async (file: string | Blob) => {
 
 export const merchantDeleteProduct = async (id: string) => {
     const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.delete(`${VITE_ENDPOINT}/product/${id}`, {
+    return await axios.delete(`${VITE_ENDPOINT}/products/${id}`, {
         headers: {
             'Authorization': `Bearer ${Token}`,
         },
@@ -180,7 +180,7 @@ export const uploadQuicks = async (id: string, data: { description: string; file
 
 export const updateEbook = async (data: IUpdateEbook, id: string) => {
     const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.put(`${VITE_ENDPOINT}/product/${id}/update`, data, {
+    return await axios.put(`${VITE_ENDPOINT}/products/${id}/update`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
             'Authorization': `Bearer ${token}`

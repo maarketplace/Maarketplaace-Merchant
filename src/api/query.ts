@@ -18,7 +18,7 @@ export const getMerchant = async () => {
 
 export const getOneMerchantAllProduct = async () => {
     const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.get(`${VITE_ENDPOINT}/merchant/product`, {
+    return await axios.get(`${VITE_ENDPOINT}/merchant/products`, {
         headers: {
             'Authorization': `Bearer ${token}`,
         },
@@ -50,7 +50,7 @@ export const getMerchantCustomer = async () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getOneProduct = async (id: any) => {
     // console.log(data?.queryKey[1])
-    return await axios.get(`${VITE_ENDPOINT}/product/${id}`)
+    return await axios.get(`${VITE_ENDPOINT}/products/${id}`)
 }
 
 // export const getBusinessName = async (name: BusinessName) => {
