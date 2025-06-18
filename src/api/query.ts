@@ -18,7 +18,7 @@ export const getMerchant = async () => {
 
 export const getOneMerchantAllProduct = async () => {
     const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.get(`${VITE_ENDPOINT}/merchant/products`, {
+    return await axios.get(`${VITE_ENDPOINT}/merchant/product`, {
         headers: {
             'Authorization': `Bearer ${token}`,
         },
