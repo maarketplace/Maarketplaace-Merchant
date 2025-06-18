@@ -103,7 +103,7 @@ const UploadCourse = () => {
         courseCategories.find((category) => category.name === selectedCategory)?.courseSubcategories || [];
 
     return (
-        <div className="min-h-screen dark:bg-gray-900 p-4 md:p-6">
+        <div className="min-h-screen dark:bg-gray-900 p-4 md:p-6 no-scrollbar">
             <div className="max-w-7xl mx-auto">
                 <div className="mb-8 text-center">
                     <h3 className="text-3xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 mt-5">
@@ -116,7 +116,7 @@ const UploadCourse = () => {
 
                 <div className="grid lg:grid-cols-2 gap-8">
                     <div className="space-y-6">
-                        <div className="bg-white max-[650px]:bg-none dark:bg-gray-800 rounded-lg shadow-sm max-[650px]:shadow-none border max-[650px]:border-none border-gray-200 dark:border-gray-700 p-2">
+                        <div className="bg-white max-[650px]:bg-none dark:bg-gray-800 rounded-lg shadow-sm max-[650px]:shadow-none border max-[650px]:border-none border-gray-200 dark:border-gray-700 p-4">
                             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
                                 Course Information
                             </h4>

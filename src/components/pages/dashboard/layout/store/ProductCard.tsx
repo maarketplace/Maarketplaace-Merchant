@@ -19,7 +19,7 @@ const ProductCard = ({
     const [showMenu, setShowMenu] = useState(false);
 
     return (
-        <div className="bg-white dark:bg-black rounded-xl border border-gray-600 shadow-md hover:shadow-lg transition-all duration-200 overflow-hidden group">
+        <div className="bg-white dark:bg-black rounded-xl  shadow-md hover:shadow-lg transition-all duration-200 overflow-hidden group">
             <div className="relative">
                 <img
                     src={product.productImage}
