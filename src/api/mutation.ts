@@ -186,4 +186,3 @@ export const updateEbook = async (data: IUpdateEbook, id: string) => {
         },
     })
 }
-
