@@ -16,18 +16,20 @@ const VerificationSchema = yup.object({
     verificationCode: yup
         .string()
         .required('Verification code is required')
-        .matches(/^\d{4,7}$/, 'Verification code must be between 1 and 7 digits')
+        .matches(/^\d{4,7}$/, 'Verification code must be between 4 and 7 digits')
 });
 
 const Verify = () => {
     const navigate = useNavigate();
-    const emails = localStorage.getItem('merchantEmail'); 
+    const emails = localStorage.getItem('merchantEmail');
+
     const form = useForm<VerificationFormData>({
         resolver: yupResolver(VerificationSchema),
         defaultValues: {
             verificationCode: '',
         }
     });
+
     const { handleSubmit, register, formState: { errors } } = form;
 
     const { mutate, isLoading } = useMutation(['merchantverify'], merchantVerify, {
@@ -41,7 +43,7 @@ const Verify = () => {
     });
 
     const { mutate: resendVerificationMutate, isLoading: isResendLoading } = useMutation(
-        ['resendMerchantVerify'], 
+        ['resendMerchantVerify'],
         () => resendMerchantVerify(emails),
         {
             onSuccess: () => {
@@ -63,40 +65,94 @@ const Verify = () => {
     };
 
     return (
-        <div className='w-[100%] h-[100vh] flex items-center justify-center bg-[#FFC300] max-[650px]:bg-[white] max-[650px]:flex dark:bg-black dark:text-white'>
-            <div className='w-[45%] h-[50vh] bg-[white] rounded-lg flex items-center justify-center flex-col gap-[20px] max-[650px]:w-[95%] dark:bg-black dark:text-white'>
-                <img src="MARKET.svg" alt="" className="max-[650px]:w-[80px]" />
-                <div className="w-[70%] flex gap-[10px] items-center flex-col">
-                    <label className='text-[25px] text-[#FFC300]'>
-                        Check your email
-                    </label>
-                    <p className='w-[70%] flex justify-center text-center text-[15px] max-[650px]:w-[95%] max-[650px]:text-[12px]'>
-                        We just sent you a 6 digit verification message to your email address
+        <div className="min-h-screen bg-gradient-to-br dark:from-gray-900 dark:to-black flex items-center justify-center p-4">
+            <div className="w-full max-w-md">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 space-y-6">
+                    <div className="text-center">
+                        <img
+                            src="MARKET.svg"
+                            alt="Market Logo"
+                            className="mx-auto h-16 w-auto"
+                        />
+                    </div>
+
+                    <div className="text-center space-y-2">
+                        <h1 className="text-2xl font-bold text-yellow-500 dark:text-yellow-400">
+                            Check your email
+                        </h1>
+                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            We just sent you a 6 digit verification code to your email address
+                        </p>
+                    </div>
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                        <div className="space-y-2">
+                            <label
+                                htmlFor="verificationCode"
+                                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            >
+                                Verification Code
+                            </label>
+                            <input
+                                id="verificationCode"
+                                type="text"
+                                maxLength={7}
+                                {...register('verificationCode')}
+                                placeholder="Enter 6-digit code"
+                                className={`
+                                    w-full px-4 py-3 text-center text-lg tracking-widest
+                                    border rounded-lg transition-colors duration-200
+                                    bg-gray-50 dark:bg-gray-700 
+                                    dark:text-white dark:border-gray-600
+                                    focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent
+                                    ${errors.verificationCode
+                                        ? 'border-red-500 focus:ring-red-500'
+                                        : 'border-gray-300 hover:border-gray-400'
+                                    }
+                                `}
+                                disabled={isLoading}
+                            />
+                            {errors.verificationCode && (
+                                <p className="text-red-500 text-xs mt-1">
+                                    {errors.verificationCode.message}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="text-center">
+                            <button
+                                type="button"
+                                onClick={handleResendClick}
+                                disabled={isResendLoading}
+                                className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
+                                         disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                            >
+                                {isResendLoading ? "Resending..." : "Resend verification code"}
+                            </button>
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-400 
+                                     text-white font-medium py-3 px-4 h-[40px] rounded-lg transition-colors duration-200
+                                     disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2
+                                     dark:focus:ring-offset-gray-800"
+                        >
+                            {isLoading ? (
+                                <Loading />
+                            ) : (
+                                "Verify Code"
+                            )}
+                        </button>
+                    </form>
+                </div>
+
+                <div className="text-center mt-6">
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Didn't receive the code? Check your spam folder or try resending.
                     </p>
                 </div>
-                <div className="w-[70%] flex gap-[10px] justify-center max-[650px]:w-[100%]">
-                    <input
-                        className='w-full h-[50px] border border-[#999BA1] dark:text-black outline-none text-center rounded-lg max-[650px]:w-[80%] max-[650px]:h-[40px]'
-                        type="text"
-                        maxLength={6}
-                        {...register('verificationCode')}
-                        placeholder="Enter verification code"
-                    />
-                </div>
-                <b className='w-[50%] text-[red] text-[12px]'>{errors?.verificationCode?.message}</b>
-                <span>
-                    <p className='text-[14px] text-blue-300 cursor-pointer' onClick={handleResendClick}>
-                        {isResendLoading ? "Resending Verification Code" : 'Resend Verification Code'}
-                    </p>
-                </span>
-                <button
-                    type="submit"
-                    className='w-[55%] bg-[#FFC300] h-[45px] text-black rounded-lg max-[650px]:w-[80%]'
-                    onClick={handleSubmit(onSubmit)}
-                    disabled={isLoading}
-                >
-                    {isLoading ? <Loading/> : "Submit"}
-                </button>
             </div>
         </div>
     );

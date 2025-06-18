@@ -6,12 +6,14 @@ import toast from 'react-hot-toast';
 import { merchantResetPassword } from '../../../api/mutation';
 import { ResetPasswordInterface } from '../../../interface/ResetPasswordInterface';
 import { ResetPasswordSchema } from '../../../schema/LoginSchema';
+import { IErrorResponse } from '../../../interface/ErrorInterface';
 
 
 function ResetPassword() {
     const navigate = useNavigate()
     const { id } = useParams<Params>()
     const form = useForm<ResetPasswordInterface>({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         resolver: yupResolver(ResetPasswordSchema) as any
     });
     const { register, handleSubmit, formState: { errors } } = form;
@@ -21,8 +23,8 @@ function ResetPassword() {
             toast.success(data?.data?.data?.message)
             navigate('/')
         },
-        onError: (error: any) => {
-            console.log(error)
+        onError: (err: IErrorResponse) => {
+            toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message);
         }
     });
 
@@ -33,7 +35,7 @@ function ResetPassword() {
         handleSubmit(onSubmit)();
     };
     return (
-        <div className="w-[100%] h-[100vh] flex items-center justify-center bg-[#FFC300] max-[650px]:bg-[white] max-[650px]:flex dark:bg-black dark:text-[white]">
+        <div className="w-[100%] h-[100vh] flex items-center justify-center max-[650px]:bg-[white] max-[650px]:flex dark:bg-black dark:text-[white]">
             <div className='w-[45%] bg-[white] rounded-lg flex items-center justify-center flex-col gap-[20px] max-[650px]:w-[100%] p-5 dark:bg-black dark:text-[white]'>
                 <img src="MARKET.svg" alt="" className=" w-[100px] max-[650px]:w-[80px]" />
                 <h3 className='text-center max-[650px]:text-[12px] text-wrap'>Enter a new password to reset your password</h3>
