@@ -1,188 +1,137 @@
-import axios from "axios";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IAddEbook, IUpdateEbook } from "../interface/UploadEbook";
 import { IAddCourse } from "../interface/UploadCourse";
 import { LoginInterface } from "../interface/LoginInterface";
 import { SignUpInterface } from "../interface/SignUpInterface";
-
-const { VITE_API_BASE_URL, VITE_TOKEN } = import.meta.env;
+import axiosInstance from "./axiosInstance";
 
 export const merchantSignup = async (data: SignUpInterface) => {
-    console.log(data);
-    return await axios.post(`${VITE_API_BASE_URL}/merchant`, data, {
+    return await axiosInstance.post("/merchant", data, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
-    })
+    });
 };
 
 export const merchantLogin = async (data: LoginInterface) => {
-    return await axios.post(`${VITE_API_BASE_URL}/merchant/login`, data)
+    return await axiosInstance.post("/merchant/login", data);
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 export const merchantVerify = async (data: any) => {
-    return await axios.put(`${VITE_API_BASE_URL}/merchant/verify`, data)
+    return await axiosInstance.put("/merchant/verify", data);
 };
+
 export const resendMerchantVerify = async (email: string | null) => {
-    return await axios.post(`${VITE_API_BASE_URL}/email?email=${email}&type=merchant`);
+    return await axiosInstance.post(`/email?email=${email}&type=merchant`);
 };
+
 export const logOutMerchant = async (id: string) => {
-    // console.log(id)
-    return await axios.post(`${VITE_API_BASE_URL}/merchant/logout/${id}`)
+    return await axiosInstance.post(`/merchant/logout/${id}`);
 };
+
 export const uploadEbook = async (data: IAddEbook) => {
-    const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_API_BASE_URL}/products/ebook`, data, {
+    return await axiosInstance.post("/products/ebook", data, {
         headers: {
             "Content-Type": "multipart/form-data",
-            'Authorization': `Bearer ${token}`
         },
-    })
-}
+    });
+};
 
 export const uploadCourse = async (data: IAddCourse) => {
-    const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_API_BASE_URL}/products/course`, data, {
+    return await axiosInstance.post("/products/course", data, {
         headers: {
             "Content-Type": "multipart/form-data",
-            'Authorization': `Bearer ${token}`
         },
-    })
-}
+    });
+};
+
 export const merchantLike = async (id: string) => {
-    const token = localStorage.getItem(VITE_TOKEN)
-    // console.log(id)
-    return await axios.post(`${VITE_API_BASE_URL}/products/${id}/like/merchant`, {}, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
-    })
-}
-export const merchantAddProductToCart = async ({ id, data }: { id: string, data: number }) => {
-    const merchantToken = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_API_BASE_URL}/carts/products/${id}/merchants`, data, {
-        headers: {
-            'Authorization': `Bearer ${merchantToken}`
-        }
-    })
-}
-export const merchantComment = async ({ id, comment }: { id: string | undefined, comment: string }) => {
-    const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_API_BASE_URL}/comment/merchant/products/${id}`, { comment }, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-}
+    return await axiosInstance.post(`/products/${id}/like/merchant`);
+};
+
+export const merchantAddProductToCart = async ({ id, data }: { id: string; data: number }) => {
+    return await axiosInstance.post(`/carts/products/${id}/merchants`, data);
+};
+
+export const merchantComment = async ({ id, comment }: { id: string | undefined; comment: string }) => {
+    return await axiosInstance.post(`/comment/merchant/products/${id}`, { comment });
+};
 
 export const merchantLikeAComment = async (id: string) => {
-    console.log(id)
-    const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_API_BASE_URL}/comment/${id}/like/merchant`, {}, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-}
-export const merchantForgotPassword = async (email: string) => {
-    console.log(email)
-    return await axios.post(`${VITE_API_BASE_URL}/merchant/fpw`, { email })
-}
+    return await axiosInstance.post(`/comment/${id}/like/merchant`);
+};
 
-export const merchantResetPassword = async (data: { id: string | undefined, password: string }) => {
-    const { id, password } = data
-    return await axios.patch(`${VITE_API_BASE_URL}/merchant/ps-change/${id}`, { password })
-}
+export const merchantForgotPassword = async (email: string) => {
+    return await axiosInstance.post("/merchant/fpw", { email });
+};
+
+export const merchantResetPassword = async (data: { id: string | undefined; password: string }) => {
+    return await axiosInstance.patch(`/merchant/ps-change/${data.id}`, { password: data.password });
+};
 
 export const merchantLoginAsUser = async () => {
-    const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_API_BASE_URL}/merchant/user`, {}, {
-        headers: {
-            'Authorization': `Bearer ${Token}`
-        }
-    })
-}
+    return await axiosInstance.post("/merchant/user");
+};
+
 export const createCategory = async (category: string) => {
-    const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_API_BASE_URL}/category`, { category }, {
-        headers: {
-            'Authorization': `Bearer ${Token}`
-        }
-    })
-}
+    return await axiosInstance.post("/category", { category });
+};
+
 export const createSubCategory = async (sub: string) => {
-    const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.post(`${VITE_API_BASE_URL}/sub-category`, { sub }, {
-        headers: {
-            'Authorization': `Bearer ${Token}`
-        }
-    })
-}
+    return await axiosInstance.post("/sub-category", { sub });
+};
 
 export const updateMerchantImage = async (file: string | Blob) => {
     const formData = new FormData();
-    formData.append('image', file);
-    const Token = localStorage.getItem(VITE_TOKEN)
+    formData.append("image", file);
 
-    return await axios.patch(`${VITE_API_BASE_URL}/merchant/profile/image`, formData, {
+    return await axiosInstance.patch("/merchant/profile/image", formData, {
         headers: {
-            'Authorization': `Bearer ${Token}`,
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
         },
     });
 };
 
 export const merchantDeleteProduct = async (id: string) => {
-    const Token = localStorage.getItem(VITE_TOKEN)
-    return await axios.delete(`${VITE_API_BASE_URL}/products/${id}`, {
-        headers: {
-            'Authorization': `Bearer ${Token}`,
-        },
-    })
-}
+    return await axiosInstance.delete(`/products/${id}`);
+};
 
-export const verifyMerchantAccountNumber = async ({ account_number, bank_code }: { account_number: string, bank_code: string }) => {
-    const Token = localStorage.getItem(VITE_TOKEN);
-    return await axios.post(
-        `${VITE_API_BASE_URL}/accounts/verify`,
-        { account_number, bank_code },
-        {
-            headers: {
-                'Authorization': `Bearer ${Token}`,
-            }
-        }
-    );
-}
+export const verifyMerchantAccountNumber = async ({
+    account_number,
+    bank_code,
+}: {
+    account_number: string;
+    bank_code: string;
+}) => {
+    return await axiosInstance.post("/accounts/verify", {
+        account_number,
+        bank_code,
+    });
+};
 
-
-export const withdrawFunds = async ({ amount, id }: { amount: number, id: string }) => {
-    const Token = localStorage.getItem(VITE_TOKEN);
-    return await axios.post(`${VITE_API_BASE_URL}/accounts/request/accounts/${id}`, { amount }, {
-        headers: {
-            'Authorization': `Bearer ${Token}`,
-        }
-    })
+export const withdrawFunds = async ({ amount, id }: { amount: number; id: string }) => {
+    return await axiosInstance.post(`/accounts/request/accounts/${id}`, { amount });
 };
 
 export const verifyWithdrawFunds = async (id: string) => {
-    return await axios.post(`${VITE_API_BASE_URL}/transactions/accounts/withdraws/${id}`)
-}
+    return await axiosInstance.post(`/transactions/accounts/withdraws/${id}`);
+};
 
-export const uploadQuicks = async (id: string, data: { description: string; file: File; images?: File[] }) => {
-    const Token = localStorage.getItem(VITE_TOKEN);
-    return await axios.post(`${VITE_API_BASE_URL}/quicks/products/${id}`, data, {
+export const uploadQuicks = async (
+    id: string,
+    data: { description: string; file: File; images?: File[] }
+) => {
+    return await axiosInstance.post(`/quicks/products/${id}`, data, {
         headers: {
-            'Authorization': `Bearer ${Token}`,
-            'Content-Type': 'multipart/form-data', // Important for sending FormData
+            "Content-Type": "multipart/form-data",
         },
     });
 };
 
 export const updateEbook = async (data: IUpdateEbook, id: string) => {
-    const token = localStorage.getItem(VITE_TOKEN)
-    return await axios.put(`${VITE_API_BASE_URL}/products/${id}/update`, data, {
+    return await axiosInstance.put(`/products/${id}/update`, data, {
         headers: {
             "Content-Type": "multipart/form-data",
-            'Authorization': `Bearer ${token}`
         },
-    })
-}
+    });
+};
