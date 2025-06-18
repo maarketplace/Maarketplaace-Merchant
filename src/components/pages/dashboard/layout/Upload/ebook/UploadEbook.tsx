@@ -161,14 +161,14 @@ function UploadEbook() {
             : [], [selectedCategory]);
 
     return (
-        <div className="min-h-screen  dark:bg-gray-900 p-4 md:p-6">
+        <div className="min-h-screen dark:bg-gray-900 p-4 md:p-6 no-scrollbar">
             <div className="max-w-7xl mx-auto">
                 <div className="mb-8 text-center">
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Upload an Ebook</h1>
                     <p className="text-lg text-black-600 dark:text-white mb-4">Share your knowledge with the world</p>
 
                     <div className="dark:text-whiite p-4 max-w-4xl mx-auto">
-                        <p className="text-sm text-black">
+                        <p className="text-sm text-black dark:text-gray-300">
                             📋 <strong>Important:</strong> Ebook file size must be below 9.5 MB.
                             Need to compress? Use this{' '}
                             <a
@@ -186,7 +186,7 @@ function UploadEbook() {
                     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
                         <div className="space-y-6 ">
-                            <div className="bg-white max-[650px]:bg-none dark:bg-gray-800 rounded-lg shadow-sm max-[650px]:shadow-none border max-[650px]:border-none border-gray-200 dark:border-gray-700">
+                            <div className="bg-white max-[650px]:bg-none dark:bg-gray-800 rounded-lg shadow-sm max-[650px]:shadow-none p-4 border max-[650px]:border-none border-gray-200 dark:border-gray-700">
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white max-[650px]:border-none mb-6">
                                     Basic Information
                                 </h2>
@@ -261,7 +261,7 @@ function UploadEbook() {
                         </div>
 
                         <div className="space-y-6">
-                            <div className="bg-white max-[650px]:bg-none dark:bg-gray-800 rounded-lg shadow-sm max-[650px]:shadow-none border max-[650px]:border-none border-gray-200 dark:border-gray-700">
+                        <div className="bg-white max-[650px]:bg-none dark:bg-gray-800 rounded-lg shadow-sm max-[650px]:shadow-none p-4 border max-[650px]:border-none border-gray-200 dark:border-gray-700">
                                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white max-[650px]:border-none mb-6">
                                     Categories & Files
                                 </h2>

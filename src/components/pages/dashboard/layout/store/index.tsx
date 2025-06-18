@@ -128,8 +128,8 @@ const Store = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-black py-8">
-            <div className="max-w-7xl mx-auto px-4">
+        <div className="min-h-screen  dark:bg-black py-8 no-scrollbar">
+            <div className="max-w-7xl mx-auto px-6">
                 <ProfileSection
                     data={data}
                     onEditClick={triggerFileInput}
@@ -161,7 +161,7 @@ const Store = () => {
                     )}
                 </div>
 
-                <div className="flex items-center justify-center mt-16 gap-2 text-gray-500 dark:text-gray-400">
+                <div className=" absolute bottom-0 left-0 right-0 flex items-center justify-center mt-16 gap-2 text-gray-500 dark:text-gray-400">
                     <span className="text-sm">Powered by</span>
                     <img src='./LOGO.svg' alt="Logo" className="w-20 h-10" />
                 </div>
