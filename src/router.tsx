@@ -15,9 +15,9 @@ import Customer from './components/pages/dashboard/layout/customer';
 import ConfirmWithdrawal from './components/pages/ConfirmWithdrawals';
 import Withdrawal from './components/pages/dashboard/layout/withdrawal';
 import UploadQuicks from './components/pages/dashboard/layout/quicks';
-import Upload from './components/pages/dashboard/layout/Upload';
 import EditEbook from './components/pages/dashboard/layout/edit/Edit-Ebook';
-
+import UploadCourse from './components/pages/dashboard/layout/Upload/courses/UploadCourse';
+import UploadEbook from './components/pages/dashboard/layout/Upload/ebook/UploadEbook';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const LoginLoader = () => import('./components/auth/login');
@@ -78,8 +78,12 @@ const router = createHashRouter([
                 element: <Overview />
             },
             {
-                path: '/dashboard/upload',
-                element: <Upload />
+                path: '/dashboard/course/upload',
+                element: <UploadCourse />
+            },
+            {
+                path: '/dashboard/ebook/upload',
+                element: <UploadEbook />
             },
             {
                 path: '/dashboard/quicks/:id',
