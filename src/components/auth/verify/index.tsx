@@ -65,11 +65,9 @@ const Verify = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-yellow-400 to-yellow-500 dark:from-gray-900 dark:to-black flex items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-br dark:from-gray-900 dark:to-black flex items-center justify-center p-4">
             <div className="w-full max-w-md">
-                {/* Main Card */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 space-y-6">
-                    {/* Logo */}
                     <div className="text-center">
                         <img
                             src="MARKET.svg"
@@ -78,7 +76,6 @@ const Verify = () => {
                         />
                     </div>
 
-                    {/* Header */}
                     <div className="text-center space-y-2">
                         <h1 className="text-2xl font-bold text-yellow-500 dark:text-yellow-400">
                             Check your email
@@ -88,9 +85,7 @@ const Verify = () => {
                         </p>
                     </div>
 
-                    {/* Form */}
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                        {/* Input Field */}
                         <div className="space-y-2">
                             <label
                                 htmlFor="verificationCode"
@@ -124,7 +119,6 @@ const Verify = () => {
                             )}
                         </div>
 
-                        {/* Resend Link */}
                         <div className="text-center">
                             <button
                                 type="button"
@@ -137,20 +131,16 @@ const Verify = () => {
                             </button>
                         </div>
 
-                        {/* Submit Button */}
                         <button
                             type="submit"
                             disabled={isLoading}
                             className="w-full bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-400 
-                                     text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200
+                                     text-white font-medium py-3 px-4 h-[40px] rounded-lg transition-colors duration-200
                                      disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2
                                      dark:focus:ring-offset-gray-800"
                         >
                             {isLoading ? (
-                                <div className="flex items-center justify-center space-x-2">
-                                    <Loading />
-                                    <span>Verifying...</span>
-                                </div>
+                                <Loading />
                             ) : (
                                 "Verify Code"
                             )}
@@ -158,7 +148,6 @@ const Verify = () => {
                     </form>
                 </div>
 
-                {/* Additional Help Text */}
                 <div className="text-center mt-6">
                     <p className="text-sm text-gray-600 dark:text-gray-400">
                         Didn't receive the code? Check your spam folder or try resending.
