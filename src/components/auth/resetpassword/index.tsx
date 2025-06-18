@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { merchantResetPassword } from '../../../api/mutation';
 import { ResetPasswordInterface } from '../../../interface/ResetPasswordInterface';
 import { ResetPasswordSchema } from '../../../schema/LoginSchema';
+import { IErrorResponse } from '../../../interface/ErrorInterface';
 
 
 function ResetPassword() {
@@ -22,8 +23,8 @@ function ResetPassword() {
             toast.success(data?.data?.data?.message)
             navigate('/')
         },
-        onError: () => {
-            toast.error("An error occurred while resetting your password. Please try again.")
+        onError: (err: IErrorResponse) => {
+            toast.error(err?.response?.data?.message || err?.response?.data?.error?.message || err?.message);
         }
     });
 
