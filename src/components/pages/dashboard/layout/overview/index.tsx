@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMerchant } from "../../../../../context/GetMerchant";
 import { formatNumber } from "../../../../../utils/Utils";
 import {
@@ -14,13 +14,15 @@ import BalanceCard from "./BalancedCard";
 import { useNavigate } from "react-router-dom";
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { data, isLoading } = useMerchant();
+  const { data, isLoading, fetchMerchant } = useMerchant();
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
   const toggleBalanceVisibility = () => {
     setIsBalanceVisible(!isBalanceVisible);
   };
-
+  useEffect(() => {
+    fetchMerchant();
+  }, [fetchMerchant]);
   const cards = [
     {
       title: "Available Balance",
@@ -91,7 +93,7 @@ const Dashboard: React.FC = () => {
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { name: 'Add Product', icon: Package, route: '/dashboard/upload' },
+                { name: 'All Product', icon: Package, route: '/dashboard/store' },
                 { name: 'View Orders', icon: ShoppingCart, route: '/dashboard/order' },
                 { name: 'Customers', icon: Users, route: '/dashboard/customer' },
                 { name: 'Transactions', icon: TrendingUp, route: '/dashboard/transaction' },

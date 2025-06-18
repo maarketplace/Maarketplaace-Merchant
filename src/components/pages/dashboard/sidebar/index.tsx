@@ -31,10 +31,10 @@ const SideBar = ({ setShowSidebar }: SideBarProps) => {
 
     return (
         <div className="w-full h-full">
-            <div className="w-full flex flex-col space-y-2 dark:text-white">
+            <div className="w-full flex flex-col space-y-2 dark:text-white mt-4 p-2">
 
                 <button
-                    className={`flex items-center px-4 py-3 w-full hover:bg-gray-100 dark:hover:bg-gray-100 transition-colors ${isActive('/dashboard') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
+                    className={`flex items-center px-4 py-3 w-full transition-colors ${isActive('/dashboard') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
                         }`}
                     onClick={() => handleNavigate('/dashboard')}
                 >
@@ -43,7 +43,7 @@ const SideBar = ({ setShowSidebar }: SideBarProps) => {
                 </button>
 
                 <button
-                    className={`flex items-center px-4 py-3 w-full hover:bg-gray-100 dark:hover:bg-gray-100 transition-colors ${isActive('/dashboard/store') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
+                    className={`flex items-center px-4 py-3 w-full transition-colors ${isActive('/dashboard/store') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
                         }`}
                     onClick={() => handleNavigate('/dashboard/store')}
                 >
@@ -52,7 +52,7 @@ const SideBar = ({ setShowSidebar }: SideBarProps) => {
                 </button>
 
                 <button
-                    className={`flex items-center px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-100 transition-colors ${isActive('/dashboard/course/upload') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
+                    className={`flex items-center px-4 py-2 w-full transition-colors ${isActive('/dashboard/course/upload') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
                         }`}
                     onClick={() => handleNavigate('/dashboard/course/upload')}
                 >
@@ -61,7 +61,7 @@ const SideBar = ({ setShowSidebar }: SideBarProps) => {
                 </button>
 
                 <button
-                    className={`flex items-center px-4 py-2 w-full hover:bg-gray-100 dark:hover:bg-gray-100 transition-colors ${isActive('/dashboard/ebook/upload') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
+                    className={`flex items-center px-4 py-2 w-full transition-colors ${isActive('/dashboard/ebook/upload') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
                         }`}
                     onClick={() => handleNavigate('/dashboard/ebook/upload')}
                 >
@@ -70,7 +70,7 @@ const SideBar = ({ setShowSidebar }: SideBarProps) => {
                 </button>
 
                 <button
-                    className={`flex items-center px-4 py-3 w-full hover:bg-gray-100 dark:hover:bg-gray-100 transition-colors ${isActive('/dashboard/order') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
+                    className={`flex items-center px-4 py-3 w-full transition-colors ${isActive('/dashboard/order') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
                         }`}
                     onClick={() => handleNavigate('/dashboard/order')}
                 >
@@ -79,7 +79,7 @@ const SideBar = ({ setShowSidebar }: SideBarProps) => {
                 </button>
 
                 <button
-                    className={`flex items-center px-4 py-3 w-full hover:bg-gray-100 dark:hover:bg-gray-100 transition-colors ${isActive('/dashboard/transaction') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
+                    className={`flex items-center px-4 py-3 w-full transition-colors ${isActive('/dashboard/transaction') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
                         }`}
                     onClick={() => handleNavigate('/dashboard/transaction')}
                 >
@@ -88,7 +88,7 @@ const SideBar = ({ setShowSidebar }: SideBarProps) => {
                 </button>
 
                 <button
-                    className={`flex items-center px-4 py-3 w-full hover:bg-gray-100 dark:hover:bg-gray-100 transition-colors ${isActive('/dashboard/customer') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
+                    className={`flex items-center px-4 py-3 w-full transition-colors ${isActive('/dashboard/customer') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
                         }`}
                     onClick={() => handleNavigate('/dashboard/customer')}
                 >
