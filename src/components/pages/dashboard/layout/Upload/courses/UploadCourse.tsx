@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDropzone } from "react-dropzone";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -14,14 +14,14 @@ import { IAddCourse } from "../../../../../../interface/UploadCourse";
 import Loading from "../../../../../../loader";
 import { UploadCourseSchema } from "../../../../../../schema/UploadCourseSchema";
 import courseCategories, { courseLocations } from "../category/courseCategory";
-import ProductToast from "../../notification";
+import { useMerchantStore } from "../../../../../../store";
 
 const UploadCourse = () => {
   const navigate = useNavigate();
   const [description, setDescription] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
   const [paymentPrice, setPaymentPrice] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const { setProductId, setProductName } = useMerchantStore();
 
   const form = useForm<IAddCourse>({
     resolver: yupResolver(UploadCourseSchema) as any,
@@ -45,6 +45,9 @@ const UploadCourse = () => {
 
   const { mutate, isLoading } = useMutation(["uploadebook"], uploadCourse, {
     onSuccess: async (data) => {
+      setProductId(data?.data?.data?.id);
+      setProductName(data?.data?.data?.data?.productName);
+
       toast.success(
         `${data?.data?.data?.message} We are currently reviewing your course it will take atleast 24 hours or less`,
         {
@@ -77,7 +80,6 @@ const UploadCourse = () => {
       });
       setSelectedFileName("");
       setDescription("");
-      setVisible(true);
       navigate("/dashboard");
     },
     onError: (err: IErrorResponse) => {
@@ -92,12 +94,28 @@ const UploadCourse = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<IAddCourse> = (data) => {
-    const { courseImage, ...others } = data;
-    mutate({
-      ...others,
-      courseImage: courseImage && courseImage.length > 0 ? courseImage : null,
-    });
+  const onSubmit = (data: IAddCourse) => {
+    const formData = new FormData();
+
+    formData.append("courseName", data.courseName);
+    formData.append("coursePrice", data.coursePrice.toString());
+    formData.append(
+      "courseDiscountedPrice",
+      data.courseDiscountedPrice.toString()
+    );
+    formData.append("courseDescription", data.courseDescription);
+    formData.append("courseCategory", data.courseCategory);
+    formData.append("courseSubCategory", data.courseSubCategory);
+    formData.append("courseLocation", data.courseLocation);
+    formData.append("courseURL", data.courseURL);
+    formData.append("author", data.author);
+    formData.append("duration", data.duration);
+
+    if (data.courseImage && data.courseImage.length > 0) {
+      formData.append("courseImage", data.courseImage[0]);
+    }
+
+    mutate(formData);
   };
 
   const handleButtonClick = () => {
@@ -122,8 +140,6 @@ const UploadCourse = () => {
   const filteredSubCategories =
     courseCategories.find((category) => category.name === selectedCategory)
       ?.courseSubcategories || [];
-
-  const courseName = watch("courseName");
 
   return (
     <div className="min-h-screen dark:bg-gray-900 p-4 md:p-6 no-scrollbar">
@@ -418,14 +434,6 @@ const UploadCourse = () => {
           </div>
         </div>
       </div>
-
-      {visible ? (
-        <ProductToast
-          productName={courseName}
-          productUrl={`https://www.maarketplaace.com/details/`}
-          setVisible={setVisible}
-        />
-      ) : null}
     </div>
   );
 };

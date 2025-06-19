@@ -25,32 +25,38 @@ export default function ProductToast({
       <div className="flex items-start p-4">
         <div className="flex-1">
           <p className="text-sm text-gray-800">
-            Product <strong>{productName}</strong> created.
+            <strong>{productName}</strong> created.
             <a
               href={productUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 underline"
+              className="text-blue-600 underline ml-2"
             >
               View it here
             </a>
           </p>
         </div>
-        <button
-          onClick={copyLink}
-          className="ml-2 text-gray-500 hover:text-gray-800"
-          title="Copy link"
-        >
-          {copied ? "✅" : <Copy size={16} />}
-        </button>
-        <button
-          onClick={() => {
-            setVisible(false);
-          }}
-          className="ml-2 text-gray-500 hover:text-gray-800"
-        >
-          <X size={16} />
-        </button>
+        <div className="flex items-center gap-x-4">
+          <button
+            onClick={copyLink}
+            className=" text-gray-500 hover:text-gray-800"
+            title="Copy link"
+          >
+            {copied ? (
+              <span className="text-sm">Copied</span>
+            ) : (
+              <Copy size={16} />
+            )}
+          </button>
+          <button
+            onClick={() => {
+              setVisible(false);
+            }}
+            className=" text-gray-500 hover:text-gray-800"
+          >
+            <X size={16} />
+          </button>
+        </div>
       </div>
     </div>
   );

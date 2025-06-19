@@ -8,14 +8,26 @@ import {
   Users,
   TrendingUp,
   Eye,
-  EyeOff
+  EyeOff,
 } from "lucide-react";
 import BalanceCard from "./BalancedCard";
 import { useNavigate } from "react-router-dom";
+import ProductToast from "../notification";
+import { useMerchantStore } from "../../../../../store";
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { data, isLoading, fetchMerchant } = useMerchant();
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const { productId, productName } = useMerchantStore();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (productName && productId) setVisible(true);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [setVisible, productName, productId]);
 
   const toggleBalanceVisibility = () => {
     setIsBalanceVisible(!isBalanceVisible);
@@ -48,7 +60,7 @@ const Dashboard: React.FC = () => {
       title: "Total Customers",
       balance: data?.totalCustomers,
       icon: <Users className="w-6 h-6" />,
-    }
+    },
   ];
 
   return (
@@ -63,9 +75,13 @@ const Dashboard: React.FC = () => {
               onClick={toggleBalanceVisibility}
               className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow"
             >
-              {isBalanceVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {isBalanceVisible ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
               <span className="text-sm font-medium">
-                {isBalanceVisible ? 'Hide' : 'Show'} Balance
+                {isBalanceVisible ? "Hide" : "Show"} Balance
               </span>
             </button>
           </div>
@@ -93,10 +109,26 @@ const Dashboard: React.FC = () => {
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {[
-                { name: 'All Product', icon: Package, route: '/dashboard/store' },
-                { name: 'View Orders', icon: ShoppingCart, route: '/dashboard/order' },
-                { name: 'Customers', icon: Users, route: '/dashboard/customer' },
-                { name: 'Transactions', icon: TrendingUp, route: '/dashboard/transaction' },
+                {
+                  name: "All Product",
+                  icon: Package,
+                  route: "/dashboard/store",
+                },
+                {
+                  name: "View Orders",
+                  icon: ShoppingCart,
+                  route: "/dashboard/order",
+                },
+                {
+                  name: "Customers",
+                  icon: Users,
+                  route: "/dashboard/customer",
+                },
+                {
+                  name: "Transactions",
+                  icon: TrendingUp,
+                  route: "/dashboard/transaction",
+                },
               ].map((action, index) => (
                 <button
                   key={index}
@@ -113,6 +145,13 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      {visible ? (
+        <ProductToast
+          setVisible={setVisible}
+          productName={productName || ""}
+          productUrl={`https://www.maarketplaace.com/details/${productId}`}
+        />
+      ) : null}
     </div>
   );
 };

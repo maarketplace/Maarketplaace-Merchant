@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import toast from "react-hot-toast";
 import { useMutation } from "react-query";
 import { useDropzone } from "react-dropzone";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadEbook } from "../../../../../../api/mutation";
@@ -18,14 +17,14 @@ import { categories } from "../category";
 import FormField from "./FormField";
 import DropzoneField from "./Dropzone";
 import InputField from "./InputField";
-import ProductToast from "../../notification";
+import { useMerchantStore } from "../../../../../../store";
 
 function UploadEbook() {
   const navigate = useNavigate();
   const [productImageName, setProductImageName] = useState("");
   const [eBookName, setEBookName] = useState("");
   const [paymentPrice, setPaymentPrice] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const { setProductId, setProductName } = useMerchantStore();
 
   const form = useForm<IAddEbook>({
     resolver: yupResolver(UploadEbookSchema) as any,
@@ -55,6 +54,9 @@ function UploadEbook() {
 
   const handleSuccess = useCallback(
     async (data: any) => {
+      setProductId(data?.data?.data?.data?._id);
+      setProductName(data?.data?.data?.data?.productName);
+
       toast.success(data?.data?.message || "Ebook uploaded successfully!", {
         duration: 5000,
         style: {
@@ -86,7 +88,6 @@ function UploadEbook() {
 
       setProductImageName("");
       setEBookName("");
-      setVisible(true);
       navigate("/dashboard");
     },
     [reset, navigate]
@@ -109,20 +110,37 @@ function UploadEbook() {
     );
   }, []);
 
-  const { mutate, isLoading } = useMutation(["uploadebook"], uploadEbook, {
+  const { mutate, isLoading } = useMutation({
+    mutationFn: uploadEbook,
     onSuccess: handleSuccess,
     onError: handleError,
   });
 
-  const onSubmit: SubmitHandler<IAddEbook> = useCallback(
-    async (data) => {
-      const { eBook, productImage, ...others } = data;
-      const payload = {
-        ...others,
-        productImage: productImage ?? null,
-        eBook: eBook ?? null,
-      };
-      mutate(payload);
+  const onSubmit = useCallback(
+    async (data: IAddEbook) => {
+      const formData = new FormData();
+      formData.append("productName", data.productName);
+      formData.append("productDescription", data.productDescription);
+      formData.append("productPrice", String(data.productPrice));
+      formData.append("discountPrice", String(data.discountPrice));
+      formData.append("category", data.category);
+      formData.append("subCategory", data.subCategory);
+      formData.append("productLocation", data.productLocation ?? "");
+      formData.append("pages", String(data.pages));
+      formData.append("author", data.author);
+      formData.append("duration", data.duration);
+      formData.append("whatToExpect", data.whatToExpect ?? "");
+      formData.append("topics", data.topics ?? "");
+
+      if (data.productImage && data.productImage.length > 0) {
+        formData.append("productImage", data.productImage[0]);
+      }
+
+      if (data.eBook && data.eBook.length > 0) {
+        formData.append("eBook", data.eBook[0]);
+      }
+
+      mutate(formData);
     },
     [mutate]
   );
@@ -190,8 +208,6 @@ function UploadEbook() {
         : [],
     [selectedCategory]
   );
-
-  const productName = watch("productName");
 
   return (
     <div className="min-h-screen dark:bg-gray-900 p-4 md:p-6 no-scrollbar">
@@ -364,13 +380,6 @@ function UploadEbook() {
           </div>
         </form>
       </div>
-      {visible ? (
-        <ProductToast
-          setVisible={setVisible}
-          productName={productName}
-          productUrl={`https://www.maarketplaace.com/details/`}
-        />
-      ) : null}
     </div>
   );
 }
