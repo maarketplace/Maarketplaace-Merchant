@@ -38,7 +38,7 @@ export const getMerchantBalance = async () => {
 export const fetchBanks = async () => {
     return await axiosInstance.get("https://api.korapay.com/merchant/api/v1/misc/banks?countryCode=NG", {
         headers: {
-            Authorization: `Bearer pk_test_a4mBL7A3sbMHrGUq5m2kZynxfHifyTpWX17aChC3`,
+            Authorization: `Bearer ${import.meta.env.KORA_API_KEY}`,
         },
     });
 };
