@@ -13,13 +13,13 @@ import {
 import BalanceCard from "./BalancedCard";
 import { useNavigate } from "react-router-dom";
 import ProductToast from "../notification";
-import { useMerchantStore } from "../../../../../store";
+import { useProductStore } from "../../../../../store";
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { data, isLoading, fetchMerchant } = useMerchant();
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
   const [visible, setVisible] = useState(false);
-  const { productId, productName } = useMerchantStore();
+  const { productId, productName } = useProductStore();
 
   useEffect(() => {
     const timeout = setTimeout(() => {

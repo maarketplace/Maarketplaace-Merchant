@@ -17,14 +17,14 @@ import { categories } from "../category";
 import FormField from "./FormField";
 import DropzoneField from "./Dropzone";
 import InputField from "./InputField";
-import { useMerchantStore } from "../../../../../../store";
+import { useProductStore } from "../../../../../../store";
 
 function UploadEbook() {
   const navigate = useNavigate();
   const [productImageName, setProductImageName] = useState("");
   const [eBookName, setEBookName] = useState("");
   const [paymentPrice, setPaymentPrice] = useState(0);
-  const { setProductId, setProductName } = useMerchantStore();
+  const { setProductId, setProductName } = useProductStore();
 
   const form = useForm<IAddEbook>({
     resolver: yupResolver(UploadEbookSchema) as any,

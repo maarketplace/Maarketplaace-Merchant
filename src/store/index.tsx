@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-interface IMerchantStore {
+interface IProductStore {
   productId: string | null;
   productName: string | null;
   setProductId: (id: string) => void;
   setProductName: (value: string) => void;
 }
 
-export const useMerchantStore = create<IMerchantStore>((set) => ({
+export const useProductStore = create<IProductStore>((set) => ({
   productId: null,
   productName: null,
   setProductId: (id) => set({ productId: id }),

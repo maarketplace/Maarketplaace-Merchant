@@ -14,14 +14,14 @@ import { IAddCourse } from "../../../../../../interface/UploadCourse";
 import Loading from "../../../../../../loader";
 import { UploadCourseSchema } from "../../../../../../schema/UploadCourseSchema";
 import courseCategories, { courseLocations } from "../category/courseCategory";
-import { useMerchantStore } from "../../../../../../store";
+import { useProductStore } from "../../../../../../store";
 
 const UploadCourse = () => {
   const navigate = useNavigate();
   const [description, setDescription] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
   const [paymentPrice, setPaymentPrice] = useState(0);
-  const { setProductId, setProductName } = useMerchantStore();
+  const { setProductId, setProductName } = useProductStore();
 
   const form = useForm<IAddCourse>({
     resolver: yupResolver(UploadCourseSchema) as any,
