@@ -210,7 +210,7 @@ function UploadEbook() {
   );
 
   return (
-    <div className="min-h-[100%] dark:bg-gray-900 p-4 md:p-6 no-scrollbar mt-10">
+    <div className="min-h-[100%] p-4 md:p-6 no-scrollbar">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
