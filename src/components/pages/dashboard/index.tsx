@@ -5,8 +5,8 @@ const DashboardMain = () => {
     return (
         <div className="w-[100%] flex bg-[white] dark:bg-black">
             <div className="w-[15%] bg-[white] dark:bg-black max-[650px]:hidden">
-                <div className="w-[100%] h-[15%] rounded-r-[50px] p-2">
-                    <img src="LOGO.svg" alt="image" className="w-[180px] h-[100px]" />
+                <div className="w-[100%] h-[15%] flex items-center justify-center rounded-r-[50px] p-2">
+                    <img src="/logomarke.png" alt="image" className="" />
                 </div>
                 <div className="w-[100%] h-[85%] bg-[#FFC300] rounded-tr-[50px] p-[10px] sticky inset-0">
                     <SideBar />
