@@ -3,7 +3,6 @@ import { useMerchant } from "../../../../../context/GetMerchant";
 import { formatNumber } from "../../../../../utils/Utils";
 import {
   ShoppingCart,
-  DollarSign,
   Package,
   Users,
   TrendingUp,
@@ -14,6 +13,8 @@ import BalanceCard from "./BalancedCard";
 import { useNavigate } from "react-router-dom";
 import ProductToast from "../notification";
 import { useProductStore } from "../../../../../store";
+import { TbCurrencyNaira } from "react-icons/tb";
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { data, isLoading, fetchMerchant } = useMerchant();
@@ -39,7 +40,7 @@ const Dashboard: React.FC = () => {
     {
       title: "Available Balance",
       balance: isBalanceVisible ? formatNumber(data?.balance) : "••••••",
-      icon: <DollarSign className="w-6 h-6" />,
+      icon: <TbCurrencyNaira className="w-6 h-6" />,
     },
     {
       title: "Total Withdrawals",
