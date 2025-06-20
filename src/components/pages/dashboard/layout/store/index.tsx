@@ -119,7 +119,7 @@ const Store = () => {
     }, [selectedFile, updateImage]);
 
     const handleShareStore = useCallback(() => {
-        const storeUrl = `https://maarketplaace.com/#/home/store/${data?.data?.business_name}`;
+        const storeUrl = `https://maarketplaace.com/home/store/${data?.data?.business_name}`;
         copyToClipboard(storeUrl);
     }, [data?.data?.business_name]);
 

@@ -29,7 +29,7 @@ const UploadCourse = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
     setValue,
     reset,
     watch,
@@ -420,10 +420,10 @@ const UploadCourse = () => {
             </div>
 
             <button
-              disabled={isLoading || !isValid}
+              disabled={isLoading}
               className={`w-full h-12 rounded-lg text-lg font-semibold transition-all duration-200 ${
-                isLoading || !isValid
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                isLoading
+                  ? "bg-yellow-300 text-gray-900 cursor-not-allowed"
                   : "bg-yellow-400 hover:bg-yellow-500 text-gray-900 hover:shadow-lg transform hover:-translate-y-0.5"
               }`}
               type="button"

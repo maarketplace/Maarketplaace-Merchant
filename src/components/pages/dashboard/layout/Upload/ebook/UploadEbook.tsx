@@ -35,7 +35,7 @@ function UploadEbook() {
     register,
     watch,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
     setValue,
     reset,
   } = form;
@@ -90,7 +90,7 @@ function UploadEbook() {
       setEBookName("");
       navigate("/dashboard");
     },
-    [reset, navigate]
+    [setProductId, setProductName, reset, navigate]
   );
 
   const handleError = useCallback((err: IErrorResponse) => {
@@ -368,9 +368,9 @@ function UploadEbook() {
 
             <button
               type="submit"
-              disabled={isLoading || !isValid}
+              disabled={isLoading}
               className={`w-full h-12 rounded-lg text-lg font-semibold transition-all duration-200 ${
-                isLoading || !isValid
+                isLoading
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-yellow-400 hover:bg-yellow-500 text-gray-900 hover:shadow-lg transform hover:-translate-y-0.5"
               }`}

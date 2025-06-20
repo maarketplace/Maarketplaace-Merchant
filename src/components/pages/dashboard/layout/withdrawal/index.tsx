@@ -50,7 +50,10 @@ const Withdrawal = () => {
         }
     });
 
-    const { data: banksData, isLoading: isBanksLoading } = useQuery('fetchBanks', fetchBanks);
+    const { data: banksData, isLoading: isBanksLoading } = useQuery('fetchBanks', fetchBanks, {
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+    });
 
     const { mutate: verifyAccount, isLoading: isVerifying, isError: isVerificationError } = useMutation(
         ['verifyMerchantAccountNumber'],
