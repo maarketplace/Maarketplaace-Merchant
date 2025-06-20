@@ -210,7 +210,7 @@ function UploadEbook() {
   );
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 p-4 md:p-6 no-scrollbar">
+    <div className="min-h-[100%] dark:bg-gray-900 p-4 md:p-6 no-scrollbar mt-10">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -311,7 +311,8 @@ function UploadEbook() {
                     theme="snow"
                     placeholder="Describe your book..."
                     onChange={(value) => setValue("productDescription", value)}
-                    style={{ minHeight: "120px" }}
+                    style={{ minHeight: "120px", }}
+                    className="dark:text-white text-black"
                   />
                 </div>
               </FormField>
@@ -340,7 +341,7 @@ function UploadEbook() {
                   error={errors.subCategory?.message}
                 >
                   <select
-                    className="w-full h-[45px] px-3 py-2 border border-gray-300 rounded-md bg-white hover:border-gray-400 focus:border-blue-500 focus:ring-1 transition-colors duration-200"
+                    className="w-full h-[45px] px-3 py-2 border border-gray-300 rounded-md bg-transparent hover:border-gray-400 focus:border-blue-500 focus:ring-1 transition-colors duration-200"
                     {...register("subCategory")}
                   >
                     <option value="">Select a subcategory</option>

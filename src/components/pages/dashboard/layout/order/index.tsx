@@ -159,7 +159,7 @@ const Order = () => {
     };
 
     return (
-        <div className="p-6 max-w-7xl mx-auto">
+        <div className="p-6 max-w-7xl mx-auto mt-5">
             <div className="mb-6">
                 <h1 className="text-2xl font-semibold text-black dark:text-white mb-4">Orders Management</h1>
 
