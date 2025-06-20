@@ -119,7 +119,7 @@ const Store = () => {
     }, [selectedFile, updateImage]);
 
     const handleShareStore = useCallback(() => {
-        const storeUrl = `https://maarketplaace.com/#/home/store/${data?.data?.business_name}`;
+        const storeUrl = `https://maarketplaace.com/home/store/${data?.data?.business_name}`;
         copyToClipboard(storeUrl);
     }, [data?.data?.business_name]);
 
@@ -128,7 +128,7 @@ const Store = () => {
     }, []);
 
     return (
-        <div className="min-h-screen  dark:bg-black py-8 no-scrollbar">
+        <div className="min-h-screen  dark:bg-black py-8 no-scrollbar mt-10">
             <div className="max-w-7xl mx-auto px-6">
                 <ProfileSection
                     data={data}

@@ -29,7 +29,7 @@ export const logOutMerchant = async (id: string) => {
     return await axiosInstance.post(`/merchant/logout/${id}`);
 };
 
-export const uploadEbook = async (data: IAddEbook) => {
+export const uploadEbook = async (data: IAddEbook | FormData) => {
     return await axiosInstance.post("/products/ebook", data, {
         headers: {
             "Content-Type": "multipart/form-data",
@@ -37,7 +37,7 @@ export const uploadEbook = async (data: IAddEbook) => {
     });
 };
 
-export const uploadCourse = async (data: IAddCourse) => {
+export const uploadCourse = async (data: IAddCourse | FormData) => {
     return await axiosInstance.post("/products/course", data, {
         headers: {
             "Content-Type": "multipart/form-data",

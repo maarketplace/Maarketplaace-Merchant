@@ -1,5 +1,5 @@
+import axios from "axios";
 import axiosInstance from "./axiosInstance";
-
 export interface BusinessName {
     name: string;
 }
@@ -36,9 +36,10 @@ export const getMerchantBalance = async () => {
 };
 
 export const fetchBanks = async () => {
-    return await axiosInstance.get("https://api.korapay.com/merchant/api/v1/misc/banks?countryCode=NG", {
+    return await axios.get("https://api.korapay.com/merchant/api/v1/misc/banks?countryCode=NG", {
         headers: {
-            Authorization: `Bearer pk_test_a4mBL7A3sbMHrGUq5m2kZynxfHifyTpWX17aChC3`,
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer sk_live_YokHaN5QsLGM6aQ4Sr4jFXdkxBqdzByo4WebEnSn`,
         },
     });
 };
