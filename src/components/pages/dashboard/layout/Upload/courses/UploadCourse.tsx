@@ -142,7 +142,7 @@ const UploadCourse = () => {
       ?.courseSubcategories || [];
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 p-4 md:p-6 no-scrollbar">
+    <div className="min-h-screen p-4 md:p-6 no-scrollbar">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8 text-center">
           <h3 className="text-3xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 mt-5">
