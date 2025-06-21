@@ -1,5 +1,4 @@
-
-import React, { Suspense, ComponentType } from 'react';
+import React, { Suspense, ComponentType } from "react";
 
 interface Props {
   componentLoader: () => Promise<{ default: ComponentType<any> }>;
