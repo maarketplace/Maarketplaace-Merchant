@@ -24,6 +24,7 @@
 /* Apply the classes based on mode */
 body {
   @apply bg-default-bg font-sans text-light-text;
+  overflow-y: hidden;
 }
 
 .dark body {
@@ -32,12 +33,12 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar {
   /* display: none; */
-  -ms-overflow-style: none; 
-  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .scrollbar-hide {
   /* display: none; */
-  -ms-overflow-style: none; 
-  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

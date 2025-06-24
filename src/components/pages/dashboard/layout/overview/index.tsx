@@ -9,11 +9,12 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import BalanceCard from "./BalancedCard";
+
 import { useNavigate } from "react-router-dom";
 import ProductToast from "../notification";
 import { useProductStore } from "../../../../../store";
 import { TbCurrencyNaira } from "react-icons/tb";
+import { BalanceCard } from "../../../../../utils/ui/card";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
