@@ -76,11 +76,11 @@ const router = createBrowserRouter([
                 element: <Overview />,
             },
             {
-                path: "/dashboard/course/upload",
+                path: "/dashboard/course/create",
                 element: <UploadCourse />,
             },
             {
-                path: "/dashboard/ebook/upload",
+                path: "/dashboard/ebook/create",
                 element: <UploadEbook />,
             },
             {

@@ -16,20 +16,20 @@ import { UploadCourseSchema } from "../../../../../../schema/UploadCourseSchema"
 import courseCategories, { courseLocations } from "../category/courseCategory";
 import { useProductStore } from "../../../../../../store";
 import { Ticket, Package, ShoppingCart, TrendingUp, Plus, X } from "lucide-react";
-import BalanceCard from "../../overview/BalancedCard";
 import { EmptyState } from "../../store";
 import InputField from "../ebook/InputField";
 import FormField from "../ebook/FormField";
 import DropzoneField from "../ebook/Dropzone";
 import { getProductAnalytics } from "../../../../../../api/query";
 import { formatNumber } from "../../../../../../utils/Utils";
+import ProductCard, { BalanceCard, ProductCardProps } from "../../../../../../utils/ui/card";
 
 interface IAnalyticsData {
   totalProduct: number;
   revenue: number;
   totalPurchase: number;
   averagePrice: number;
-  products: any[];
+  products: ProductCardProps["product"][];
 }
 
 const UploadCourse = () => {
@@ -444,8 +444,16 @@ const UploadCourse = () => {
         </div>
       )}
       
-      {!showAddEbook && (
-        <EmptyState title="No course uploaded yet" description="Start adding course here" />
+      {!showAddEbook && analyticsData?.products && analyticsData.products.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8 p-4 max-[650px]:p-0 max-[650px]:mt-6">
+          {analyticsData.products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
+
+      {!showAddEbook && (!analyticsData?.products || analyticsData.products.length === 0) && (
+        <EmptyState title="No eBook uploaded yet" description="Start adding eBook here" />
       )}
     </div>
   );

@@ -19,17 +19,18 @@ import DropzoneField from "./Dropzone";
 import InputField from "./InputField";
 import { useProductStore } from "../../../../../../store";
 import { Package, Plus, ShoppingCart, Ticket, TrendingUp, X } from "lucide-react";
-import BalanceCard from "../../overview/BalancedCard";
+import ProductCard, { BalanceCard, ProductCardProps } from "../../../../../../utils/ui/card";
 import { EmptyState } from "../../store";
 import { getProductAnalytics } from "../../../../../../api/query";
 import { formatNumber } from "../../../../../../utils/Utils";
+
 
 interface IAnalyticsData {
   totalProduct: number;
   revenue: number;
   totalPurchase: number;
   averagePrice: number;
-  products: any[];
+  products: ProductCardProps["product"][];
 }
 
 function UploadEbook() {
@@ -499,11 +500,17 @@ function UploadEbook() {
           </div>
         ) : null
       }
-      {
-        showAddEbook ? null : (
-          <EmptyState title="No eBook uploaded yet" description="Start adding eBook here" />
-        )
-      }
+      {!showAddEbook && analyticsData?.products && analyticsData.products.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8 p-4 max-[650px]:p-0 max-[650px]:mt-6">
+          {analyticsData.products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
+
+      {!showAddEbook && (!analyticsData?.products || analyticsData.products.length === 0) && (
+        <EmptyState title="No eBook uploaded yet" description="Start adding eBook here" />
+      )}
     </div>
   );
 }
