@@ -47,3 +47,7 @@ export const fetchBanks = async () => {
 export const getTransaction = async () => {
     return await axiosInstance.get("/transactions");
 };
+
+export const getProductAnalytics = async (productType: string) => {
+    return await axiosInstance.get(`/products/analysis?productType=${productType}`);
+};

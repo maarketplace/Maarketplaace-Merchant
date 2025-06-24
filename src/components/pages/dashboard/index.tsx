@@ -3,7 +3,7 @@ import SideBar from "./sidebar";
 
 const DashboardMain = () => {
     return (
-        <div className="w-[100%] flex bg-[white] dark:bg-black">
+        <div className="w-[100%] flex bg-[white] dark:bg-black scrollbar-hide">
             <div className="w-[15%] bg-[white] dark:bg-black max-[650px]:hidden">
                 <div className="w-[100%] h-[15%] flex items-center justify-center rounded-r-[50px] p-2">
                     <img src="/logomarke.png" alt="image" className="" />

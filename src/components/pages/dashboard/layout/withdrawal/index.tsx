@@ -208,7 +208,7 @@ const Withdrawal = () => {
     });
 
     return (
-        <div className="min-h-screen bg-gradient-to-br bg-white dark:bg-black no-scrollbar mt-5">
+        <div className="min-h-screen bg-gradient-to-br bg-white dark:bg-black no-scrollbar p-6 max-[650px]:p-0 max-[650px]:mt-5">
             <div className="container mx-auto px-4 py-8 max-w-7xl">
                 <div className="bg-white dark:bg-black rounded-2xl shadow-xl p-8 mb-8">
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
@@ -249,10 +249,10 @@ const Withdrawal = () => {
                     <div className="p-4 sm:p-6 border-b border-slate-200 dark:border-slate-700">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div>
-                                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
+                                <h2 className="text-3xl text-[#FFC300] mb-1">
                                     Transaction History
                                 </h2>
-                                <p className="text-sm text-slate-600 dark:text-slate-400">
+                                <p className="text-gray-600 dark:text-yellow-100">
                                     Track all your withdrawal transactions
                                 </p>
                             </div>

@@ -24,6 +24,10 @@
 /* Apply the classes based on mode */
 body {
   @apply bg-default-bg font-sans text-light-text;
+  scrollbar-width:none;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-color: #888 #f0f0f0; /* Firefox scrollbar color */
+
 }
 
 .dark body {
@@ -31,13 +35,11 @@ body {
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  /* display: none; */
   -ms-overflow-style: none; 
   scrollbar-width: none; 
 }
 
 .scrollbar-hide {
-  /* display: none; */
   -ms-overflow-style: none; 
   scrollbar-width: none; 
 }

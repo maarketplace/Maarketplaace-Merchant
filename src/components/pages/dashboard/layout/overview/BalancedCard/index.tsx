@@ -36,7 +36,7 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className={`text-sm font-medium mb-1 ${isColored ? 'text-white' : 'text-gray-600 dark:text-gray-200'
+          <p className={`text-sm font-medium mb-1 ${isColored ? 'text-white' : 'text-gray-600 dark:text-yellow-100'
             }`}>
             {title}
           </p>
@@ -47,7 +47,7 @@ const BalanceCard: React.FC<BalanceCardProps> = ({
                 }`}></div>
             </div>
           ) : (
-            <p className={`text-xl font-bold mb-1 ${isColored ? 'text-white' : 'text-gray-900 dark:text-white'
+              <p className={`text-xl font-bold mb-1 ${isColored ? 'text-white' : 'text-gray-900 dark:text-[#FFC300]'
               }`}>
               {balance}
             </p>

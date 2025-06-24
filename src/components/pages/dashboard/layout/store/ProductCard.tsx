@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaEllipsisV, FaEdit, FaTrash } from "react-icons/fa";
-import { TbPlus } from "react-icons/tb";
+import { TbPlus, TbShare } from "react-icons/tb";
 import { IProduct } from "../../../../../interface/ProductInterface";
 
 const ProductCard = ({
@@ -17,7 +17,13 @@ const ProductCard = ({
     isDeleting: boolean;
 }) => {
     const [showMenu, setShowMenu] = useState(false);
-
+    const [copied, setCopied] = useState(false);
+    const productUrl = `https://www.maarketplaace.com/details/${product._id}`;
+    const copyLink = () => {
+        navigator.clipboard.writeText(productUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      };
     return (
         <div className="bg-white dark:bg-black rounded-xl  shadow-md hover:shadow-lg transition-all duration-200 overflow-hidden group">
             <div className="relative">
@@ -66,13 +72,22 @@ const ProductCard = ({
                 <h3 className="font-medium text-gray-900 dark:text-white mb-3 line-clamp-2">
                     {product.productName}
                 </h3>
-                <button
-                    onClick={onQuicksClick}
-                    className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                >
-                    <TbPlus className="w-4 h-4" />
-                    Add Quicks
-                </button>
+                <span className="w-full flex gap-2">
+                    <button
+                        onClick={onQuicksClick}
+                        className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                    >
+                        <TbPlus className="w-4 h-4" />
+                         Quicks
+                    </button>
+                    <button
+                        onClick={copyLink}
+                        className="w-full border border-yellow-400 hover:bg-yellow-500  font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                    >
+                        <TbShare className="w-4 h-4" />
+                        {copied ? "Copied!" : "Share"}
+                    </button>
+                </span>
             </div>
         </div>
     );

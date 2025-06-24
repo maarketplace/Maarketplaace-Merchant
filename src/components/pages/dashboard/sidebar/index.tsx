@@ -52,21 +52,21 @@ const SideBar = ({ setShowSidebar }: SideBarProps) => {
                 </button>
 
                 <button
-                    className={`flex items-center px-4 py-2 w-full transition-colors ${isActive('/dashboard/course/upload') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
+                    className={`flex items-center px-4 py-2 w-full transition-colors ${isActive('/dashboard/course/create') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
                         }`}
-                    onClick={() => handleNavigate('/dashboard/course/upload')}
+                    onClick={() => handleNavigate('/dashboard/course/create')}
                 >
                     <IoVideocamOutline className="w-5 h-5 mr-3" />
-                    <span className="text-sm">Upload Course</span>
+                    <span className="text-sm">Create Course</span>
                 </button>
 
                 <button
-                    className={`flex items-center px-4 py-2 w-full transition-colors ${isActive('/dashboard/ebook/upload') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
+                    className={`flex items-center px-4 py-2 w-full transition-colors ${isActive('/dashboard/ebook/create') ? 'bg-black text-white border-l-4 border-[#FFC300]' : 'text-black'
                         }`}
-                    onClick={() => handleNavigate('/dashboard/ebook/upload')}
+                    onClick={() => handleNavigate('/dashboard/ebook/create')}
                 >
                     <PiNotebookLight className="w-5 h-5 mr-3" />
-                    <span className="text-sm">Upload E-book</span>
+                    <span className="text-sm">Create eBook</span>
                 </button>
 
                 <button
