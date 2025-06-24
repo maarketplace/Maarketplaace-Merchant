@@ -120,7 +120,7 @@ const Store = () => {
 
     const handleShareStore = useCallback(() => {
         const formattedName = data?.data?.business_name.trim().replace(/\s+/g, "-");
-        const storeUrl = `https://maarketplaace.com/home/store/${formattedName}`;
+        const storeUrl = `https://maarketplaace.com/store/${formattedName}`;
         copyToClipboard(storeUrl);
     }, [data?.data?.business_name]);
 
