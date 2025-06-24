@@ -54,5 +54,9 @@ export const getTickets = async () => {
   return await axiosInstance.get("/events/merchant");
 };
 export const getTicketsById = async (id: string) => {
-  return await axiosInstance.get(`/events//${id}`);
+  return await axiosInstance.get(`/events/${id}`);
+};
+
+export const getProductAnalytics = async (productType: string) => {
+    return await axiosInstance.get(`/products/analysis?productType=${productType}`);
 };

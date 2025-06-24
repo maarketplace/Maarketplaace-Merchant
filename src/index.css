@@ -5,6 +5,7 @@
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;  /* Chrome, Safari and Opera */
+  width:0;
 }
 
 .marquee {

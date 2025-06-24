@@ -14,16 +14,16 @@ import ProfileSection from "./ProfileSection";
 import ProductCard from "./ProductCard";
 import ImageUploadModal from "./ImageUpload";
 
-const EmptyState = () => (
+export const EmptyState = ({title, description}: {title: string, description: string}) => (
     <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
         <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
             <TbPlus className="w-12 h-12 text-gray-400" />
         </div>
         <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-            No products yet
+            {title}
         </h3>
         <p className="text-gray-500 dark:text-gray-400 mb-4">
-            Start adding products to showcase your store
+            {description}
         </p>
     </div>
 );
@@ -119,7 +119,8 @@ const Store = () => {
     }, [selectedFile, updateImage]);
 
     const handleShareStore = useCallback(() => {
-        const storeUrl = `https://maarketplaace.com/home/store/${data?.data?.business_name}`;
+        const formattedName = data?.data?.business_name.trim().replace(/\s+/g, "-");
+        const storeUrl = `https://maarketplaace.com/home/store/${formattedName}`;
         copyToClipboard(storeUrl);
     }, [data?.data?.business_name]);
 
@@ -128,7 +129,7 @@ const Store = () => {
     }, []);
 
     return (
-        <div className="min-h-screen  dark:bg-black py-8 no-scrollbar">
+        <div className="min-h-screen  dark:bg-black py-8 px-4 no-scrollbar">
             <div className="max-w-7xl mx-auto px-6">
                 <ProfileSection
                     data={data}
@@ -157,11 +158,11 @@ const Store = () => {
                             ))}
                         </div>
                     ) : (
-                        <EmptyState />
+                            <EmptyState title="No Product in store yet" description="Start adding products to showcase your store" />
                     )}
                 </div>
 
-                <div className=" absolute bottom-0 left-0 right-0 flex items-center justify-center mt-16 gap-2 text-gray-500 dark:text-gray-400">
+                <div className=" absolute bottom-4 left-0 right-0 flex items-center justify-center mt-16 gap-2 text-gray-500 dark:text-gray-400">
                     <span className="text-sm mt-4">Powered by</span>
                     <img src='/logomarke.png' alt="Logo" className="h-8" />
                 </div>

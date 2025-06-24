@@ -159,9 +159,9 @@ const Order = () => {
     };
 
     return (
-        <div className="p-6 max-w-7xl mx-auto mt-5">
+        <div className="p-8 max-[650px]:p-0 max-w-7xl mx-auto mt-5 ">
             <div className="mb-6">
-                <h1 className="text-2xl font-semibold text-black dark:text-white mb-4">Orders Management</h1>
+                <h1 className="text-3xl text-[#FFC300] mb-4">Orders Management</h1>
 
                 <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -180,10 +180,6 @@ const Order = () => {
                                 </option>
                             ))}
                         </select>
-                    </div>
-
-                    <div className="text-sm text-gray-600">
-                        Showing {filteredOrders.length} of {formattedData.length} orders
                     </div>
                 </div>
             </div>

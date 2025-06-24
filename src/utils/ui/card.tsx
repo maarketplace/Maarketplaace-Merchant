@@ -146,3 +146,71 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
     </div>
   );
 };
+
+import { ShoppingBag, Tag } from 'lucide-react';
+import { useState } from "react";
+
+export interface ProductCardProps {
+  product: {
+    id: string;
+    productName: string;
+    productPrice: number;
+    productImage: string;
+    category: string;
+    subCategory: string;
+  };
+}
+
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const [copied, setCopied] = useState(false);
+  
+  const productUrl = `https://www.maarketplaace.com/details/${product.id}`;
+  const copyLink = () => {
+    navigator.clipboard.writeText(productUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <div className="border border-gray-200 dark:border-gray-700 p-0 space-y-8">
+      {product.productImage ? (
+        <div className="h-[180px] w-full">
+          <img
+            src={product.productImage}
+            alt={product.productName}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      ) : (
+        <div className="flex items-center justify-center w-full py-16 bg-[#262626]">
+          <ShoppingBag color="#FFCC00" size={42} />
+        </div>
+      )}
+
+      <div className="p-2 space-y-2 h-[100px]">
+        <p className="bg-[#FFC300] w-fit px-2 rounded-2xl text-black text-base mb-2">
+          {product.category}
+        </p>
+        <p className="font-semibold text-[#FFC300] text-[20px] mb-2">
+          {product.productName}
+        </p>
+        <p className="text-sm flex items-center gap-2">
+          <Tag size={16} /> {product.subCategory}
+        </p>
+      </div>
+
+      <div className="flex items-center justify-between p-2">
+        <span className="font-semibold text-[#FFC300]">
+          <p>₦{product.productPrice?.toLocaleString()}</p>
+          <span className="text-xs">In stock</span>
+        </span>
+        <span>
+          <button onClick={copyLink} className="flex items-center gap-2 text-black dark:text-white border border-[#FFC300] font-medium py-1 px-6 rounded-md transition-colors duration-200 hover:bg-[#FFC300] hover:text-black">
+            {copied ? "Copied!" : "Share"}
+           </button>
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard;
