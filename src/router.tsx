@@ -19,6 +19,7 @@ import EditEbook from "./components/pages/dashboard/layout/edit/Edit-Ebook";
 import UploadCourse from "./components/pages/dashboard/layout/Upload/courses/UploadCourse";
 import UploadEbook from "./components/pages/dashboard/layout/Upload/ebook/UploadEbook";
 import CreateTicket from "./components/pages/dashboard/layout/Upload/ticket/CreateTicket";
+import EditEvent from "./components/pages/dashboard/layout/Upload/ticket/editTicket";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const LoginLoader = () => import("./components/auth/login");
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/ticket",
         element: <CreateTicket />,
+      },
+      {
+        path: "/dashboard/ticket/:id",
+        element: <EditEvent />,
       },
       {
         path: "/dashboard/quicks/:id",
