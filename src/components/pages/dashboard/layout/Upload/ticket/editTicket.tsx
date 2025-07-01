@@ -1,20 +1,19 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { createTicketSchema } from "../../../../../../schema/CreateTicketSchema";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { updateTicketSchema } from "../../../../../../schema/CreateTicketSchema";
+import { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import InputField from "../ebook/InputField";
 import FormField from "../ebook/FormField";
 import ReactQuill from "react-quill";
 import DropzoneField from "../ebook/Dropzone";
-import yup from "yup";
+import * as yup from "yup";
 import { useMutation, useQuery } from "react-query";
-import { createTicket } from "../../../../../../api/mutation";
+import { updateTicket } from "../../../../../../api/mutation";
 import toast from "react-hot-toast";
 import { getTicketsById } from "../../../../../../api/query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-type FormValues = yup.InferType<typeof createTicketSchema>;
+type FormValues = yup.InferType<typeof updateTicketSchema>;
 
 const formFieldData: {
   name: keyof FormValues;
@@ -32,7 +31,7 @@ const formFieldData: {
     name: "price",
     label: "Price (₦)",
     placeholder: "0.00",
-    type: "number",
+    type: "text",
   },
   {
     name: "availableTicket",
@@ -64,17 +63,7 @@ const eventCategories = [
 export default function EditEvent() {
   const [eventImageName, setEventImageName] = useState("");
   const { id } = useParams();
-
-  const { data } = useQuery({
-    queryKey: ["eventTickets"],
-    queryFn: () => getTicketsById(String(id)),
-    onError: (error: { message: string }) => {
-      toast.error(error?.message);
-    },
-  });
-
-  const ticket = data?.data?.data?.data;
-  console.log(ticket);
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -93,28 +82,35 @@ export default function EditEvent() {
       eventType: "",
       eventImage: undefined,
     },
-    resolver: yupResolver(createTicketSchema),
   });
 
-  useEffect(() => {
-    if (ticket) {
-      reset({
-        title: ticket.name || "",
-        price: ticket.price?.toString() || "",
-        category: ticket.category || "",
-        availableTicket: ticket.totalTickets?.toString() || "",
-        location: ticket.location || "",
-        description: ticket.description || "",
-        eventType: ticket.eventType || "",
-        eventImage: undefined,
-      });
+  const { data } = useQuery({
+    queryKey: ["eventTickets", id],
+    queryFn: () => getTicketsById(String(id)),
+    onSuccess: (data) => {
+      const event = data?.data?.data?.data?.event;
+      if (event) {
+        reset({
+          title: event.name || "",
+          price: event.price?.toString() || "",
+          category: event.category || "",
+          availableTicket: event.totalTickets?.toString() || "",
+          location: event.location || "",
+          description: event.description || "",
+          eventType: event.eventType || "",
+          eventImage: undefined,
+        });
 
-      if (ticket.image) {
-        const filename = ticket.image.split("/").pop();
-        setEventImageName(filename || "existing_image.jpg");
+        if (event.bannerImage) {
+          const filename = event.bannerImage.split("/").pop();
+          setEventImageName(filename || "existing_image.jpg");
+        }
       }
-    }
-  }, [ticket, reset]);
+    },
+    onError: (error: { message: string }) => {
+      toast.error(error?.message);
+    },
+  });
 
   const onDropEventImage = useCallback(
     (acceptedFiles: File[]) => {
@@ -146,49 +142,40 @@ export default function EditEvent() {
   );
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: createTicket,
+    mutationFn: ({ payload, id }: { payload: FormData; id: string }) =>
+      updateTicket(payload, id),
     onSuccess: (data) => {
-      toast.success(data?.data);
-      reset();
+      console.log(data);
+      navigate("/dashboard/ticket/");
     },
     onError: () => {
-      toast.error("Failed to create ticket");
+      toast.error("Failed to update ticket");
     },
   });
 
   const onSubmit = (data: FormValues) => {
     const formData = new FormData();
 
-    const startDateTime = new Date(
-      `${data.startDate}T${data.startTime}`
-    ).toISOString();
-    const endDateTime =
-      data.endDate && data.endTime
-        ? new Date(`${data.endDate}T${data.endTime}`).toISOString()
-        : "";
-
     formData.append("name", data.title);
     formData.append("description", data.description);
-    formData.append("startDate", startDateTime);
-    if (endDateTime) formData.append("endDate", endDateTime);
     formData.append("location", data.location);
     formData.append("eventType", data.eventType || "public");
     formData.append("category", data.category);
-    formData.append("totalTickets", String(parseInt(data.availableTicket)));
-    formData.append("price", String(parseFloat(data.price)));
+    formData.append("price", String(parseFloat(data.price) || 0));
 
     if (data.eventImage instanceof FileList && data.eventImage.length > 0) {
       formData.append("image", data.eventImage[0]);
     }
 
-    mutate(formData);
+    if (id) {
+      mutate({ payload: formData, id });
+    }
   };
 
   return (
     <main className="py-12">
-      {" "}
       <form
-        className="grid  md:grid-cols-2 md:gap-x-6 md:gap-y-2 grid-cols-1 p-4 md:p-6"
+        className="grid md:grid-cols-2 md:gap-x-6 md:gap-y-2 grid-cols-1 p-4 md:p-6"
         onSubmit={handleSubmit(onSubmit)}
       >
         {formFieldData.map(({ name, label, placeholder, type }) => (
@@ -198,7 +185,6 @@ export default function EditEvent() {
             placeholder={placeholder}
             type={type}
             register={register(name)}
-            error={errors[name]?.message}
           />
         ))}
 
@@ -218,8 +204,8 @@ export default function EditEvent() {
             {...register("eventType")}
           >
             <option value="">Select event type</option>
-            <option>private</option>
-            <option>public</option>
+            <option value="private">private</option>
+            <option value="public">public</option>
           </select>
         </FormField>
 
@@ -236,7 +222,7 @@ export default function EditEvent() {
               }
               style={{ minHeight: "120px" }}
               className="dark:text-white text-black"
-              defaultValue={ticket?.description || ""}
+              defaultValue={data?.data?.data?.data?.event?.description || ""}
             />
           </div>
         </FormField>
@@ -255,9 +241,10 @@ export default function EditEvent() {
               disabled={isLoading}
               className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
             >
-              {isLoading ? "Creating..." : "Create Ticket"}
+              {isLoading ? "Updating..." : "Update Ticket"}
             </button>
             <button
+              onClick={() => navigate("/dashboard/ticket/")}
               type="button"
               className="w-full bg-black text-white border border-gray-300 font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
             >

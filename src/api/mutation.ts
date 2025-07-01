@@ -163,8 +163,14 @@ export const updateEbook = async (data: IUpdateEbook, id: string) => {
   });
 };
 
-export const createTicket = async (payload) => {
+export const createTicket = async (payload: any) => {
   return await axiosInstance.post("/events", payload, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+export const updateTicket = async (payload: any, id: string) => {
+  return await axiosInstance.put(`/events/${id}/update`, payload, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
