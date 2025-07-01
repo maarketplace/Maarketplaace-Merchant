@@ -20,9 +20,11 @@ export default function CreateTicket() {
     onError: (error: { message: string }) => {
       toast.error(error?.message);
     },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
-  const tickets = data?.data?.data.data;
+  const tickets = data?.data?.data?.data;
 
   const cards = [
     {
