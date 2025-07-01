@@ -8,7 +8,7 @@ import FormField from "../ebook/FormField";
 import ReactQuill from "react-quill";
 import DropzoneField from "../ebook/Dropzone";
 import yup from "yup";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { createTicket } from "../../../../../../api/mutation";
 import toast from "react-hot-toast";
 
@@ -20,31 +20,31 @@ const formFieldData: {
   placeholder: string;
   type: string;
 }[] = [
-  {
-    name: "title",
-    label: "Title",
-    placeholder: "Enter ticket title",
-    type: "text",
-  },
-  {
-    name: "price",
-    label: "Price (₦)",
-    placeholder: "0.00",
-    type: "number",
-  },
-  {
-    name: "availableTicket",
-    label: "Available Tickets",
-    placeholder: "100",
-    type: "number",
-  },
-  {
-    name: "location",
-    label: "Location",
-    placeholder: "Event location",
-    type: "text",
-  },
-];
+    {
+      name: "title",
+      label: "Title",
+      placeholder: "Enter ticket title",
+      type: "text",
+    },
+    {
+      name: "price",
+      label: "Price (₦)",
+      placeholder: "0.00",
+      type: "number",
+    },
+    {
+      name: "availableTicket",
+      label: "Available Tickets",
+      placeholder: "100",
+      type: "number",
+    },
+    {
+      name: "location",
+      label: "Location",
+      placeholder: "Event location",
+      type: "text",
+    },
+  ];
 
 const eventCategories = [
   "Workshops & Masterclasses",
@@ -64,6 +64,7 @@ export default function EventForm({
 }: {
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const queryClient = useQueryClient()
   const [eventImageName, setEventImageName] = useState("");
 
   const {
@@ -122,7 +123,8 @@ export default function EventForm({
   const { mutate, isLoading } = useMutation({
     mutationFn: createTicket,
     onSuccess: (data) => {
-      toast.success(data?.data);
+      toast.success(data?.data?.data?.message || "Ticket created successfully");
+      queryClient.invalidateQueries("eventTickets");
       reset();
       setOpenForm(false);
     },
@@ -171,7 +173,7 @@ export default function EventForm({
           placeholder={placeholder}
           type={type}
           register={register(name)}
-          error={errors[name]?.message}
+          error={errors[name]?.message?.toString()}
         />
       ))}
 
@@ -181,14 +183,14 @@ export default function EventForm({
           placeholder="e.g., June 21, 2025"
           type="date"
           register={register("startDate")}
-          error={errors.startDate?.message}
+          error={errors.startDate?.message?.toString()}
         />
         <InputField
           label="End Date"
           placeholder="e.g., June 22, 2025"
           type="date"
           register={register("endDate")}
-          error={errors.endDate?.message}
+          error={errors.endDate?.message?.toString()}
         />
       </div>
 
@@ -198,7 +200,7 @@ export default function EventForm({
           placeholder="Event start time"
           type="time"
           register={register("startTime")}
-          error={errors.startTime?.message}
+          error={errors.startTime?.message?.toString()}
         />
 
         <InputField
@@ -206,11 +208,11 @@ export default function EventForm({
           placeholder="Event end time"
           type="time"
           register={register("endTime")}
-          error={errors.endTime?.message}
+          error={errors.endTime?.message?.toString()}
         />
       </div>
 
-      <FormField label="Event Category" error={errors.category?.message}>
+      <FormField label="Event Category" error={errors.category?.message?.toString()}>
         <select
           className="w-full h-[45px] px-3 py-2 border border-gray-300 rounded-md bg-transparent hover:border-gray-400 focus:border-blue-500 focus:ring-1 transition-colors duration-200"
           {...register("category")}
@@ -220,7 +222,7 @@ export default function EventForm({
         </select>
       </FormField>
 
-      <FormField label="Event Type" error={errors.eventType?.message}>
+      <FormField label="Event Type" error={errors.eventType?.message?.toString()}>
         <select
           className="w-full h-[45px] px-3 py-2 border border-gray-300 rounded-md bg-transparent hover:border-gray-400 focus:border-blue-500 focus:ring-1 transition-colors duration-200"
           {...register("eventType")}
@@ -231,7 +233,7 @@ export default function EventForm({
         </select>
       </FormField>
 
-      <FormField label="Event Description" error={errors.description?.message}>
+      <FormField label="Event Description" error={errors.description?.message?.toString()}>
         <div className="border border-gray-300 rounded-md overflow-hidden">
           <ReactQuill
             theme="snow"
