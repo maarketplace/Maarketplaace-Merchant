@@ -14,29 +14,6 @@ import { IEventCard } from "../../../../../../interface/EventCard";
 export default function CreateTicket() {
   const [openForm, setOpenForm] = useState<boolean>(false);
 
-  const cards = [
-    {
-      title: "Total Tickets",
-      balance: "5",
-      icon: <PiTicket className="w-6 h-6" />,
-    },
-    {
-      title: "Revenue",
-      balance: "31207",
-      icon: <TbCurrencyNaira className="w-6 h-6" />,
-    },
-    {
-      title: "Tickets Sold",
-      balance: "143",
-      icon: <Users className="w-6 h-6" />,
-    },
-    {
-      title: "Avg. Price",
-      balance: "194",
-      icon: <HiTrendingUp className="w-6 h-6" />,
-    },
-  ];
-
   const { data } = useQuery({
     queryKey: ["eventTickets"],
     queryFn: getTickets,
@@ -46,6 +23,29 @@ export default function CreateTicket() {
   });
 
   const tickets = data?.data?.data.data;
+
+  const cards = [
+    {
+      title: "Total Tickets",
+      balance: tickets?.stats?.totalEvents,
+      icon: <PiTicket className="w-6 h-6" />,
+    },
+    {
+      title: "Revenue",
+      balance: tickets?.stats?.revenue,
+      icon: <TbCurrencyNaira className="w-6 h-6" />,
+    },
+    {
+      title: "Tickets Sold",
+      balance: tickets?.stats?.ticketsSold,
+      icon: <Users className="w-6 h-6" />,
+    },
+    {
+      title: "Avg. Price",
+      balance: tickets?.stats?.averagePrice,
+      icon: <HiTrendingUp className="w-6 h-6" />,
+    },
+  ];
 
   return (
     <main className="min-h-[100vh] p-4 md:p-6 overflow-hidden mt-5 space-y-8">
@@ -74,7 +74,7 @@ export default function CreateTicket() {
           openForm ? "hidden md:grid" : ""
         }`}
       >
-        {cards.map((card, index) => {
+        {cards?.map((card, index) => {
           return (
             <BalanceCard
               key={index}
@@ -94,7 +94,7 @@ export default function CreateTicket() {
           Your Ticket
         </h2>
         <div className="grid lg:grid-cols-3 lg:grid-rows-1 lg:gap-6 md:grid-cols-2 grid-cols-1 gap-4">
-          {tickets?.map((ticket: IEventCard) => {
+          {tickets?.events?.map((ticket: IEventCard) => {
             return (
               <TicketCard
                 ticketID={ticket._id}

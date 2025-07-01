@@ -4,6 +4,7 @@ import { IAddCourse } from "../interface/UploadCourse";
 import { LoginInterface } from "../interface/LoginInterface";
 import { SignUpInterface } from "../interface/SignUpInterface";
 import axiosInstance from "./axiosInstance";
+import yup from "yup";
 
 export const merchantSignup = async (data: SignUpInterface) => {
   return await axiosInstance.post("/merchant", data, {
@@ -165,6 +166,12 @@ export const updateEbook = async (data: IUpdateEbook, id: string) => {
 
 export const createTicket = async (payload) => {
   return await axiosInstance.post("/events", payload, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+export const updateTicket = async (payload: any, id: string) => {
+  return await axiosInstance.put(`/events/${id}/update`, payload, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
