@@ -34,12 +34,12 @@ export function TicketCard({
   return (
     <div className="rounded-md border border-gray-300  p-4 space-y-6">
       {imageUrl ? (
-        <div className="h-[180px] w-full">
+        <div className="h-[250px] w-full">
           <img
             src={imageUrl}
             alt={eventName}
             height={300}
-            className="h-full rounded-md w-full"
+            className="h-full rounded-md w-full object-cover"
           />
         </div>
       ) : (
