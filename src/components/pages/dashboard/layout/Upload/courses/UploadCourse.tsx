@@ -453,7 +453,7 @@ const UploadCourse = () => {
       )}
 
       {!showAddEbook && (!analyticsData?.products || analyticsData.products.length === 0) && (
-        <EmptyState title="No course uploaded yet" description="Start adding eBook here" />
+        <EmptyState title="No course uploaded yet" description="Start adding your courses here" />
       )}
     </div>
   );
