@@ -62,3 +62,7 @@ export const getProductAnalytics = async (productType: string) => {
     `/products/analysis?productType=${productType}`
   );
 };
+
+export const getOrderStats = async () => {
+  return await axiosInstance.get("/orders/merchant");
+};
