@@ -1,8 +1,7 @@
-import { TbCurrencyNaira, TbPlus } from "react-icons/tb";
-
+import { TbCurrencyNaira } from "react-icons/tb";
 import { PiTicket } from "react-icons/pi";
 import { HiTrendingUp } from "react-icons/hi";
-import { Users } from "lucide-react";
+import { Plus, Users, X } from "lucide-react";
 import { useState } from "react";
 import { BalanceCard, TicketCard } from "../../../../../../utils/ui/card";
 import EventForm from "./eventForm";
@@ -10,11 +9,13 @@ import { useQuery } from "react-query";
 import { getTickets } from "../../../../../../api/query";
 import toast from "react-hot-toast";
 import { IEventCard } from "../../../../../../interface/EventCard";
+import { EmptyState } from "../../store";
+import Loading from "../../../../../../loader";
 
 export default function CreateTicket() {
   const [openForm, setOpenForm] = useState<boolean>(false);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["eventTickets"],
     queryFn: getTickets,
     onError: (error: { message: string }) => {
@@ -50,52 +51,67 @@ export default function CreateTicket() {
   ];
 
   return (
-    <main className="min-h-[100vh] p-4 md:p-6 overflow-hidden mt-5 space-y-8">
-      <div className="flex justify-between">
-        <div className="md:block hidden">
-          <h1 className="text-[#FFC300] md:text-[30px] text-[20px] font-bold mb-2">
-            Ticket Dashboard
-          </h1>
-          <h3 className="text-gray-600 dark:text-gray-400">
+    <main className="min-h-[100%] p-4 md:p-6 scrollbar-hide overflow-hidden">
+      <div className="px-4 py-3 max-[650px]:p-0 max-[650px]:mt-6 flex justify-between items-end max-[650px]:flex-col max-[650px]:items-start gap-2">
+        <span className="text-gray-900 dark:text-white mb-0 pb-0 flex justify-center flex-col gap-2">
+          <h1 className="text-3xl text-[#FFC300]">Ticket Dashboard</h1>
+          <p className="text-lg  dark:text-yellow-100">
             Manage your tickets and track sales
-          </h3>
-        </div>
-        <div className="flex justify-end w-full md:w-fit">
-          <button
-            onClick={() => setOpenForm((prev) => !prev)}
-            className="w-fit h-fit bg-[#FFC300] hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-          >
-            <TbPlus className="w-4 h-4" />
-            Add Ticket
-          </button>
-        </div>
+          </p>
+        </span>
+
+        <button
+          onClick={() => setOpenForm((prev) => !prev)}
+          className="cursor-pointer w-[150px] h-[40px] rounded-lg bg-[#FFc300] dark:text-black flex items-center justify-center gap-2 "
+        >
+          {!openForm ? (
+            <span className="flex items-center gap-2">
+              <Plus size={18} />
+              Add Ticket
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <X size={18} />
+              Close form
+            </span>
+          )}
+        </button>
       </div>
 
-      <div
-        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8 ${
-          openForm ? "hidden md:grid" : ""
-        }`}
-      >
-        {cards?.map((card, index) => {
-          return (
-            <BalanceCard
-              key={index}
-              title={card.title}
-              balance={card.balance}
-              icon={card.icon}
-              isLoading={false}
-            />
-          );
-        })}
-      </div>
+      {!openForm ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8 p-4 max-[650px]:p-0 max-[650px]:mt-6">
+          {cards?.map((card, index) => {
+            return (
+              <BalanceCard
+                key={index}
+                title={card.title}
+                balance={card.balance}
+                icon={card.icon}
+                isLoading={isLoading}
+              />
+            );
+          })}
+        </div>
+      ) : null}
 
-      {openForm ? <EventForm setOpenForm={setOpenForm} /> : null}
+      {openForm ? (
+        <div className="px-4 py-3">
+          <EventForm setOpenForm={setOpenForm} />
+        </div>
+      ) : null}
 
-      <div>
-        <h2 className="text-[#FFC300] md:text-[30px] text-[20px] font-bold mb-4">
-          Your Ticket
-        </h2>
-        <div className="grid lg:grid-cols-3 lg:grid-rows-1 lg:gap-6 md:grid-cols-2 grid-cols-1 gap-4">
+      {isLoading && <Loading width="150px" />}
+
+      {!openForm && tickets?.length === 0 && (
+        <EmptyState
+          onClick={() => setOpenForm(true)}
+          title="No event created yet"
+          description="Start creating event here"
+        />
+      )}
+
+      {!openForm ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8 p-4 max-[650px]:p-0 max-[650px]:mt-6">
           {tickets?.events?.map((ticket: IEventCard) => {
             return (
               <TicketCard
@@ -111,7 +127,7 @@ export default function CreateTicket() {
             );
           })}
         </div>
-      </div>
+      ) : null}
     </main>
   );
 }

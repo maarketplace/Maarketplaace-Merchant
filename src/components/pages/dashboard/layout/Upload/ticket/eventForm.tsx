@@ -11,6 +11,7 @@ import yup from "yup";
 import { useMutation, useQueryClient } from "react-query";
 import { createTicket } from "../../../../../../api/mutation";
 import toast from "react-hot-toast";
+import Loading from "../../../../../../loader";
 
 type FormValues = yup.InferType<typeof createTicketSchema>;
 
@@ -20,31 +21,31 @@ const formFieldData: {
   placeholder: string;
   type: string;
 }[] = [
-    {
-      name: "title",
-      label: "Title",
-      placeholder: "Enter ticket title",
-      type: "text",
-    },
-    {
-      name: "price",
-      label: "Price (₦)",
-      placeholder: "0.00",
-      type: "number",
-    },
-    {
-      name: "availableTicket",
-      label: "Available Tickets",
-      placeholder: "100",
-      type: "number",
-    },
-    {
-      name: "location",
-      label: "Location",
-      placeholder: "Event location",
-      type: "text",
-    },
-  ];
+  {
+    name: "title",
+    label: "Title",
+    placeholder: "Enter ticket title",
+    type: "text",
+  },
+  {
+    name: "price",
+    label: "Price (₦)",
+    placeholder: "0.00",
+    type: "number",
+  },
+  {
+    name: "availableTicket",
+    label: "Available Tickets",
+    placeholder: "100",
+    type: "number",
+  },
+  {
+    name: "location",
+    label: "Location",
+    placeholder: "Event location",
+    type: "text",
+  },
+];
 
 const eventCategories = [
   "Workshops & Masterclasses",
@@ -64,7 +65,7 @@ export default function EventForm({
 }: {
   setOpenForm: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const [eventImageName, setEventImageName] = useState("");
 
   const {
@@ -212,7 +213,10 @@ export default function EventForm({
         />
       </div>
 
-      <FormField label="Event Category" error={errors.category?.message?.toString()}>
+      <FormField
+        label="Event Category"
+        error={errors.category?.message?.toString()}
+      >
         <select
           className="w-full h-[45px] px-3 py-2 border border-gray-300 rounded-md bg-transparent hover:border-gray-400 focus:border-blue-500 focus:ring-1 transition-colors duration-200"
           {...register("category")}
@@ -222,7 +226,10 @@ export default function EventForm({
         </select>
       </FormField>
 
-      <FormField label="Event Type" error={errors.eventType?.message?.toString()}>
+      <FormField
+        label="Event Type"
+        error={errors.eventType?.message?.toString()}
+      >
         <select
           className="w-full h-[45px] px-3 py-2 border border-gray-300 rounded-md bg-transparent hover:border-gray-400 focus:border-blue-500 focus:ring-1 transition-colors duration-200"
           {...register("eventType")}
@@ -233,7 +240,10 @@ export default function EventForm({
         </select>
       </FormField>
 
-      <FormField label="Event Description" error={errors.description?.message?.toString()}>
+      <FormField
+        label="Event Description"
+        error={errors.description?.message?.toString()}
+      >
         <div className="border border-gray-300 rounded-md overflow-hidden">
           <ReactQuill
             theme="snow"
@@ -259,9 +269,13 @@ export default function EventForm({
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+            className={`w-full h-12 rounded-lg text-lg font-semibold transition-all duration-200 mt-4 ${
+              isLoading
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-yellow-400 hover:bg-yellow-500 text-gray-900 hover:shadow-lg transform hover:-translate-y-0.5"
+            }`}
           >
-            {isLoading ? "Creating..." : "Create Ticket"}
+            {isLoading ? <Loading /> : "Create Ticket"}
           </button>
           <button
             type="button"

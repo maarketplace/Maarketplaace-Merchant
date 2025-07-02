@@ -32,9 +32,9 @@ export function TicketCard({
   ticketID,
 }: TicketCardProps) {
   return (
-    <div className="rounded-md border border-gray-300  p-4 space-y-6">
+    <div className="rounded-md border border-gray-300 dark:border-gray-700  p-4 space-y-8">
       {imageUrl ? (
-        <div className="h-[250px] w-full">
+        <div className="h-[180px] w-full">
           <img
             src={imageUrl}
             alt={eventName}
@@ -54,10 +54,10 @@ export function TicketCard({
         </p>
         <p className="font-bold text-[#FFC300] text-[20px] mb-2">{eventName}</p>
         <p className="text-sm flex items-center gap-2 mb-2">
-          <PiCalendar /> {startDate}
+          <PiCalendar size={16} /> {startDate}
         </p>
         <p className="text-sm flex items-center gap-2">
-          <HiOutlineLocationMarker /> {location}
+          <HiOutlineLocationMarker size={16} /> {location}
         </p>
       </div>
 
@@ -147,7 +147,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
   );
 };
 
-import { ShoppingBag, Tag } from 'lucide-react';
+import { ShoppingBag, Tag } from "lucide-react";
 import { useState } from "react";
 
 export interface ProductCardProps {
@@ -163,7 +163,7 @@ export interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [copied, setCopied] = useState(false);
-  
+
   const productUrl = `https://www.maarketplaace.com/details/${product.id}`;
   const copyLink = () => {
     navigator.clipboard.writeText(productUrl);
@@ -171,13 +171,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <div className="border border-gray-200 dark:border-gray-700 p-0 space-y-8">
+    <div className="border rounded-md border-gray-200 dark:border-gray-700 p-4 space-y-8">
       {product.productImage ? (
         <div className="h-[180px] w-full">
           <img
             src={product.productImage}
             alt={product.productName}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover rounded-md"
           />
         </div>
       ) : (
@@ -204,9 +204,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <span className="text-xs">In stock</span>
         </span>
         <span>
-          <button onClick={copyLink} className="flex items-center gap-2 text-black dark:text-white border border-[#FFC300] font-medium py-1 px-6 rounded-md transition-colors duration-200 hover:bg-[#FFC300] hover:text-black">
+          <button
+            onClick={copyLink}
+            className="flex items-center gap-2 text-black dark:text-white border border-[#FFC300] font-medium py-1 px-6 rounded-md transition-colors duration-200 hover:bg-[#FFC300] hover:text-black"
+          >
             {copied ? "Copied!" : "Share"}
-           </button>
+          </button>
         </span>
       </div>
     </div>
