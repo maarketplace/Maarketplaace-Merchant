@@ -9,8 +9,7 @@ import {
     TbSearch
 } from 'react-icons/tb';
 import { Clock, CheckCircle, XCircle } from 'lucide-react';
-import QrScanner from 'qr-scanner';
-
+import { Html5Qrcode } from "html5-qrcode";
 interface AttendeeData {
     ticketCode: string;
     attendeeName: string;
@@ -51,7 +50,6 @@ const ScanTickets: React.FC = () => {
     const [scanHistory, setScanHistory] = useState<AttendeeData[]>([]);
     const [cameraError, setCameraError] = useState<string>('');
 
-    const videoRef = useRef<HTMLVideoElement>(null);
     const qrScannerRef = useRef<any>(null);
 
     const [stats, setStats] = useState<Stats>({
@@ -62,62 +60,61 @@ const ScanTickets: React.FC = () => {
     });
 
     const startQRScanner = async (): Promise<void> => {
-        try {
-            setCameraError('');
+        setCameraError('');
+        setIsScanning(true);
 
-            qrScannerRef.current = new QrScanner(
-                videoRef.current!,
-                (result: { data: string; }) => handleQRResult(result.data),
-                {
-                    onDecodeError: (error: any) => console.log('QR decode error:', error),
-                    preferredCamera: 'environment', // Use back camera
-                    highlightScanRegion: true,
-                    highlightCodeOutline: true,
-                    maxScansPerSecond: 5,
+        const config = { fps: 10, qrbox: 250 }; 
+        const html5QrCode = new Html5Qrcode("qr-scanner");
+
+        qrScannerRef.current = html5QrCode;
+
+        try {
+            await html5QrCode.start(
+                { facingMode: "environment" }, 
+                config,
+                (decodedText: string) => {
+                    handleQRResult(decodedText);
+                    html5QrCode.stop(); 
+                    setIsScanning(false);
+                },
+                (error: any) => {
+                    console.log("QR error", error);
                 }
             );
-
-            await qrScannerRef.current.start();
-            setIsScanning(true);
-
-        } catch (error) {
-            setCameraError('Unable to access camera or start QR scanner.');
-            console.error('QR Scanner error:', error);
+        } catch (err) {
+            console.error("Error starting QR code scanner", err);
+            setCameraError("Failed to start QR code scanner.");
+            setIsScanning(false);
         }
-      };
-
-    // Stop QR scanner
-    const stopQRScanner = (): void => {
-        if (qrScannerRef.current) {
-            // qrScannerRef.current.stop();
-            // qrScannerRef.current.destroy();
-            qrScannerRef.current = null;
-        }
-
-        // Stop camera stream
-        if (videoRef.current?.srcObject) {
-            const stream = videoRef.current.srcObject as MediaStream;
-            stream.getTracks().forEach(track => track.stop());
-            videoRef.current.srcObject = null;
-        }
-
-        setIsScanning(false);
     };
 
-    // Handle QR scan result
+    const stopQRScanner = async (): Promise<void> => {
+        if (qrScannerRef.current) {
+            try {
+                await qrScannerRef.current.stop();
+                await qrScannerRef.current.clear();
+                qrScannerRef.current = null;
+                setIsScanning(false);
+            } catch (err) {
+                console.error("Error stopping scanner", err);
+                setCameraError("Failed to stop the QR scanner.");
+            }
+        }
+    };
+    
+    
+
     const handleQRResult = (qrData: string): void => {
         if (qrData && qrData.trim()) {
             handleTicketValidation(qrData.trim(), 'qr');
         }
     };
 
-    // Simulate QR code detection for demo
     const simulateQRScan = (): void => {
         const mockTicketCode = `TKT-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
         handleQRResult(mockTicketCode);
     };
 
-    // Handle manual code entry
     const handleManualEntry = (e?: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLInputElement>): void => {
         if (e) e.preventDefault();
         if (manualCode.trim()) {
@@ -126,10 +123,8 @@ const ScanTickets: React.FC = () => {
         }
     };
 
-    // Validate ticket (mock validation)
     const handleTicketValidation = (code: string, method: ScanMethod): void => {
-        // Mock validation logic
-        const isValid = Math.random() > 0.2; // 80% chance of valid ticket
+        const isValid = Math.random() > 0.2; 
         const ticketTypes: AttendeeData['ticketType'][] = ['VIP', 'Regular', 'Student'];
 
         const attendeeData: AttendeeData = {
@@ -145,7 +140,6 @@ const ScanTickets: React.FC = () => {
 
         setScanResult(attendeeData);
 
-        // Update stats
         setStats(prev => ({
             ...prev,
             totalScanned: prev.totalScanned + 1,
@@ -154,21 +148,17 @@ const ScanTickets: React.FC = () => {
             lastScanTime: attendeeData.scanTime
         }));
 
-        // Add to scan history
         setScanHistory(prev => [attendeeData, ...prev.slice(0, 9)]); // Keep last 10 scans
 
-        // Clear result after 5 seconds
         setTimeout(() => setScanResult(null), 5000);
     };
 
-    // Handle keyboard events for manual entry
     const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>): void => {
         if (e.key === 'Enter') {
             handleManualEntry(e);
         }
     };
 
-    // Cleanup on unmount
     useEffect(() => {
         return () => {
             stopQRScanner();
@@ -222,7 +212,6 @@ const ScanTickets: React.FC = () => {
     const handleTabChange = (tab: TabType): void => {
         setActiveTab(tab);
         if (tab === 'qr' && !isScanning) {
-            // Auto-start scanner when switching to QR tab
             setTimeout(() => startQRScanner(), 100);
         } else if (tab === 'manual') {
             stopQRScanner();
@@ -230,8 +219,8 @@ const ScanTickets: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
-            <div className="max-w-4xl mx-auto space-y-6">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-y-auto">
+            <div className="max-w-4xl mx-auto p-4 space-y-6">
                 {/* Header */}
                 <div className="text-center">
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -242,7 +231,6 @@ const ScanTickets: React.FC = () => {
                     </p>
                 </div>
 
-                {/* Stats Cards */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <StatCard
                         title="Total Scanned"
@@ -270,18 +258,16 @@ const ScanTickets: React.FC = () => {
                     />
                 </div>
 
-                {/* Scan Result */}
                 {scanResult && (
                     <ScanResultCard result={scanResult} />
                 )}
 
-                {/* Tab Navigation */}
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
                     <div className="flex border-b border-gray-200 dark:border-gray-700">
                         <button
                             onClick={() => handleTabChange('qr')}
                             className={`flex-1 py-3 px-4 text-center font-medium transition-colors ${activeTab === 'qr'
-                                    ? 'text-[#FFC300] border-b-2 border-[#FFC300] bg-yellow-50 dark:bg-yellow-900/20'
+                                    ? 'text-yellow-600 border-b-2 border-yellow-600 bg-yellow-50 dark:bg-yellow-900/20'
                                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                                 }`}
                         >
@@ -293,7 +279,7 @@ const ScanTickets: React.FC = () => {
                         <button
                             onClick={() => handleTabChange('manual')}
                             className={`flex-1 py-3 px-4 text-center font-medium transition-colors ${activeTab === 'manual'
-                                    ? 'text-[#FFC300] border-b-2 border-[#FFC300] bg-yellow-50 dark:bg-yellow-900/20'
+                                    ? 'text-yellow-600 border-b-2 border-yellow-600 bg-yellow-50 dark:bg-yellow-900/20'
                                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                                 }`}
                         >
@@ -306,25 +292,20 @@ const ScanTickets: React.FC = () => {
 
                     <div className="p-6">
                         {activeTab === 'qr' ? (
-                            <div className="space-y-4">
-                                <div className="relative bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden" style={{ aspectRatio: '4/3' }}>
+                            <div className="space-y-4 flex items-center justify-center flex-col">
+                                <div className="relative bg-gray-100 dark:bg-gray-700 rounded-lg h-[200px]" style={{ aspectRatio: '4/3' }}>
                                     {isScanning ? (
                                         <>
-                                            <video
-                                                ref={videoRef}
-                                                autoPlay
-                                                playsInline
-                                                muted
-                                                className="w-full h-full object-cover"
-                                            />
+                                            <div id="qr-scanner" className="w-full h-full rounded-lg"></div>
+
                                             <div className="absolute inset-0 flex items-center justify-center">
-                                                <div className="w-48 h-48 border-2 border-[#FFC300] rounded-lg relative">
-                                                    <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-[#FFC300] rounded-tl-lg"></div>
-                                                    <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-[#FFC300] rounded-tr-lg"></div>
-                                                    <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-[#FFC300] rounded-bl-lg"></div>
-                                                    <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-[#FFC300] rounded-br-lg"></div>
+                                                <div className="w-48 h-48 border-2 border-yellow-400 rounded-lg relative">
+                                                    <div className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-yellow-400 rounded-tl-lg"></div>
+                                                    <div className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-yellow-400 rounded-tr-lg"></div>
+                                                    <div className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-yellow-400 rounded-bl-lg"></div>
+                                                    <div className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-yellow-400 rounded-br-lg"></div>
                                                     <div className="absolute inset-0 flex items-center justify-center">
-                                                        <div className="text-[#FFC300] text-sm font-medium bg-black/50 px-2 py-1 rounded">
+                                                        <div className="text-yellow-400 text-sm font-medium bg-black/50 px-2 py-1 rounded">
                                                             Scanning...
                                                         </div>
                                                     </div>
@@ -350,7 +331,7 @@ const ScanTickets: React.FC = () => {
                                     {!isScanning ? (
                                         <button
                                             onClick={startQRScanner}
-                                            className="bg-[#FFC300] hover:bg-yellow-500 text-black font-medium py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                                            className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
                                         >
                                             <TbCamera className="w-5 h-5" />
                                             Start QR Scanner
@@ -366,7 +347,7 @@ const ScanTickets: React.FC = () => {
                                             </button>
                                             <button
                                                 onClick={simulateQRScan}
-                                                className="bg-[#FFC300] hover:bg-yellow-500 text-black font-medium py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                                                className="bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
                                             >
                                                 <TbQrcode className="w-5 h-5" />
                                                 Simulate Scan
@@ -395,7 +376,7 @@ const ScanTickets: React.FC = () => {
                                                 onChange={(e) => setManualCode(e.target.value.toUpperCase())}
                                                 onKeyPress={handleKeyPress}
                                                 placeholder="Enter ticket code (e.g., TKT-ABC123)"
-                                                className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC300] focus:border-transparent dark:bg-gray-700 dark:text-white text-lg font-mono"
+                                                className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent dark:bg-gray-700 dark:text-white text-lg font-mono"
                                                 autoComplete="off"
                                             />
                                             <TbSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -405,7 +386,8 @@ const ScanTickets: React.FC = () => {
                                     <button
                                         type="submit"
                                         disabled={!manualCode.trim()}
-                                        className="w-full bg-[#FFC300] hover:bg-yellow-500 disabled:bg-gray-300 disabled:cursor-not-allowed text-black font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                                        onClick={() => handleManualEntry()}
+                                        className="w-full bg-yellow-400 hover:bg-yellow-500 disabled:bg-gray-300 disabled:cursor-not-allowed text-black font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                                     >
                                         <TbCheck className="w-5 h-5" />
                                         Validate Ticket
