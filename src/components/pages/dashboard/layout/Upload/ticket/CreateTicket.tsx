@@ -1,7 +1,7 @@
-import { TbCurrencyNaira } from "react-icons/tb";
+import { TbCurrencyNaira, TbPlus } from "react-icons/tb";
 import { PiTicket } from "react-icons/pi";
 import { HiTrendingUp } from "react-icons/hi";
-import { Plus, Users, X } from "lucide-react";
+import { Users } from "lucide-react";
 import { useState } from "react";
 import { BalanceCard, TicketCard } from "../../../../../../utils/ui/card";
 import EventForm from "./eventForm";
@@ -11,9 +11,11 @@ import toast from "react-hot-toast";
 import { IEventCard } from "../../../../../../interface/EventCard";
 import { EmptyState } from "../../store";
 import Loading from "../../../../../../loader";
+import InviteAgentModal from "./InviteAgent";
 
 export default function CreateTicket() {
   const [openForm, setOpenForm] = useState<boolean>(false);
+  const [showInviteModal, setShowInviteModal] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["eventTickets"],
@@ -49,7 +51,12 @@ export default function CreateTicket() {
       icon: <HiTrendingUp className="w-6 h-6" />,
     },
   ];
-
+  const handleInviteAgent = (inviteData: { name: string; email: string }) => {
+    console.log("Inviting agent:", inviteData);
+    toast.success(
+      `Invitation sent to ${inviteData.name} (${inviteData.email})`
+    );
+  };
   return (
     <main className="min-h-[100%] p-4 md:p-6 scrollbar-hide overflow-hidden">
       <div className="px-4 py-3 max-[650px]:p-0 max-[650px]:mt-6 flex justify-between items-end max-[650px]:flex-col max-[650px]:items-start gap-2">
@@ -60,22 +67,22 @@ export default function CreateTicket() {
           </p>
         </span>
 
-        <button
-          onClick={() => setOpenForm((prev) => !prev)}
-          className="cursor-pointer w-[150px] h-[40px] rounded-lg bg-[#FFc300] dark:text-black flex items-center justify-center gap-2 "
-        >
-          {!openForm ? (
-            <span className="flex items-center gap-2">
-              <Plus size={18} />
-              Add Ticket
-            </span>
-          ) : (
-            <span className="flex items-center gap-2">
-              <X size={18} />
-              Close form
-            </span>
-          )}
-        </button>
+        <div className="flex justify-end w-full md:w-fit gap-2">
+          <button
+            onClick={() => setShowInviteModal(true)}
+            className="w-fit h-fit border border-[#FFC300] text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 dark:text-white"
+          >
+            <TbPlus className="w-4 h-4" />
+            Invite Agent
+          </button>
+          <button
+            onClick={() => setOpenForm((prev) => !prev)}
+            className="w-fit h-fit bg-[#FFC300] hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+          >
+            <TbPlus className="w-4 h-4" />
+            Add Ticket
+          </button>
+        </div>
       </div>
 
       {!openForm ? (
@@ -128,6 +135,12 @@ export default function CreateTicket() {
           })}
         </div>
       ) : null}
+
+      <InviteAgentModal
+        isOpen={showInviteModal}
+        onClose={() => setShowInviteModal(false)}
+        onSubmit={handleInviteAgent}
+      />
     </main>
   );
 }
