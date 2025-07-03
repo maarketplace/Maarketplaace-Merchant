@@ -1,7 +1,7 @@
 import { TbCurrencyNaira, TbPlus } from "react-icons/tb";
 import { PiTicket } from "react-icons/pi";
 import { HiTrendingUp } from "react-icons/hi";
-import { Users } from "lucide-react";
+import { Users, X } from "lucide-react";
 import { useState } from "react";
 import { BalanceCard, TicketCard } from "../../../../../../utils/ui/card";
 import EventForm from "./eventForm";
@@ -79,8 +79,17 @@ export default function CreateTicket() {
             onClick={() => setOpenForm((prev) => !prev)}
             className="w-fit h-fit bg-[#FFC300] hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
           >
-            <TbPlus className="w-4 h-4" />
-            Add Ticket
+            {!openForm ? (
+              <span className="flex items-center gap-2">
+                <TbPlus size={18} />
+                Add Ticket
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                <X size={18} />
+                Close form
+              </span>
+            )}
           </button>
         </div>
       </div>
