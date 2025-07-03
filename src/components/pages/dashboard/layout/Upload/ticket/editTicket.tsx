@@ -12,6 +12,7 @@ import { updateTicket } from "../../../../../../api/mutation";
 import toast from "react-hot-toast";
 import { getTicketsById } from "../../../../../../api/query";
 import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../../../../../../loader";
 
 type FormValues = yup.InferType<typeof updateTicketSchema>;
 
@@ -173,9 +174,9 @@ export default function EditEvent() {
   };
 
   return (
-    <main className="py-12">
+    <main className="md:px-8 py-12">
       <form
-        className="grid md:grid-cols-2 md:gap-x-6 md:gap-y-2 grid-cols-1 p-4 md:p-6"
+        className="grid md:grid-cols-2 md:gap-x-6 md:gap-y-2 grid-cols-1 px-4 py-3"
         onSubmit={handleSubmit(onSubmit)}
       >
         {formFieldData.map(({ name, label, placeholder, type }) => (
@@ -239,9 +240,13 @@ export default function EditEvent() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+              className={`w-full h-12 rounded-lg text-lg font-semibold transition-all duration-200 mt-4 ${
+                isLoading
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-yellow-400 hover:bg-yellow-500 text-gray-900 hover:shadow-lg transform hover:-translate-y-0.5"
+              }`}
             >
-              {isLoading ? "Updating..." : "Update Ticket"}
+              {isLoading ? <Loading /> : "Update Ticket"}
             </button>
             <button
               onClick={() => navigate("/dashboard/ticket/")}
