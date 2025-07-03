@@ -10,9 +10,11 @@ import { useQuery } from "react-query";
 import { getTickets } from "../../../../../../api/query";
 import toast from "react-hot-toast";
 import { IEventCard } from "../../../../../../interface/EventCard";
+import InviteAgentModal from "./InviteAgent";
 
 export default function CreateTicket() {
   const [openForm, setOpenForm] = useState<boolean>(false);
+  const [showInviteModal, setShowInviteModal] = useState<boolean>(false);
 
   const { data } = useQuery({
     queryKey: ["eventTickets"],
@@ -48,7 +50,10 @@ export default function CreateTicket() {
       icon: <HiTrendingUp className="w-6 h-6" />,
     },
   ];
-
+  const handleInviteAgent = (inviteData: { name: string; email: string }) => {
+    console.log("Inviting agent:", inviteData);
+    toast.success(`Invitation sent to ${inviteData.name} (${inviteData.email})`);
+  };
   return (
     <main className="min-h-[100vh] p-4 md:p-6 overflow-hidden mt-5 space-y-8">
       <div className="flex justify-between">
@@ -60,7 +65,14 @@ export default function CreateTicket() {
             Manage your tickets and track sales
           </h3>
         </div>
-        <div className="flex justify-end w-full md:w-fit">
+        <div className="flex justify-end w-full md:w-fit gap-2">
+          <button
+            onClick={() => setShowInviteModal(true)}
+            className="w-fit h-fit border border-[#FFC300] text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+          >
+            <TbPlus className="w-4 h-4" />
+            Invite Agent
+          </button>
           <button
             onClick={() => setOpenForm((prev) => !prev)}
             className="w-fit h-fit bg-[#FFC300] hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
@@ -72,9 +84,8 @@ export default function CreateTicket() {
       </div>
 
       <div
-        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8 ${
-          openForm ? "hidden md:grid" : ""
-        }`}
+        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8 ${openForm ? "hidden md:grid" : ""
+          }`}
       >
         {cards?.map((card, index) => {
           return (
@@ -112,6 +123,11 @@ export default function CreateTicket() {
           })}
         </div>
       </div>
+      <InviteAgentModal
+        isOpen={showInviteModal}
+        onClose={() => setShowInviteModal(false)}
+        onSubmit={handleInviteAgent}
+      />
     </main>
   );
 }

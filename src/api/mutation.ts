@@ -174,3 +174,7 @@ export const updateTicket = async (payload: any, id: string) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
+
+export const inviteAgent = async (data: { email: string; name: string }) => {
+  return await axiosInstance.post(`/events/invite`, data);
+}

@@ -20,6 +20,7 @@ import UploadCourse from "./components/pages/dashboard/layout/Upload/courses/Upl
 import UploadEbook from "./components/pages/dashboard/layout/Upload/ebook/UploadEbook";
 import CreateTicket from "./components/pages/dashboard/layout/Upload/ticket/CreateTicket";
 import EditEvent from "./components/pages/dashboard/layout/Upload/ticket/editTicket";
+import ScanTickets from "./components/pages/event-agent/scanTickets";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const LoginLoader = () => import("./components/auth/login");
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
         path: "/account-withdraw/:id",
         element: <ConfirmWithdrawal />,
     },
+    {
+        path: "/event-agent",
+        element: <ScanTickets />,
+    }
 ]);
 
 export default router;
