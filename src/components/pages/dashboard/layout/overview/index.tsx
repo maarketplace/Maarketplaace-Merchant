@@ -9,11 +9,12 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import BalanceCard from "./BalancedCard";
+
 import { useNavigate } from "react-router-dom";
 import ProductToast from "../notification";
 import { useProductStore } from "../../../../../store";
 import { TbCurrencyNaira } from "react-icons/tb";
+import { BalanceCard } from "../../../../../utils/ui/card";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -65,16 +66,16 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen dark:bg-black p-4 mt-10">
+    <div className="min-h-screen dark:bg-black p-8 mt-5 max-[650px]:p-2 max-[650px]:mt-10">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-3xl font-light text-black dark:text-white">
+            <h1 className="text-3xl  text-[#FFC300]">
               Dashboard
             </h1>
             <button
               onClick={toggleBalanceVisibility}
-              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+              className="cursor-pointer w-[150px] h-[40px] rounded-lg bg-[#FFc300] dark:text-black flex items-center justify-center gap-2"
             >
               {isBalanceVisible ? (
                 <EyeOff className="w-4 h-4" />
@@ -86,7 +87,7 @@ const Dashboard: React.FC = () => {
               </span>
             </button>
           </div>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600 dark:text-yellow-100">
             Welcome back! Here's what's happening with your business today.
           </p>
         </div>

@@ -38,10 +38,10 @@ const Customer = () => {
 
 
     return (
-        <div className="w-[100%] max-[650px]:w-[100%] flex items-center justify-center mt-[50px] max-[650px]:mt-[40px]">
+        <div className="w-[100%] max-[650px]:w-[100%] flex items-center justify-center mt-[50px] max-[650px]:mt-[40px] p-4 max-[650px]:p-0 ">
             <div className="w-[95%] mb-[50px] flex flex-col gap-[20px]">
-                <h1 className="text-2xl font-semibold text-black dark:text-white p-0 m-0">Customers Management</h1>
-                <p className="mb-4 text-sm">You will be able to view all your customers here </p>
+                <h1 className="text-3xl  text-[#FFC300]">Customers Management</h1>
+                <p className="mb-4 text-gray-600 dark:text-yellow-100">You will be able to view all your customers here </p>
                 <Table
                     data={formattedData}
                     columns={columns}

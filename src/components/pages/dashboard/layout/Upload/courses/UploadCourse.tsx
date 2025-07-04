@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { uploadCourse } from "../../../../../../api/mutation";
 import { IErrorResponse } from "../../../../../../interface/ErrorInterface";
@@ -15,13 +15,58 @@ import Loading from "../../../../../../loader";
 import { UploadCourseSchema } from "../../../../../../schema/UploadCourseSchema";
 import courseCategories, { courseLocations } from "../category/courseCategory";
 import { useProductStore } from "../../../../../../store";
+import {
+  Ticket,
+  Package,
+  ShoppingCart,
+  TrendingUp,
+  Plus,
+  X,
+} from "lucide-react";
+import { EmptyState } from "../../store";
+import InputField from "../ebook/InputField";
+import FormField from "../ebook/FormField";
+import DropzoneField from "../ebook/Dropzone";
+import { getProductAnalytics } from "../../../../../../api/query";
+import { formatNumber } from "../../../../../../utils/Utils";
+import ProductCard, {
+  BalanceCard,
+  ProductCardProps,
+} from "../../../../../../utils/ui/card";
+
+interface IAnalyticsData {
+  totalProduct: number;
+  revenue: number;
+  totalPurchase: number;
+  averagePrice: number;
+  products: ProductCardProps["product"][];
+}
 
 const UploadCourse = () => {
   const navigate = useNavigate();
-  const [description, setDescription] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("");
   const [paymentPrice, setPaymentPrice] = useState(0);
   const { setProductId, setProductName } = useProductStore();
+  const [showAddEbook, setShowAddEbook] = useState<boolean>(false);
+
+  const {
+    data: analyticsData,
+    isLoading: isAnalyticsLoading,
+    error: analyticsError,
+    refetch: refetchAnalytics,
+  } = useQuery(
+    ["courseAnalytics", "course"],
+    () => getProductAnalytics("course"),
+    {
+      select: (data) => data?.data?.data as IAnalyticsData,
+      onError: (err: IErrorResponse) => {
+        console.error("Failed to fetch analytics:", err);
+        toast.error("Failed to load analytics data");
+      },
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
+    }
+  );
 
   const form = useForm<IAddCourse>({
     resolver: yupResolver(UploadCourseSchema) as any,
@@ -29,7 +74,7 @@ const UploadCourse = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
     setValue,
     reset,
     watch,
@@ -79,7 +124,9 @@ const UploadCourse = () => {
         duration: "",
       });
       setSelectedFileName("");
-      setDescription("");
+
+      refetchAnalytics();
+
       navigate("/dashboard");
     },
     onError: (err: IErrorResponse) => {
@@ -141,299 +188,300 @@ const UploadCourse = () => {
     courseCategories.find((category) => category.name === selectedCategory)
       ?.courseSubcategories || [];
 
+  const cards = [
+    {
+      title: "Total Course",
+      balance: analyticsData?.totalProduct || 0,
+      icon: <Ticket className="w-6 h-6" />,
+    },
+    {
+      title: "Revenue",
+      balance: formatNumber(analyticsData?.revenue || 0),
+      icon: <Package className="w-6 h-6" />,
+    },
+    {
+      title: "Total Course Sold",
+      balance: analyticsData?.totalPurchase || 0,
+      icon: <ShoppingCart className="w-6 h-6" />,
+    },
+    {
+      title: "Avg. Price",
+      balance: formatNumber(analyticsData?.averagePrice || 0),
+      icon: <TrendingUp className="w-6 h-6" />,
+    },
+  ];
+
   return (
     <div className="min-h-screen p-4 md:p-6 no-scrollbar">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8 text-center">
-          <h3 className="text-3xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 mt-5">
-            Upload a Course
-          </h3>
-          <p className="text-base md:text-lg text-gray-600 dark:text-gray-400">
-            Show the world what you are selling
+      <div className="px-4 py-3 max-[650px]:p-0 max-[650px]:mt-6 flex justify-between items-end max-[650px]:flex-col max-[650px]:items-start gap-2">
+        <span className="text-gray-900 dark:text-white mb-0 pb-0 flex justify-center flex-col gap-2">
+          <h1 className="text-3xl text-[#FFC300]">Upload a Course</h1>
+          <p className="text-lg  dark:text-yellow-100">
+            Share your knowledge with the world
+          </p>
+        </span>
+        {showAddEbook ? (
+          <button
+            className="cursor-pointer w-[150px] h-[40px] rounded-lg bg-[#FFc300] dark:text-black flex items-center justify-center gap-2 "
+            onClick={() => setShowAddEbook(!showAddEbook)}
+          >
+            <X size={18} />
+            Close form
+          </button>
+        ) : (
+          <button
+            className="cursor-pointer w-[150px] h-[40px] rounded-lg bg-[#FFc300] dark:text-black flex items-center justify-center gap-2 "
+            onClick={() => setShowAddEbook(!showAddEbook)}
+          >
+            <Plus size={18} />
+            Add Course
+          </button>
+        )}
+      </div>
+
+      {!showAddEbook && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8 p-4 max-[650px]:p-0 max-[650px]:mt-6">
+          {cards.map((card, index) => (
+            <BalanceCard
+              key={index}
+              title={card.title}
+              balance={card.balance}
+              icon={card.icon}
+              isLoading={isAnalyticsLoading}
+            />
+          ))}
+        </div>
+      )}
+
+      {analyticsError && (
+        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-600 text-sm">
+            Failed to load analytics data.
+            <button
+              onClick={() => refetchAnalytics()}
+              className="ml-2 text-red-800 underline hover:no-underline"
+            >
+              Try again
+            </button>
           </p>
         </div>
+      )}
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <div className="bg-white max-[650px]:bg-none dark:bg-gray-800 rounded-lg shadow-sm max-[650px]:shadow-none border max-[650px]:border-none border-gray-200 dark:border-gray-700 p-4">
-              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                Course Information
-              </h4>
+      {showAddEbook && (
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div className="max-[650px]:bg-none rounded-lg max-[650px]:shadow-none p-4 max-[650px]:p-0 border-gray-200 dark:border-gray-700">
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+                  Course Information
+                </h4>
 
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course Name
-                  </label>
-                  <input
-                    placeholder="Course Name"
+                <div className="space-y-6">
+                  <InputField
+                    label="Course Name"
+                    placeholder="Enter course name"
+                    register={register("courseName")}
+                    error={errors.courseName?.message}
                     type="text"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    {...register("courseName")}
                   />
-                  {errors.courseName?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.courseName?.message}
-                    </p>
-                  )}
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course Price
-                  </label>
-                  <p className="text-xs text-gray-500 mb-2">(original price)</p>
-                  <input
-                    placeholder="Course Price"
-                    type="text"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    {...register("coursePrice")}
-                  />
-                  {errors.coursePrice?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.coursePrice?.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course Discounted Price
-                  </label>
-                  <p className="text-xs text-gray-500 mb-2">
-                    (amount to remove from the original price)
-                  </p>
-                  <input
-                    placeholder="Course Discounted Price"
-                    type="text"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    {...register("courseDiscountedPrice")}
-                  />
-                  {errors.courseDiscountedPrice?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.courseDiscountedPrice?.message}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Payment Price
-                  </label>
-                  <p className="text-xs text-gray-500 mb-2">
-                    (payment price for buyers)
-                  </p>
-                  <input
+                  <InputField
+                    label=" Course Price"
+                    placeholder="Enter original price"
                     type="number"
+                    description="Original price before any discounts"
+                    register={register("coursePrice")}
+                    error={errors.coursePrice?.message}
+                  />
+
+                  <InputField
+                    label="Course Discounted Price"
+                    placeholder="Enter discount amount"
+                    type="number"
+                    description="Amount to subtract from original price"
+                    register={register("courseDiscountedPrice")}
+                    error={errors.courseDiscountedPrice?.message}
+                  />
+
+                  <InputField
+                    label="Final Price"
+                    placeholder="Calculated automatically"
+                    type="number"
+                    description="Price customers will pay"
                     value={paymentPrice}
-                    disabled
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-600 text-gray-900 dark:text-white"
+                    disabled={true}
                   />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course Location
-                  </label>
-                  <select
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    {...register("courseLocation")}
+                  <FormField
+                    label="Book Category"
+                    error={errors.courseLocation?.message}
+                    className="mt-8"
                   >
-                    {courseLocations.map((location, index) => (
-                      <option key={index} value={location}>
-                        {location}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.courseLocation?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.courseLocation?.message}
-                    </p>
-                  )}
-                </div>
+                    <select
+                      className="w-full h-[45px] px-3 py-2 border border-gray-300 rounded-md bg-transparent hover:border-gray-400 focus:border-blue-500 focus:ring-1 transition-colors duration-200 mt-4"
+                      {...register("courseLocation")}
+                    >
+                      {courseLocations.map((location, index) => (
+                        <option key={index} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </select>
+                  </FormField>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course Description
-                  </label>
-                  <ReactQuill
-                    theme="snow"
-                    value={description}
-                    onChange={(value) => {
-                      setDescription(value);
-                      setValue("courseDescription", value);
-                    }}
-                  />
-                  {errors.courseDescription?.message && (
-                    <p className="text-red-500 text-sm mt-2">
-                      {errors.courseDescription?.message}
-                    </p>
-                  )}
+                  <FormField
+                    label="Course Description"
+                    error={errors.courseDescription?.message}
+                  >
+                    <div className="quill-container">
+                      <ReactQuill
+                        theme="snow"
+                        placeholder="Describe your book..."
+                        onChange={(value) =>
+                          setValue("courseDescription", value)
+                        }
+                        className="dark:text-white text-black rounded-lg"
+                        modules={{
+                          toolbar: [
+                            ["bold", "italic", "underline"],
+                            [{ list: "ordered" }, { list: "bullet" }],
+                            ["link"],
+                          ],
+                        }}
+                      />
+                    </div>
+                    <style>{`
+                                .quill-container {
+                                height: 100px;
+                                }
+                                .quill-container .ql-container {
+                                height: calc(120px - 42px);
+                                overflow-y: auto;
+                                }
+                              `}</style>
+                  </FormField>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-                Additional Details
-              </h4>
+            <div className="space-y-6">
+              <div className="max-[650px]:bg-none rounded-lg max-[650px]:shadow-none p-4 max-[650px]:p-0 border-gray-200 dark:border-gray-700">
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+                  Additional Details
+                </h4>
 
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course Category
-                  </label>
-                  <select
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    {...register("courseCategory")}
+                <div className="space-y-6">
+                  <FormField
+                    label="Course Category"
+                    error={errors.courseCategory?.message}
+                    className="mt-8"
                   >
-                    <option value="" disabled>
-                      Select a category
-                    </option>
-                    {courseCategories.map((category) => (
-                      <option key={category.id} value={category.name}>
-                        {category.name}
+                    <select
+                      className="w-full h-[45px] px-3 py-2 border border-gray-300 rounded-md bg-transparent hover:border-gray-400 focus:border-blue-500 focus:ring-1 transition-colors duration-200 mt-2"
+                      {...register("courseCategory")}
+                    >
+                      <option value="" disabled>
+                        Select a category
                       </option>
-                    ))}
-                  </select>
-                  {errors.courseCategory?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.courseCategory?.message}
-                    </p>
-                  )}
-                </div>
+                      {courseCategories.map((category) => (
+                        <option key={category.id} value={category.name}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </FormField>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course Sub Category
-                  </label>
-                  <select
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:bg-gray-100 dark:disabled:bg-gray-600"
-                    {...register("courseSubCategory")}
-                    disabled={!selectedCategory}
-                  >
-                    <option value="" disabled>
-                      Select a subcategory
-                    </option>
-                    {filteredSubCategories.map((subCategory) => (
-                      <option key={subCategory.id} value={subCategory.name}>
-                        {subCategory.name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.courseSubCategory?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.courseSubCategory?.message}
-                    </p>
+                  {selectedCategory && (
+                    <FormField
+                      label="Course Subcategory"
+                      error={errors.courseSubCategory?.message}
+                      className="mt-4"
+                    >
+                      <select
+                        className="w-full h-[45px] px-3 py-2 border border-gray-300 rounded-md bg-transparent hover:border-gray-400 focus:border-blue-500 focus:ring-1 transition-colors duration-200 mt-2"
+                        {...register("courseSubCategory")}
+                        disabled={!selectedCategory}
+                      >
+                        <option value="" disabled>
+                          Select a subcategory
+                        </option>
+                        {filteredSubCategories.map((subCategory) => (
+                          <option key={subCategory.id} value={subCategory.name}>
+                            {subCategory.name}
+                          </option>
+                        ))}
+                      </select>
+                    </FormField>
                   )}
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course URL
-                  </label>
-                  <input
+                  <InputField
+                    label="Course URL"
                     placeholder="Course URL"
                     type="text"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    {...register("courseURL")}
+                    register={register("courseURL")}
+                    error={errors.courseURL?.message}
                   />
-                  {errors.courseURL?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.courseURL?.message}
-                    </p>
-                  )}
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course Author
-                  </label>
-                  <input
+                  <InputField
+                    label="Course Author"
                     placeholder="Course Author"
                     type="text"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    {...register("author")}
+                    register={register("author")}
+                    error={errors.author?.message}
                   />
-                  {errors.author?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.author?.message}
-                    </p>
-                  )}
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Course Duration
-                  </label>
-                  <input
+                  <InputField
+                    label="Course Duration"
                     placeholder="Course Duration"
                     type="text"
-                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                    {...register("duration")}
+                    register={register("duration")}
+                    error={errors.duration?.message}
                   />
-                  {errors.duration?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.duration?.message}
-                    </p>
-                  )}
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Add Course Image
-                  </label>
-                  <div
-                    {...getProductImageRootProps()}
-                    className="w-full min-h-[120px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-yellow-400 transition-colors p-6"
-                  >
-                    <input {...getProductImageInputProps()} />
-                    {selectedFileName ? (
-                      <div className="text-center">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">
-                          {selectedFileName}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Click to change image
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="text-center">
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          Drag & drop an image here, or click to select
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          PNG, JPG, JPEG, GIF
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  {errors.courseImage?.message && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.courseImage?.message}
-                    </p>
-                  )}
+                  <DropzoneField
+                    getRootProps={getProductImageRootProps}
+                    getInputProps={getProductImageInputProps}
+                    fileName={selectedFileName}
+                    placeholder="Click To Add Course Image"
+                    error={errors.courseImage?.message}
+                  />
                 </div>
+                <button
+                  disabled={isLoading}
+                  className={`w-full h-12 rounded-lg text-lg font-semibold transition-all duration-200 mt-4 ${
+                    isLoading
+                      ? "bg-yellow-300 text-gray-900 cursor-not-allowed"
+                      : "bg-yellow-400 hover:bg-yellow-500 text-gray-900 hover:shadow-lg transform hover:-translate-y-0.5"
+                  }`}
+                  type="button"
+                  onClick={handleButtonClick}
+                >
+                  {isLoading ? <Loading /> : "Upload Course"}
+                </button>
               </div>
             </div>
-
-            <button
-              disabled={isLoading}
-              className={`w-full h-12 rounded-lg text-lg font-semibold transition-all duration-200 ${
-                isLoading
-                  ? "bg-yellow-300 text-gray-900 cursor-not-allowed"
-                  : "bg-yellow-400 hover:bg-yellow-500 text-gray-900 hover:shadow-lg transform hover:-translate-y-0.5"
-              }`}
-              type="button"
-              onClick={handleButtonClick}
-            >
-              {isLoading ? <Loading /> : "Upload Course"}
-            </button>
           </div>
         </div>
-      </div>
+      )}
+
+      {!showAddEbook &&
+        analyticsData?.products &&
+        analyticsData.products.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8 p-4 max-[650px]:p-0 max-[650px]:mt-6">
+            {analyticsData.products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+
+      {!showAddEbook &&
+        (!analyticsData?.products || analyticsData.products.length === 0) && (
+          <EmptyState
+            onClick={() => setShowAddEbook(true)}
+            title="No course uploaded yet"
+            description="Start adding your courses here"
+          />
+        )}
     </div>
   );
 };

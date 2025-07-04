@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useMemo } from "react";
-import { Search, ChevronLeft, ChevronRight, Image, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Image } from "lucide-react";
 
 interface TableProps<T> {
     columns: Array<{
@@ -43,7 +44,6 @@ const Table = <T extends Record<string, any>>({
     const [searchQuery, setSearchQuery] = useState("");
     const [sortColumn, setSortColumn] = useState<keyof T | null>(null);
     const [sortDirection, setSortDirection] = useState<SortDirection>(null);
-    const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
@@ -101,32 +101,6 @@ const Table = <T extends Record<string, any>>({
         }
     };
 
-    const mobileColumns = useMemo(() => {
-        return columns
-            .filter(col => !col.mobileHidden)
-            .sort((a, b) => (a.priority || 999) - (b.priority || 999))
-            .slice(0, 10);
-    }, [columns]);
-
-    const hiddenMobileColumns = useMemo(() => {
-        const visibleColumns = columns
-            .filter(col => !col.mobileHidden)
-            .sort((a, b) => (a.priority || 999) - (b.priority || 999))
-            .slice(0, 2);
-
-        return columns.filter(col => !visibleColumns.includes(col));
-    }, [columns]);
-
-    const toggleRowExpansion = (index: number) => {
-        const newExpanded = new Set(expandedRows);
-        if (newExpanded.has(index)) {
-            newExpanded.delete(index);
-        } else {
-            newExpanded.add(index);
-        }
-        setExpandedRows(newExpanded);
-    };
-
     const renderCell = (column: typeof columns[0], row: T) => {
         const value = row[column.key];
 
@@ -137,7 +111,7 @@ const Table = <T extends Record<string, any>>({
         switch (column.type) {
             case 'image':
                 return (
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center max-[650px]:justify-end">
                         {value ? (
                             <img
                                 src={String(value)}
@@ -171,8 +145,8 @@ const Table = <T extends Record<string, any>>({
     };
 
     const renderMobileCard = (row: T, index: number) => {
-        const isExpanded = expandedRows.has(index);
-        const hasHiddenColumns = hiddenMobileColumns.length > 0;
+        // Show all columns instead of filtering out mobileHidden ones
+        const allColumns = columns; // Use all columns instead of mobileColumns
 
         return (
             <div
@@ -185,16 +159,16 @@ const Table = <T extends Record<string, any>>({
                 <div
                     className={`
                         p-2
-                        ${onRowClick && !hasHiddenColumns ? 'cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 active:bg-blue-100 dark:active:bg-blue-900/30 transition-colors duration-150 w-full' : ''}
+                        ${onRowClick ? 'cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 active:bg-blue-100 dark:active:bg-blue-900/30 transition-colors duration-150 w-full' : ''}
                     `}
                     onClick={() => {
-                        if (onRowClick && !hasHiddenColumns) {
+                        if (onRowClick) {
                             onRowClick(row);
                         }
                     }}
                 >
                     <div className="space-y-4 p-2">
-                        {mobileColumns.map((column) => (
+                        {allColumns.map((column) => (
                             <div key={String(column.key)} className="flex justify-between items-start">
                                 <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mr-3 flex-shrink-0">
                                     {column.label}
@@ -206,48 +180,6 @@ const Table = <T extends Record<string, any>>({
                         ))}
                     </div>
                 </div>
-
-                {hasHiddenColumns && (
-                    <>
-                        <button
-                            onClick={() => toggleRowExpansion(index)}
-                            className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-150 text-left"
-                        >
-                            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                                <span>
-                                    {isExpanded ? 'Show less' : `Show ${hiddenMobileColumns.length} more field${hiddenMobileColumns.length > 1 ? 's' : ''}`}
-                                </span>
-                                {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                            </div>
-                        </button>
-
-                        {isExpanded && (
-                            <div className="px-4 pb-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
-                                <div className="space-y-3 pt-3">
-                                    {hiddenMobileColumns.map((column) => (
-                                        <div key={String(column.key)} className="flex justify-between items-start">
-                                            <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mr-3 flex-shrink-0">
-                                                {column.label}
-                                            </span>
-                                            <div className="text-right flex-1">
-                                                {renderCell(column, row)}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {onRowClick && (
-                                    <button
-                                        onClick={() => onRowClick(row)}
-                                        className="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors duration-150"
-                                    >
-                                        View Details
-                                    </button>
-                                )}
-                            </div>
-                        )}
-                    </>
-                )}
             </div>
         );
     };
@@ -361,7 +293,7 @@ const Table = <T extends Record<string, any>>({
                         renderLoadingSkeleton()
                     ) : currentData.length > 0 ? (
                         <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-700">
-                            {currentData.map((row, rowIndex) => (
+                            {currentData?.map((row, rowIndex) => (
                                 <tr
                                     key={rowIndex}
                                     className={`
@@ -416,7 +348,7 @@ const Table = <T extends Record<string, any>>({
                     </div>
                 ) : currentData.length > 0 ? (
                     <div className="p-4">
-                        {currentData.map((row, index) => renderMobileCard(row, index))}
+                        {currentData?.map((row, index) => renderMobileCard(row, index))}
                     </div>
                 ) : (
                     <div className="p-2 text-center">

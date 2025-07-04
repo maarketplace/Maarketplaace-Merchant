@@ -30,20 +30,67 @@ export const getOneProduct = async (id: any) => {
     return await axiosInstance.get(`/products/${id}`);
 };
 
-
 export const getMerchantBalance = async () => {
     return await axiosInstance.get("/merchant/account");
 };
 
 export const fetchBanks = async () => {
-    return await axios.get("https://api.korapay.com/merchant/api/v1/misc/banks?countryCode=NG", {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_KORA_API_KEY}`,
-        },
-    });
+    return await axios.get(
+        "https://api.korapay.com/merchant/api/v1/misc/banks?countryCode=NG",
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${import.meta.env.VITE_KORA_API_KEY}`,
+            },
+        }
+    );
 };
 
 export const getTransaction = async () => {
     return await axiosInstance.get("/transactions");
 };
+
+export const getTickets = async () => {
+    return await axiosInstance.get("/events/merchant");
+};
+export const getTicketsById = async (id: string) => {
+    return await axiosInstance.get(`/events/merchant/${id}`);
+};
+
+export const getProductAnalytics = async (productType: string) => {
+    return await axiosInstance.get(
+        `/products/analysis?productType=${productType}`
+    );
+};
+
+export const getOrderStats = async () => {
+    return await axiosInstance.get("/orders/merchant");
+};
+
+export const getEbookById = async (id: string) => {
+    return await axiosInstance.get(
+        `/products/details/analysis?productId=${id}&productType=ebook`
+    );
+}
+
+export const getCourseById = async (id: string) => {
+    return await axiosInstance.get(
+        `/products/details/analysis?productId=${id}&productType=course`
+    );
+}
+
+export const getEbookCustomers = async (id: string) => {
+    return await axiosInstance.get(
+        `/products/customers/analysis?productId=${id}&productType=ebook`
+    );
+}
+
+export const getCourseCustomers = async (id: string) => {
+    return await axiosInstance.get(
+        `/products/customers/analysis?productId=${id}&productType=course`
+    );
+}
+
+export const getEventsAttendees = async (id: string) => {
+    return await axiosInstance.get(`/events/attendees/${id}`);
+}
