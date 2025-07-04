@@ -293,7 +293,7 @@ const Table = <T extends Record<string, any>>({
                         renderLoadingSkeleton()
                     ) : currentData.length > 0 ? (
                         <tbody className="bg-white dark:bg-black divide-y divide-gray-200 dark:divide-gray-700">
-                            {currentData.map((row, rowIndex) => (
+                            {currentData?.map((row, rowIndex) => (
                                 <tr
                                     key={rowIndex}
                                     className={`
@@ -348,7 +348,7 @@ const Table = <T extends Record<string, any>>({
                     </div>
                 ) : currentData.length > 0 ? (
                     <div className="p-4">
-                        {currentData.map((row, index) => renderMobileCard(row, index))}
+                        {currentData?.map((row, index) => renderMobileCard(row, index))}
                     </div>
                 ) : (
                     <div className="p-2 text-center">

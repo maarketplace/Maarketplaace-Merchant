@@ -422,31 +422,30 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ config }) => {
                     {
                         activeTab === 'verifier' && (
                             <div className="text-center py-12">
-                               <Table 
-                               data={verifiers || []}
-                                 columns={[
-                                    {
-                                        key: 'name',
-                                        label: 'Verifier Name',
-                                        sortable: true,
-                                        type: 'text',
-                                        priority: 1,
-                                    },
-                                    {
-                                        key: 'email',
-                                        label: 'Email',
-                                        sortable: true,
-                                        type: 'text',
-                                        priority: 2,
-                                    }
-                                ]}
-                                loading={false}
-                                emptyMessage="No verifiers found"
-                                searchPlaceholder="Search verifiers..."
-                                showSearch={true}
-                                striped={true}
-                                rowsPerPage={10}
-                               />
+                                <Table
+                                    data={verifiers || []}
+                                    columns={[
+                                        {
+                                            key: 'name',
+                                            label: 'Verifier Name',
+                                            sortable: true,
+                                            type: 'text',
+                                            priority: 1,
+                                        },
+                                        {
+                                            key: 'email',
+                                            label: 'Email',
+                                            sortable: true,
+                                            type: 'text',
+                                            priority: 2,
+                                        }
+                                    ]}
+                                    emptyMessage="No verifiers found"
+                                    searchPlaceholder="Search verifiers..."
+                                    showSearch={true}
+                                    striped={true}
+                                    rowsPerPage={10}
+                                />
                             </div>
                         )
                     }
