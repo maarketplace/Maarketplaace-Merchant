@@ -119,7 +119,7 @@ export default function CreateTicket() {
 
       {isLoading && <Loading width="150px" />}
 
-      {!openForm && tickets?.event?.length === 0 && (
+      {!openForm && tickets?.events?.length === 0 && (
         <EmptyState
           onClick={() => setOpenForm(true)}
           title="No event created yet"

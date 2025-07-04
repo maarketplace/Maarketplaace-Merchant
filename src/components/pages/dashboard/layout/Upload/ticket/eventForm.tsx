@@ -269,7 +269,7 @@ export default function EventForm({
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full h-12 rounded-lg text-lg font-semibold transition-all duration-200  ${
+            className={`w-full py-2 px-4 rounded-lg text-lg font-medium transition-all duration-200  ${
               isLoading
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : "bg-yellow-400 hover:bg-yellow-500 text-gray-900 hover:shadow-lg transform hover:-translate-y-0.5"
