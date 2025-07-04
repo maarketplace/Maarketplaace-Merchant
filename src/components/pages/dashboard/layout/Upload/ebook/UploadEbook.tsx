@@ -503,7 +503,7 @@ function UploadEbook() {
       {!showAddEbook && analyticsData?.products && analyticsData.products.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8 p-4 max-[650px]:p-0 max-[650px]:mt-6">
           {analyticsData.products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product}  />
           ))}
         </div>
       )}

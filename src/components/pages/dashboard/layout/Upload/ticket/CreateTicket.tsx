@@ -12,8 +12,10 @@ import { IEventCard } from "../../../../../../interface/EventCard";
 import { EmptyState } from "../../store";
 import Loading from "../../../../../../loader";
 import InviteAgentModal from "./InviteAgent";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateTicket() {
+  const navigate = useNavigate();
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [showInviteModal, setShowInviteModal] = useState<boolean>(false);
 
@@ -51,12 +53,11 @@ export default function CreateTicket() {
       icon: <HiTrendingUp className="w-6 h-6" />,
     },
   ];
-  const handleInviteAgent = (inviteData: { name: string; email: string }) => {
-    console.log("Inviting agent:", inviteData);
-    toast.success(
-      `Invitation sent to ${inviteData.name} (${inviteData.email})`
-    );
+
+  const handleTicketClick = (ticketID: string) => {
+    navigate(`/dashboard/ticket-details/${ticketID}`);
   };
+
   return (
     <main className="min-h-[100%] p-4 md:p-6 scrollbar-hide overflow-hidden">
       <div className="px-4 py-3 max-[650px]:p-0 max-[650px]:mt-6 flex justify-between items-end max-[650px]:flex-col max-[650px]:items-start gap-2">
@@ -131,6 +132,7 @@ export default function CreateTicket() {
           {tickets?.events?.map((ticket: IEventCard) => {
             return (
               <TicketCard
+                onClick={() => handleTicketClick(ticket._id)}
                 ticketID={ticket._id}
                 imageUrl={ticket.bannerImage}
                 category={ticket.category}
@@ -148,7 +150,6 @@ export default function CreateTicket() {
       <InviteAgentModal
         isOpen={showInviteModal}
         onClose={() => setShowInviteModal(false)}
-        onSubmit={handleInviteAgent}
       />
     </main>
   );

@@ -19,6 +19,7 @@ interface TicketCardProps {
   price: number;
   imageUrl: string;
   ticketID: string;
+  onClick?: () => void;
 }
 
 export function TicketCard({
@@ -30,6 +31,7 @@ export function TicketCard({
   price,
   imageUrl,
   ticketID,
+  onClick = () => { }
 }: TicketCardProps) {
   return (
     <div className="rounded-md border border-gray-300 dark:border-gray-700  p-4 space-y-8">
@@ -40,6 +42,7 @@ export function TicketCard({
             alt={eventName}
             height={300}
             className="h-full rounded-md w-full object-cover"
+            onClick={onClick}
           />
         </div>
       ) : (
@@ -104,9 +107,8 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <p
-            className={`text-sm font-medium mb-1 ${
-              isColored ? "text-white" : "text-gray-600 dark:text-gray-200"
-            }`}
+            className={`text-sm font-medium mb-1 ${isColored ? "text-white" : "text-gray-600 dark:text-gray-200"
+              }`}
           >
             {title}
           </p>
@@ -114,16 +116,14 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
           {isLoading ? (
             <div className="animate-pulse">
               <div
-                className={`h-6 rounded w-20 mb-1 ${
-                  isColored ? "bg-white/20" : "bg-gray-300 dark:bg-gray-600"
-                }`}
+                className={`h-6 rounded w-20 mb-1 ${isColored ? "bg-white/20" : "bg-gray-300 dark:bg-gray-600"
+                  }`}
               ></div>
             </div>
           ) : (
             <p
-              className={`text-xl font-bold mb-1 ${
-                isColored ? "text-white" : "text-gray-900 dark:text-white"
-              }`}
+              className={`text-xl font-bold mb-1 ${isColored ? "text-white" : "text-gray-900 dark:text-white"
+                }`}
             >
               {balance}
             </p>
@@ -133,11 +133,10 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
         <div
           className={`
           p-2 rounded-lg
-          ${
-            isColored
+          ${isColored
               ? "bg-white text-white"
               : "bg-gray-100 dark:bg-black text-gray-700 dark:text-gray-300"
-          }
+            }
         `}
         >
           {icon}
@@ -149,6 +148,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
 
 import { ShoppingBag, Tag } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export interface ProductCardProps {
   product: {
@@ -163,7 +163,7 @@ export interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [copied, setCopied] = useState(false);
-
+  const navigate = useNavigate()
   const productUrl = `https://www.maarketplaace.com/details/${product.id}`;
   const copyLink = () => {
     navigator.clipboard.writeText(productUrl);
@@ -171,7 +171,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <div className="border rounded-md border-gray-200 dark:border-gray-700 p-4 space-y-8">
+    <div className="border rounded-md border-gray-200 dark:border-gray-700 p-4 space-y-8"
+      onClick={() => navigate(`/dashboard/ebook-details/${product.id}`)}
+    >
       {product.productImage ? (
         <div className="h-[180px] w-full">
           <img

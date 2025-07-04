@@ -21,6 +21,8 @@ import UploadEbook from "./components/pages/dashboard/layout/Upload/ebook/Upload
 import CreateTicket from "./components/pages/dashboard/layout/Upload/ticket/CreateTicket";
 import EditEvent from "./components/pages/dashboard/layout/Upload/ticket/editTicket";
 import ScanTickets from "./components/pages/event-agent/scanTickets";
+import VerifyEventAgent from "./components/pages/event-agent";
+import { CourseDetails, EBookDetails, EventDetails } from "./utils/ui/DetailsServiceConfig";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const LoginLoader = () => import("./components/auth/login");
@@ -81,8 +83,16 @@ const router = createBrowserRouter([
                 element: <UploadCourse />,
             },
             {
+                path: "/dashboard/course-details/:id",
+                element: <CourseDetails />,
+            },
+            {
                 path: "/dashboard/ebook/create",
                 element: <UploadEbook />,
+            },
+            {
+                path: "/dashboard/ebook-details/:id",
+                element: <EBookDetails />,
             },
             {
                 path: "/dashboard/ticket",
@@ -91,6 +101,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/ticket/:id",
                 element: <EditEvent />,
+            },
+            {
+                path: "/dashboard/ticket-details/:id",
+                element: <EventDetails />,
             },
             {
                 path: "/dashboard/quicks/:id",
@@ -125,6 +139,10 @@ const router = createBrowserRouter([
     {
         path: "/event-agent",
         element: <ScanTickets />,
+    },
+    {
+        path: "/verify-agent",
+        element: <VerifyEventAgent/>
     }
 ]);
 

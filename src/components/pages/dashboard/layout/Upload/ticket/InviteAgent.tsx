@@ -2,20 +2,33 @@ import { useState, FormEvent } from "react";
 import toast from "react-hot-toast";
 import { TbX } from "react-icons/tb";
 import { inviteAgent } from "../../../../../../api/mutation";
-import { useMutation } from "react-query";
-
+import { useMutation, useQuery } from "react-query";
+import { getTickets } from "../../../../../../api/query";
+import { IEventCard } from "../../../../../../interface/EventCard";
 
 interface InviteAgentModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: { name: string, email: string }) => void;
 }
 
-const InviteAgentModal = ({ isOpen, onClose, onSubmit }: InviteAgentModalProps) => {
+const InviteAgentModal = ({ isOpen, onClose }: InviteAgentModalProps) => {
     const [formData, setFormData] = useState({
-        name: "",
-        email: ""
+        eventId: "",
+        email: "",
+        name: ""
     });
+
+    const { data: eventsData, isLoading: eventsLoading } = useQuery({
+        queryKey: ["eventTickets"],
+        queryFn: getTickets,
+        onError: (error: { message: string }) => {
+            toast.error(error?.message);
+        },
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+    });
+
+    const events = eventsData?.data?.data?.data?.events || [];
 
     const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
         const { name, value } = e.target;
@@ -23,39 +36,31 @@ const InviteAgentModal = ({ isOpen, onClose, onSubmit }: InviteAgentModalProps) 
             ...prev,
             [name]: value
         }));
-      };
+    };
 
-      const inviteMutation = useMutation(inviteAgent, {
-          onSuccess: () => {
-              toast.success("Agent invited successfully");
-              onClose();
-          },
-          onError: () => {
-              toast.error("Failed to invite agent");
-          }
-      });
+    const inviteMutation = useMutation(inviteAgent, {
+        onSuccess: () => {
+            toast.success("Agent invited successfully");
+            onClose();
+        },
+        onError: () => {
+            toast.error("Failed to invite agent");
+        }
+    });
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!formData.name.trim() || !formData.email.trim()) {
+        if (!formData.eventId.trim() || !formData.email.trim()) {
             toast.error("Please fill in all fields");
             return;
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email)) {
-            toast.error("Please enter a valid email address");
-            return;
-        }
-
         inviteMutation.mutate(formData);
-        onSubmit(formData);
-        setFormData({ name: "", email: "" });
-        onClose();
+        setFormData({ eventId: "", email: "", name: "" });
     };
 
     const handleClose = () => {
-        setFormData({ name: "", email: "" });
+        setFormData({ eventId: "", email: "", name: "" });
         onClose();
     };
 
@@ -78,7 +83,30 @@ const InviteAgentModal = ({ isOpen, onClose, onSubmit }: InviteAgentModalProps) 
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label htmlFor="eventId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Select Event
+                        </label>
+                        <select
+                            id="eventId"
+                            name="eventId"
+                            value={formData.eventId}
+                            onChange={handleInputChange}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFC300] focus:border-transparent dark:bg-gray-700 dark:text-white"
+                            required
+                            disabled={eventsLoading}
+                        >
+                            <option value="">
+                                {eventsLoading ? "Loading events..." : "Select an event"}
+                            </option>
+                            {events.map((event: IEventCard) => (
+                                <option key={event._id} value={event._id}>
+                                    {event.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Name
                         </label>
                         <input
@@ -92,7 +120,6 @@ const InviteAgentModal = ({ isOpen, onClose, onSubmit }: InviteAgentModalProps) 
                             required
                         />
                     </div>
-
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Email
@@ -119,9 +146,10 @@ const InviteAgentModal = ({ isOpen, onClose, onSubmit }: InviteAgentModalProps) 
                         </button>
                         <button
                             type="submit"
-                            className="px-6 py-2 bg-[#FFC300] hover:bg-yellow-500 text-black font-medium rounded-lg transition-colors duration-200"
+                            disabled={inviteMutation.isLoading}
+                            className="px-6 py-2 bg-[#FFC300] hover:bg-yellow-500 text-black font-medium rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Send Invitation
+                            {inviteMutation.isLoading ? "Sending..." : "Send Invitation"}
                         </button>
                     </div>
                 </form>
@@ -130,4 +158,4 @@ const InviteAgentModal = ({ isOpen, onClose, onSubmit }: InviteAgentModalProps) 
     );
 };
 
-export default InviteAgentModal
+export default InviteAgentModal;
