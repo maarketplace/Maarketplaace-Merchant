@@ -19,7 +19,7 @@ export default function CreateTicket() {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [showInviteModal, setShowInviteModal] = useState<boolean>(false);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isFetched } = useQuery({
     queryKey: ["eventTickets"],
     queryFn: getTickets,
     onError: (error: { message: string }) => {
@@ -69,13 +69,16 @@ export default function CreateTicket() {
         </span>
 
         <div className="flex justify-end w-full md:w-fit gap-2">
-          <button
-            onClick={() => setShowInviteModal(true)}
-            className="w-fit h-fit border border-[#FFC300] text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 dark:text-white"
-          >
-            <TbPlus className="w-4 h-4" />
-            Invite Agent
-          </button>
+          {isFetched && tickets?.events?.length !== 0 ? (
+            <button
+              onClick={() => setShowInviteModal(true)}
+              className="w-fit h-fit border border-[#FFC300] text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 dark:text-white"
+            >
+              <TbPlus className="w-4 h-4" />
+              Invite Agent
+            </button>
+          ) : null}
+
           <button
             onClick={() => setOpenForm((prev) => !prev)}
             className="w-fit h-fit bg-[#FFC300] hover:bg-yellow-500 text-black font-medium py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
@@ -119,7 +122,7 @@ export default function CreateTicket() {
 
       {isLoading && <Loading width="150px" />}
 
-      {!openForm && tickets?.length === 0 && (
+      {!openForm && tickets?.events?.length === 0 && (
         <EmptyState
           onClick={() => setOpenForm(true)}
           title="No event created yet"

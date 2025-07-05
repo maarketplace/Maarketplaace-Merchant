@@ -15,14 +15,7 @@ import Loading from "../../../../../../loader";
 import { UploadCourseSchema } from "../../../../../../schema/UploadCourseSchema";
 import courseCategories, { courseLocations } from "../category/courseCategory";
 import { useProductStore } from "../../../../../../store";
-import {
-  Ticket,
-  Package,
-  ShoppingCart,
-  TrendingUp,
-  Plus,
-  X,
-} from "lucide-react";
+import { Ticket, ShoppingCart, TrendingUp, Plus, X } from "lucide-react";
 import { EmptyState } from "../../store";
 import InputField from "../ebook/InputField";
 import FormField from "../ebook/FormField";
@@ -33,6 +26,7 @@ import ProductCard, {
   BalanceCard,
   ProductCardProps,
 } from "../../../../../../utils/ui/card";
+import { TbCurrencyNaira } from "react-icons/tb";
 
 interface IAnalyticsData {
   totalProduct: number;
@@ -197,7 +191,7 @@ const UploadCourse = () => {
     {
       title: "Revenue",
       balance: formatNumber(analyticsData?.revenue || 0),
-      icon: <Package className="w-6 h-6" />,
+      icon: <TbCurrencyNaira className="w-6 h-6" />,
     },
     {
       title: "Total Course Sold",

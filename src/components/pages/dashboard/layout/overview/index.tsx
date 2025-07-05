@@ -70,9 +70,7 @@ const Dashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-3xl  text-[#FFC300]">
-              Dashboard
-            </h1>
+            <h1 className="text-3xl  text-[#FFC300]">Dashboard</h1>
             <button
               onClick={toggleBalanceVisibility}
               className="cursor-pointer w-[150px] h-[40px] rounded-lg bg-[#FFc300] dark:text-black flex items-center justify-center gap-2"
