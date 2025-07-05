@@ -518,6 +518,7 @@ function UploadEbook() {
       {!showAddEbook &&
         (!analyticsData?.products || analyticsData.products.length === 0) && (
           <EmptyState
+            onClick={() => setShowAddEbook(true)}
             title="No eBook uploaded yet"
             description="Start adding eBook here"
           />
